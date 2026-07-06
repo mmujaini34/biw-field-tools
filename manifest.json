@@ -1,0 +1,24 @@
+{
+  "name": "BIW Field Tools",
+  "short_name": "BIW Tools",
+  "description": "BIW Field Tools - Time Sheet, Checklist, Installation Report, Empty Timesheet",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0e14",
+  "theme_color": "#0a0e14",
+  "version": "3.5.1",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Time Sheet", "url": "./timesheet.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Checklist", "url": "./checklist.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Installation Report", "url": "./report.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Empty Timesheet", "url": "./empty-timesheet.html", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}
