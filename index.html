@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>BIW Field Tools</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a0f14">
+<meta name="description" content="BIW Field Tools — Time Sheet, Checklist, Installation Report, Empty Timesheet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BIW Tools">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:#1a0f14;color:#fff;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow:hidden}
+
+/* ============ الصورة الحية ============ */
+.stage{position:fixed;top:0;right:0;bottom:0;left:0;overflow:hidden;background:#1a0f14}
+.photo{position:absolute;top:-3%;right:-3%;bottom:-3%;left:-3%;
+  background:#1a0f14 url(bg.jpg) no-repeat left 42%;
+  background-size:cover;
+  -webkit-animation:kenburns 36s ease-in-out infinite alternate;
+  animation:kenburns 36s ease-in-out infinite alternate}
+@-webkit-keyframes kenburns{from{-webkit-transform:scale(1)}to{-webkit-transform:scale(1.07) translateY(-0.8%)}}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07) translateY(-0.8%)}}
+
+/* نبض توهج الشمس (طبقة ضوء فوق الصورة، ما تغير شكلها) */
+.sunGlow{position:absolute;left:50%;top:56%;width:150vmin;height:150vmin;margin:-75vmin 0 0 -75vmin;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(255,205,120,.28) 0%,rgba(255,150,60,.12) 26%,transparent 55%);
+  -webkit-animation:breath 6.5s ease-in-out infinite;animation:breath 6.5s ease-in-out infinite}
+@-webkit-keyframes breath{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes breath{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* لمعان يتنفس على الماء (أسفل الصورة) */
+.waterShine{position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(255,170,90,.10) 45%,rgba(255,190,110,.16) 70%,transparent);
+  -webkit-animation:breath 9s ease-in-out -3s infinite;animation:breath 9s ease-in-out -3s infinite}
+
+/* شرر / غبار ذهبي يطفو */
+.ember{position:absolute;border-radius:50%;pointer-events:none;
+  background:#ffc46a;
+  background:radial-gradient(circle at 35% 30%,rgba(255,225,170,.95),rgba(255,170,80,.45) 60%,transparent 75%);
+  box-shadow:0 0 8px rgba(255,190,110,.5)}
+@-webkit-keyframes floatUp{0%{-webkit-transform:translateY(0) translateX(0);opacity:0}8%{opacity:.85}55%{-webkit-transform:translateY(-46vh) translateX(10px);opacity:.55}100%{-webkit-transform:translateY(-92vh) translateX(-6px);opacity:0}}
+@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:.85}55%{transform:translateY(-46vh) translateX(10px);opacity:.55}100%{transform:translateY(-92vh) translateX(-6px);opacity:0}}
+@-webkit-keyframes floatUpB{0%{-webkit-transform:translateY(0);opacity:0}8%{opacity:.7}55%{-webkit-transform:translateY(-44vh) translateX(-12px);opacity:.45}100%{-webkit-transform:translateY(-88vh) translateX(8px);opacity:0}}
+@keyframes floatUpB{0%{transform:translateY(0);opacity:0}8%{opacity:.7}55%{transform:translateY(-44vh) translateX(-12px);opacity:.45}100%{transform:translateY(-88vh) translateX(8px);opacity:0}}
+
+/* تظليل خفيف فوق وتحت عشان وضوح النصوص — شفاف جدًا ما يغير الصورة */
+.vig-top{position:absolute;top:0;left:0;right:0;height:22%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(12,6,10,.62),transparent)}
+.vig-bot{position:absolute;bottom:0;left:0;right:0;height:38%;pointer-events:none;
+  background:linear-gradient(0deg,rgba(10,5,9,.78) 0%,rgba(10,5,9,.35) 55%,transparent)}
+
+/* ============ الهيدر ============ */
+header{position:fixed;top:0;left:0;right:0;z-index:6;text-align:center;
+  padding-top:calc(16px + env(safe-area-inset-top))}
+.brand-title{font-size:25px;font-weight:800;letter-spacing:5px;color:#fff;direction:ltr;
+  text-shadow:0 2px 22px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.5)}
+.brand-sub{margin-top:5px;font-size:10px;letter-spacing:3.5px;color:rgba(255,226,196,.92);direction:ltr;
+  text-shadow:0 1px 12px rgba(0,0,0,.85)}
+.brand-line{width:64px;height:2px;margin:10px auto 0;background:#ffc46a;border-radius:2px;
+  box-shadow:0 0 14px rgba(255,196,106,.9)}
+
+/* ============ الأيقونات الأربع الشفافة — صف واحد تحت ============ */
+nav{position:fixed;right:10px;top:50%;z-index:6;
+  -webkit-transform:translateY(-46%);transform:translateY(-46%);
+  text-align:center;font-size:0}
+.glass{display:block;font-size:12px;text-decoration:none;color:#fff;margin:9px 0}
+.glass-orb{position:relative;display:block;width:92px;height:92px;margin:0 auto;border-radius:50%;
+  background:rgba(20,14,18,.30);
+  border:1.5px solid rgba(255,255,255,.34);
+  box-shadow:0 8px 26px rgba(0,0,0,.45), inset 0 1px 1px rgba(255,255,255,.22);
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
+  opacity:0;-webkit-transform:translateY(20px);transform:translateY(20px);
+  -webkit-transition:-webkit-transform .22s ease, border-color .22s ease, background .22s ease;
+  transition:transform .22s ease, border-color .22s ease, background .22s ease}
+.glass-orb.show{-webkit-animation:up .5s cubic-bezier(.25,1.35,.4,1) forwards;animation:up .5s cubic-bezier(.25,1.35,.4,1) forwards}
+@-webkit-keyframes up{to{opacity:1;-webkit-transform:translateY(0)}}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+.glass:active .glass-orb{-webkit-transform:scale(.92);transform:scale(.92);background:rgba(255,196,106,.22);border-color:#ffc46a}
+.glass-orb:after{content:"";position:absolute;top:-2px;right:-2px;bottom:-2px;left:-2px;border-radius:50%;
+  border:2px solid rgba(255,196,106,.9);opacity:0;pointer-events:none}
+.glass-orb.tapped:after{-webkit-animation:ripple .55s ease-out;animation:ripple .55s ease-out}
+@-webkit-keyframes ripple{0%{opacity:.9;-webkit-transform:scale(1)}100%{opacity:0;-webkit-transform:scale(1.55)}}
+@keyframes ripple{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.55)}}
+@media (hover:hover){
+  .glass:hover .glass-orb{-webkit-transform:translateY(-5px);transform:translateY(-5px);
+    border-color:#ffc46a;background:rgba(255,170,80,.16);
+    box-shadow:0 14px 30px rgba(0,0,0,.55),0 0 22px rgba(255,190,110,.45), inset 0 1px 1px rgba(255,255,255,.25)}
+}
+.glass-ico{position:absolute;top:50%;left:50%;width:42px;height:42px;margin:-21px 0 0 -21px}
+.glass-ico path,.glass-ico circle,.glass-ico line,.glass-ico rect{stroke:#fff;stroke-width:2.3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.glass-en{display:block;margin-top:9px;font-size:10.5px;font-weight:800;letter-spacing:.6px;direction:ltr;
+  text-shadow:0 1px 10px rgba(0,0,0,.9)}
+.glass-ar{display:block;margin-top:2px;font-size:10px;color:rgba(255,232,205,.95);text-shadow:0 1px 8px rgba(0,0,0,.9)}
+
+/* ============ الشريط السفلي ============ */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:6;text-align:center;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.dock-inner{display:inline-block;padding:8px 13px;border-radius:999px;
+  background:rgba(14,9,13,.62);border:1px solid rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.net,.ver{display:inline-block;vertical-align:middle;font-family:"Courier New",monospace;direction:ltr}
+.net{font-size:10.5px;letter-spacing:1px;color:#8fe3cf}
+.net .dot{display:inline-block;vertical-align:middle;width:8px;height:8px;margin-right:6px;border-radius:50%;
+  background:#7fd1c0;box-shadow:0 0 8px #7fd1c0;
+  -webkit-animation:pulse 2.2s ease infinite;animation:pulse 2.2s ease infinite}
+.net.off{color:#f0c98c}
+.net.off .dot{background:#ffb35c;box-shadow:0 0 8px #ffb35c}
+@-webkit-keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.sep{display:inline-block;vertical-align:middle;width:1px;height:15px;margin:0 11px;background:rgba(255,255,255,.2)}
+.ver{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.55)}
+.upd{display:inline-block;vertical-align:middle;margin-left:11px;padding:6px 13px;border-radius:999px;
+  border:1px solid rgba(255,196,106,.6);background:rgba(255,170,80,.14);color:#ffdcae;
+  font-size:10.5px;letter-spacing:1px;cursor:pointer;font-family:"Courier New",monospace;direction:ltr}
+.upd:active{background:rgba(255,170,80,.32)}
+.upd-top{position:absolute;top:calc(14px + env(safe-area-inset-top));left:14px;z-index:7;
+  padding:8px 14px;font-size:11px;background:rgba(14,9,13,.55);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.upd[disabled]{opacity:.5}
+
+/* ============ آيباد / عريض ============ */
+@media (min-width:760px){
+  .brand-title{font-size:34px}
+  nav{right:0;left:0;top:auto;bottom:calc(84px + env(safe-area-inset-bottom));
+    -webkit-transform:none;transform:none;padding:0 10px}
+  .glass{display:inline-block;vertical-align:top;width:24%;max-width:190px;margin:0 4px}
+  .glass-orb{width:126px;height:126px;
+    background:rgba(210,230,255,.10);border-color:rgba(220,240,255,.5);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+  .glass-ico{width:54px;height:54px;margin:-27px 0 0 -27px}
+  .glass-en{font-size:13.5px;margin-top:12px}
+  .glass-ar{font-size:12px}
+}
+/* هواتف قصيرة */
+@media (max-height:660px){
+  .glass-orb{width:64px;height:64px}
+  .glass-ico{width:28px;height:28px;margin:-14px 0 0 -14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .photo,.sunGlow,.waterShine,.ember,.net .dot{-webkit-animation:none!important;animation:none!important}
+  .glass-orb{opacity:1;-webkit-transform:none;transform:none;-webkit-animation:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="stage" aria-hidden="true">
+  <div class="photo"></div>
+  <div class="sunGlow"></div>
+  <div class="waterShine"></div>
+  <!-- شرر ذهبي يطفو -->
+  <span class="ember" style="left:14%;bottom:6%;width:5px;height:5px;-webkit-animation:floatUp 13s linear -2s infinite;animation:floatUp 13s linear -2s infinite"></span>
+  <span class="ember" style="left:30%;bottom:2%;width:4px;height:4px;-webkit-animation:floatUpB 16s linear -8s infinite;animation:floatUpB 16s linear -8s infinite"></span>
+  <span class="ember" style="left:47%;bottom:8%;width:6px;height:6px;-webkit-animation:floatUp 11s linear -5s infinite;animation:floatUp 11s linear -5s infinite"></span>
+  <span class="ember" style="left:62%;bottom:3%;width:4px;height:4px;-webkit-animation:floatUpB 15s linear -11s infinite;animation:floatUpB 15s linear -11s infinite"></span>
+  <span class="ember" style="left:78%;bottom:7%;width:5px;height:5px;-webkit-animation:floatUp 14s linear -3s infinite;animation:floatUp 14s linear -3s infinite"></span>
+  <span class="ember" style="left:88%;bottom:1%;width:4px;height:4px;-webkit-animation:floatUpB 17s linear -9s infinite;animation:floatUpB 17s linear -9s infinite"></span>
+  <span class="ember" style="left:8%;bottom:-2%;width:4px;height:4px;-webkit-animation:floatUp 18s linear -13s infinite;animation:floatUp 18s linear -13s infinite"></span>
+  <span class="ember" style="left:55%;bottom:-4%;width:5px;height:5px;-webkit-animation:floatUpB 12.5s linear -6s infinite;animation:floatUpB 12.5s linear -6s infinite"></span>
+  <div class="vig-top"></div>
+  <div class="vig-bot"></div>
+</div>
+
+<header>
+  <button class="upd upd-top" id="updBtn" type="button">⟳ UPDATE</button>
+  <div class="brand-title">BIW FIELD TOOLS</div>
+  <div class="brand-sub">ITT BIW CONNECTOR SYSTEMS</div>
+  <div class="brand-line"></div>
+</header>
+
+<nav id="nav">
+  <a class="glass" href="timesheet.html">
+    <span class="glass-orb"><svg class="glass-ico" viewBox="0 0 34 34"><circle cx="17" cy="17" r="12.5"/><line x1="17" y1="9" x2="17" y2="17"/><line x1="17" y1="17" x2="23" y2="21"/></svg></span>
+    <span class="glass-en">TIME SHEET</span>
+    <span class="glass-ar">تايم شيت</span>
+  </a>
+  <a class="glass" href="checklist.html">
+    <span class="glass-orb"><svg class="glass-ico" viewBox="0 0 34 34"><rect x="7" y="5" width="20" height="24" rx="3"/><path d="M12 15 L15 18 L22 11"/><line x1="12" y1="23" x2="22" y2="23"/></svg></span>
+    <span class="glass-en">CHECKLIST</span>
+    <span class="glass-ar">تشك لست</span>
+  </a>
+  <a class="glass" href="report.html">
+    <span class="glass-orb"><svg class="glass-ico" viewBox="0 0 34 34"><path d="M9 5 h11 l5 5 v19 h-16 z"/><path d="M20 5 v5 h5"/><line x1="13" y1="16" x2="21" y2="16"/><line x1="13" y1="21" x2="21" y2="21"/><line x1="13" y1="26" x2="18" y2="26"/></svg></span>
+    <span class="glass-en">REPORT</span>
+    <span class="glass-ar">تقرير التركيب</span>
+  </a>
+  <a class="glass" href="empty-timesheet.html">
+    <span class="glass-orb"><svg class="glass-ico" viewBox="0 0 34 34"><rect x="8" y="5" width="18" height="24" rx="3"/><line x1="12" y1="12" x2="18" y2="12"/><path d="M14 25 l8 -8 l2.5 2.5 l-8 8 l-3.2 .7 z"/></svg></span>
+    <span class="glass-en">EMPTY TS</span>
+    <span class="glass-ar">تايم شيت حر</span>
+  </a>
+</nav>
+
+<div class="dock">
+  <div class="dock-inner">
+    <span class="net" id="net"><span class="dot"></span><span id="netTx">ONLINE</span></span>
+    <span class="sep"></span>
+    <span class="ver">v3.5.1</span>
+    <span class="sep"></span>
+    <span class="ver" id="cacheState">...</span>
+  </div>
+</div>
+
+<script>
+/* مؤشر الاتصال */
+(function(){
+  var chip=document.getElementById('net'), tx=document.getElementById('netTx');
+  function set(){var on=navigator.onLine;chip.classList.toggle('off',!on);tx.textContent=on?'ONLINE':'OFFLINE';}
+  window.addEventListener('online',set);window.addEventListener('offline',set);set();
+})();
+/* ظهور الأيقونات متدرج + موجة عند الضغط */
+(function(){
+  var orbs=document.querySelectorAll('.glass-orb');
+  for(var i=0;i<orbs.length;i++){
+    (function(el,d){
+      setTimeout(function(){el.classList.add('show');},350+d*110);
+      el.parentElement.addEventListener('touchstart',function(){el.classList.remove('tapped');void el.offsetWidth;el.classList.add('tapped');},{passive:true});
+      el.parentElement.addEventListener('mousedown',function(){el.classList.remove('tapped');void el.offsetWidth;el.classList.add('tapped');});
+    })(orbs[i],i);
+  }
+})();
+/* زر التحديث: يمسح الكاش ويسحب أحدث نسخة */
+(function(){
+  var btn=document.getElementById('updBtn');
+  btn.addEventListener('click',function(){
+    if(!navigator.onLine){btn.textContent='⚠ تحتاج نت';setTimeout(function(){btn.textContent='⟳ UPDATE';},2200);return;}
+    btn.disabled=true;btn.textContent='... يحدّث';
+    var done=function(){location.reload();};
+    try{
+      var p=[];
+      if(window.caches&&caches.keys){p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));}));}
+      if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations){p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}));}
+      Promise.all(p).then(done,done);
+      setTimeout(done,6000);
+    }catch(e){done();}
+  });
+})();
+/* تسجيل الأوفلاين + مؤشر "كل شي محمّل" */
+(function(){
+  var state=document.getElementById('cacheState');
+  function setState(t,ok){if(state){state.textContent=t;state.style.color=ok?'#8fe3cf':'rgba(255,255,255,.55)';}}
+  if(!('serviceWorker' in navigator)){setState('NO-SW',false);return;}
+  setState('LOADING...',false);
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      function watch(sw){
+        if(!sw){return;}
+        sw.addEventListener('statechange',function(){
+          if(sw.state==='activated'){verify();}
+        });
+      }
+      if(reg.active){verify();}
+      watch(reg.installing||reg.waiting);
+      reg.addEventListener('updatefound',function(){watch(reg.installing);});
+    }).catch(function(){setState('SW-ERR',false);});
+  });
+  function verify(){
+    /* نتأكد فعليًا إن كل الصفحات والمكتبات بالكاش */
+    if(!window.caches){setState('READY',true);return;}
+    var must=['timesheet.html','checklist.html','report.html','empty-timesheet.html','libs/jspdf.umd.min.js','libs/html2canvas.min.js','bg.jpg'];
+    caches.keys().then(function(ks){
+      var name=null;
+      for(var i=0;i<ks.length;i++){if(ks[i].indexOf('biw-field-tools')===0){name=ks[i];}}
+      if(!name){setState('LOADING...',false);setTimeout(verify,2500);return;}
+      caches.open(name).then(function(c){
+        Promise.all(must.map(function(u){return c.match(u,{ignoreSearch:true});})).then(function(rs){
+          var missing=0;
+          for(var i=0;i<rs.length;i++){if(!rs[i])missing++;}
+          if(missing===0){setState('\u2713 OFFLINE READY',true);}
+          else{setState('LOADING '+(must.length-missing)+'/'+must.length,false);setTimeout(verify,3000);}
+        });
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
