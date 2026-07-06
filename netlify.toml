@@ -1,0 +1,3 @@
+# BIW Field Tools - static site, no build needed
+[build]
+  publish = "."
