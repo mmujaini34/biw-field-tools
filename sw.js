@@ -1,5 +1,5 @@
-/* BIW Field Tools — Service Worker v3.6.0 (Safari-proof, redirect-proof, offline-first) */
-const CACHE_NAME = 'biw-field-tools-v3.6.0';
+/* BIW Field Tools — Service Worker v3.7.0 (Safari-proof, redirect-proof, offline-first) */
+const CACHE_NAME = 'biw-field-tools-v3.7.0';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
   './checklist.html',
   './report.html',
   './empty-timesheet.html',
+  './expenses.html',
   './bg.jpg',
   './libs/html2canvas.min.js',
   './libs/jspdf.umd.min.js',
