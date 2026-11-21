@@ -1,5 +1,5 @@
-/* BIW Field Tools — Service Worker v3.16.1 (Safari-proof, redirect-proof, offline-first) */
-const CACHE_NAME = 'biw-field-tools-v3.16.1';
+/* BIW Field Tools — Service Worker v3.16.2 (Safari-proof, redirect-proof, offline-first) */
+const CACHE_NAME = 'biw-field-tools-v3.16.2';
 /* طابور رفع الأرشيف: نفس الكود المستخدم بالصفحات */
 try { importScripts('./archive-queue.js'); } catch (e) {}
 const ASSETS = [
@@ -66,7 +66,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.indexOf('biw-field-tools-') === 0 && k !== CACHE_NAME).map((k) => caches.delete(k)))   /* كاش تطبيق KSA ما نلمسه */
     ).then(() => self.clients.claim())
   );
 });
@@ -75,6 +75,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return; /* خارجي: خله للمتصفح */
+  if (url.pathname.indexOf('/ksa/') !== -1) return; /* تطبيق KSA له خدمته الخاصة */
   if (url.pathname.endsWith('/version.json')) {   /* فحص التحديث: شبكة فقط، بلا كاش أبدًا */
     e.respondWith(fetch(e.request, { cache: 'no-store' }));
     return;
