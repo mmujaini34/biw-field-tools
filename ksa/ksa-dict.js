@@ -198,7 +198,7 @@
     'مثال في PDF: Saudi Aramco / Baker Hughes': ['In the PDF: Saudi Aramco / Baker Hughes', 'في الـ PDF: Saudi Aramco / Baker Hughes'],
     'اختر الشركة؛ ستظهر مع العميل في خانة Customer.': ['Choose the company; it shows with the client in the Customer box.', 'اختر الشركة؛ تطلع مع العميل في خانة Customer.'],
     'تاريخ عمل التقرير.': ['The date of the report.', 'تاريخ عمل التقرير.'],
-    'مثال: 09-May-2026': ['Example: 09-May-2026', 'مثال: 09-May-2026'],
+    'مثال: 09-May-2026': ['Example: 09-May-2026', 'مثال: \u206609-May-2026\u2069'],
     'اكتب الاسم بالإنجليزي؛ أول حرف يتحول Capital تلقائيًا.': ['Type the name in English; first letters become capitals automatically.', 'اكتب الاسم بالإنجليزي؛ أول حرف يصير كابيتال لحاله.'],
     'اكتب الاسم بالإنجليزي؛ يظهر أيضًا أسفل التقرير.': ['Type the name in English; it also shows at the bottom of the report.', 'اكتب الاسم بالإنجليزي؛ يطلع بعد تحت في التقرير.'],
     'اكتب اسم الرق.': ['Type the rig name.', 'اكتب اسم الرق.'],

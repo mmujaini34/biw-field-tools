@@ -1,13 +1,15 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "notes": [
     "التطبيق كله صار عربي أو إنجليزي: اختر اللغة من فوق في الصفحة الرئيسية",
     "أول مرة تفتح التطبيق تختار اللغة وتكتب اسمك، والملفات تنرفع للإدارة باسمك",
-    "رسالة الترحيب ورسالة «أنت على أحدث نسخة» تغيّرت"
+    "رسالة الترحيب ورسالة «أنت على أحدث نسخة» تغيّرت",
+    "تحسين عرض التواريخ في الوضع العربي"
   ],
   "notes_en": [
     "The whole app is now in Arabic or English: choose the language at the top of the home page",
     "The first time you open the app you choose the language and type your name; files go to management under your name",
-    "New welcome message and a new “You are on the latest version” message"
+    "New welcome message and a new “You are on the latest version” message",
+    "Better date display in Arabic mode"
   ]
 }
