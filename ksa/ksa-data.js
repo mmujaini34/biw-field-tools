@@ -39,6 +39,7 @@
   /* أسماء المهندسين: أول حرف من كل كلمة كابيتال */
   function pkey(v) { return String(v == null ? '' : v).toUpperCase().replace(/\s+/g, ''); }
   function normPart(x) { return { part: pkey(x.part), desc: clean(x.desc).toUpperCase(), manual: clean(x.manual).toUpperCase() || 'N/A', serialRequired: x.serialRequired !== false }; }
+  function T(en, ar) { return g.KSAi18n ? g.KSAi18n.t(en, ar) : ar; }
   function niceName(v) { return clean(v).toLowerCase().replace(/(^|[\s\-'])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); }
 
   var cache = getJSON(CACHE, null) || { engineers: [], ops: DEFAULT_OPS.slice(), parts: DEFAULT_PARTS.slice(), at: 0 };
@@ -174,9 +175,9 @@
     partKey: pkey,
     savePart: function (o, oldPart) {
       var d = normPart(o || {});
-      if (!d.part || !d.desc) return { ok: false, error: 'P/N و Description مطلوبين' };
+      if (!d.part || !d.desc) return { ok: false, error: T('Part Number and Description are required', 'البارت نمبر والوصف مطلوبين') };
       var oldK = pkey(oldPart);
-      if (oldK && oldK !== d.part && api.findPart(d.part)) return { ok: false, error: 'البارت نمبر ' + d.part + ' موجود بالقائمة' };
+      if (oldK && oldK !== d.part && api.findPart(d.part)) return { ok: false, error: T('Part Number ' + d.part + ' is already in the list', 'البارت نمبر ' + d.part + ' موجود بالقائمة') };
       var cur = api.findPart(oldK || d.part);
       if (cur && cur.part === d.part && cur.desc === d.desc && cur.manual === d.manual && cur.serialRequired === d.serialRequired) return { ok: true, part: cur };
       var data = { part: d.part, desc: d.desc, manual: d.manual, serialRequired: d.serialRequired };

@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0e0a10">
 <meta name="robots" content="noindex,nofollow">
 <title>الإدارة — BIW KSA</title>
+<script src="ksa-i18n.js"></script><script src="ksa-dict.js"></script>
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -109,6 +110,10 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
 .toast.on{opacity:1}
 .dev h3:not(:first-child){margin-top:18px}
 .dev p{margin-bottom:6px!important}
+.ksa-ar .tool .en{display:none}
+.ksa-en .tool .ar{display:none}
+.ksa-en .eng,.ksa-en .doc,.ksa-en .tool,.ksa-en .eng .nm,.ksa-en .tool .en{text-align:left}
+.ksa-en .lrow span{text-align:left}
 .lrow{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:13.5px}
 .lrow span{flex:1;min-width:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lrow button{flex:none;margin:0!important;padding:6px 12px!important;font-size:12.5px!important}
@@ -127,6 +132,8 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
 <div class="toast" id="toast" role="status"></div>
 
 <script>
+/* KSA: اختيار اللغة أول مرة */
+(function(){ if(window.KSAi18n&&!KSAi18n.chosen()){ var go=function(){KSAi18n.pick(function(){location.reload();});}; if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go(); } })();
 (function(){
   'use strict';
   var FN='https://szomlyrlpznrdyewknec.supabase.co/functions/v1/biw-ksa';
@@ -308,6 +315,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
       tx.appendChild(el('span','meta ltr',bits.join('  ·  ')));
       var others=(it.engineers||[]).filter(function(n){return nk(n)!==nk(name);});
       if(others.length)tx.appendChild(el('span','with','مشترك مع: '+others.join(' + ')));
+      if(it.created_by)tx.appendChild(el('span','with','رفعه: '+it.created_by));
       b.appendChild(tx);
       b.onclick=function(){openDoc(it,b);};
       view.appendChild(b);

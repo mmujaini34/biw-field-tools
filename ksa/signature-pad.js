@@ -13,6 +13,8 @@
 
   function norm(v) { return String(v || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
   function el(tag, css, html) { var e = document.createElement(tag); if (css) e.style.cssText = css; if (html != null) e.innerHTML = html; return e; }
+  function T(en, ar) { return window.KSAi18n ? window.KSAi18n.t(en, ar) : ar; }
+  function TR(s) { return window.KSAi18n ? window.KSAi18n.tr(s) : s; }
   function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   /* ---------------- شاشة التوقيع ---------------- */
@@ -26,26 +28,26 @@
     var hostEl = el('div', 'position:fixed;inset:0;z-index:2147483000');
     var root = hostEl.attachShadow ? hostEl.attachShadow({ mode: 'open' }) : hostEl;
     var ov = el('div', 'position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;box-sizing:border-box;' +
-      'font-family:-apple-system,"Segoe UI",Roboto,Tahoma,Arial,sans-serif;direction:rtl;touch-action:none;-webkit-user-select:none;user-select:none;' +
+      'font-family:-apple-system,"Segoe UI",Roboto,Tahoma,Arial,sans-serif;direction:' + (window.KSAi18n && window.KSAi18n.lang() === 'en' ? 'ltr' : 'rtl') + ';touch-action:none;-webkit-user-select:none;user-select:none;' +
       'padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)');
     ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
     var head = el('div', 'flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid #e2e8f0');
-    head.appendChild(el('div', 'min-width:0', '<div style="font-weight:900;font-size:17px;color:#0f172a">' + esc(opts.title || 'التوقيع') + '</div>' +
+    head.appendChild(el('div', 'min-width:0', '<div style="font-weight:900;font-size:17px;color:#0f172a">' + esc(TR(opts.title || T('Signature', 'التوقيع'))) + '</div>' +
       (opts.name ? '<div style="font-size:14px;color:#334155;direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(opts.name) + '</div>' : '') +
-      '<div style="font-size:12.5px;color:#64748b">وقّع بإصبعك أو بالقلم في المساحة البيضاء</div>'));
-    var bCancel = el('button', 'flex:none;font:inherit;font-size:15px;font-weight:700;padding:10px 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;min-height:44px', 'إلغاء');
+      '<div style="font-size:12.5px;color:#64748b">' + T('Sign with your finger or a pen in the white area', 'وقّع بإصبعك أو بالقلم في المساحة البيضاء') + '</div>'));
+    var bCancel = el('button', 'flex:none;font:inherit;font-size:15px;font-weight:700;padding:10px 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;min-height:44px', T('Cancel', 'إلغاء'));
     bCancel.type = 'button'; head.appendChild(bCancel);
 
     var area = el('div', 'flex:1 1 auto;position:relative;min-height:0;background:#fff');
     var guide = el('div', 'position:absolute;left:8%;right:8%;top:64%;border-top:2px dashed #cbd5e1;pointer-events:none');
-    var hint = el('div', 'position:absolute;left:0;right:0;top:40%;text-align:center;color:#cbd5e1;font-size:22px;font-weight:700;pointer-events:none', 'وقّع هنا');
+    var hint = el('div', 'position:absolute;left:0;right:0;top:40%;text-align:center;color:#cbd5e1;font-size:22px;font-weight:700;pointer-events:none', T('Sign here', 'وقّع هنا'));
     var cv = el('canvas', 'position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair');
     area.appendChild(guide); area.appendChild(hint); area.appendChild(cv);
 
     var foot = el('div', 'flex:none;display:flex;gap:10px;padding:10px 14px;border-top:1px solid #e2e8f0;background:#f8fafc');
-    var bUndo = el('button', 'flex:1;font:inherit;font-size:15px;font-weight:700;padding:12px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;min-height:48px', 'تراجع');
-    var bClear = el('button', 'flex:1;font:inherit;font-size:15px;font-weight:700;padding:12px;border-radius:12px;border:1px solid #fecaca;background:#fff;color:#b91c1c;min-height:48px', 'مسح');
-    var bSave = el('button', 'flex:2;font:inherit;font-size:16px;font-weight:900;padding:12px;border-radius:12px;border:0;background:#0f766e;color:#fff;min-height:48px', 'حفظ التوقيع');
+    var bUndo = el('button', 'flex:1;font:inherit;font-size:15px;font-weight:700;padding:12px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;min-height:48px', T('Undo', 'تراجع'));
+    var bClear = el('button', 'flex:1;font:inherit;font-size:15px;font-weight:700;padding:12px;border-radius:12px;border:1px solid #fecaca;background:#fff;color:#b91c1c;min-height:48px', T('Clear', 'مسح'));
+    var bSave = el('button', 'flex:2;font:inherit;font-size:16px;font-weight:900;padding:12px;border-radius:12px;border:0;background:#0f766e;color:#fff;min-height:48px', T('Save signature', 'حفظ التوقيع'));
     [bUndo, bClear, bSave].forEach(function (b) { b.type = 'button'; foot.appendChild(b); });
     ov.appendChild(head); ov.appendChild(area); ov.appendChild(foot);
     root.appendChild(ov);

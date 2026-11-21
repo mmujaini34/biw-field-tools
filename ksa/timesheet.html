@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Time Sheet KSA</title>
+<script src="ksa-i18n.js"></script><script src="ksa-dict.js"></script>
 <link rel="icon" type="image/png" href="icon-192.png">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f5f7;color:#111827;font-family:Arial,sans-serif}.app-shell{max-width:920px;margin:0 auto;padding:18px}.input-panel{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.06)}.input-title{margin:0 0 6px;font-size:24px;font-weight:900}.input-note{margin:0 0 16px;color:#6b7280;font-size:13px}.form-section{border:1px solid #e5e7eb;border-radius:16px;padding:14px;margin:14px 0;background:#fbfbfc}.section-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}.step-badge{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#111827;color:#fff;font-weight:900}.section-title-wrap h3,.form-section h3{margin:0 0 4px;font-size:17px;font-weight:900}.section-title-wrap p{margin:0;color:#6b7280;font-size:12px}.job-grid,.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.form-field label{display:block;margin-bottom:6px;font-size:12px;font-weight:900;color:#374151;text-transform:uppercase}input,textarea,select{width:100%;border:1px solid #cfd6df;border-radius:10px;min-height:44px;padding:10px 12px;font-size:15px;font-weight:700;outline:none;background:#fff;color:#111827}input:focus,textarea:focus,select:focus{border-color:#111827}.select-card,.auto-value{width:100%;min-height:44px;border:1px solid #cfd6df;border-radius:10px;padding:11px 12px;background:#fff;font-size:15px;font-weight:800;cursor:pointer;white-space:pre-line}.placeholder{color:#9ca3af;font-weight:700}.required-hint{margin-top:6px;font-size:11px;color:#6b7280}.items-display-title{font-weight:900}.items-display-sub{font-size:12px;color:#6b7280;margin-top:3px;font-weight:700}.items-summary{margin-top:10px;font-size:12px;color:#374151;white-space:pre-line;line-height:1.35}.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.btn{border:0;border-radius:11px;padding:12px 16px;min-height:44px;font-weight:900;cursor:pointer}.btn-primary{background:#111827;color:#fff}.btn-secondary{background:#e5e7eb;color:#111827}.status-text{margin-top:10px;font-size:13px;font-weight:800;color:#374151}.validation-hint{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:#fff1f2;color:#9f1239;font-weight:800;font-size:13px}.validation-hint.active{display:block}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:9999;align-items:center;justify-content:center;padding:18px}.modal-overlay.active{display:flex}.modal-box{width:100%;max-width:440px;background:#fff;border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.25)}.modal-box h3{margin:0 0 12px;font-size:20px;font-weight:900}.modal-field{margin:12px 0}.modal-field label{display:block;margin-bottom:6px;font-size:12px;font-weight:900;text-transform:uppercase;color:#374151}.modal-preview{margin-top:12px;padding:10px;border-radius:10px;background:#f3f4f6;font-weight:900}.modal-actions{display:flex;gap:10px;margin-top:16px}.modal-actions button{flex:1;border:0;border-radius:10px;min-height:42px;font-weight:900;cursor:pointer}.cancel-btn{background:#e5e7eb;color:#111827}.done-btn{background:#111827;color:#fff}.items-modal-box{max-width:930px;max-height:90vh;overflow:auto}.items-modal-note{margin:0 0 12px;color:#6b7280;font-size:12px;line-height:1.4}.item-editor-row{border:1px solid #e5e7eb;border-radius:14px;padding:12px;margin:12px 0;background:#fafafa}.item-row-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.item-row-title{font-weight:900}.item-remove-btn{border:0;border-radius:9px;background:#fee2e2;color:#991b1b;padding:8px 10px;font-weight:900}.item-mode-line{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:#374151;margin:6px 0 10px}.item-mode-line input,.engineer-option input{width:auto;min-height:auto}.item-row-grid{display:grid;grid-template-columns:.65fr 1.7fr 1fr 1fr 1.1fr;gap:10px}.item-row-grid.manual-mode{grid-template-columns:.65fr 1.6fr 1fr 1fr 1.1fr}.item-mini-field label{display:block;font-size:11px;font-weight:900;color:#4b5563;margin-bottom:5px}.item-mini-field input,.item-mini-field select{min-height:40px;font-size:13px;padding:8px 9px}.serial-status{display:block;margin-top:5px;font-size:11px;font-weight:900}.serial-status.ok{color:#166534}.serial-status.bad{color:#991b1b}.auto-readonly{background:#f3f4f6;color:#374151}.engineer-option{display:block;padding:10px 8px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0;font-weight:800}.pdf-stage{position:absolute;left:-12000px;top:0;width:794px;height:1123px;overflow:hidden;background:#fff}body.generating-pdf .pdf-stage{left:0;top:0;opacity:0;pointer-events:none}.page{width:794px;height:1123px;margin:0;background:#fff;padding:18px 22px;font-family:"Times New Roman",serif;color:#000;overflow:hidden}table{width:100%;border-collapse:collapse;table-layout:fixed}td,th{border:2px solid #000;vertical-align:top;overflow:hidden;color:#000}.cell{padding:7px 8px;font-size:18px;font-weight:bold;line-height:1.08}.center{text-align:center;vertical-align:middle}.top-title{font-family:Arial,sans-serif;font-size:25px;font-weight:900;line-height:1.35;text-transform:uppercase}.top-table td{height:135px}.top-left{width:28%}.top-center{width:42%}.top-right{width:30%}.logo-cell{background:#fff;vertical-align:middle;text-align:center}.logo-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;padding:4px}.logo-img{width:100%;height:100%;object-fit:contain;display:block}.info-table{margin-top:0}.info-table td{height:52px}.info-label{width:20%}.info-value{width:43%}.info-right-label{width:13%}.info-right-value{width:24%}
@@ -478,6 +479,7 @@ body.generating-pdf .app-back-bar{display:none !important}
 .ksa-note{font-size:12px;color:#64748b;font-weight:700;margin-top:6px;line-height:1.5}
 .ksa-ok{color:#15803d}
 .ksa-warn{color:#b45309}
+.ksa-ar .select-card,.ksa-ar .auto-value,.ksa-ar .items-summary,.ksa-ar .ksa-day-date,.ksa-ar input,.ksa-ar textarea,.ksa-ar select,.ksa-ar .item-part-card,.ksa-ar .status-text,.ksa-ar .validation-hint{unicode-bidi:plaintext}
 .ksa-sub{margin:14px 0 6px;font-size:14px;font-weight:900;color:#0f172a}
 .ksa-add-part{border-top:1px dashed #94a3b8!important}
 .ksa-add-part .item-result-desc{color:#0f766e!important;font-weight:900!important}
@@ -490,9 +492,9 @@ body.ui-night .ksa-sub,body.ui-night .ksa-eng-top b{color:#e5e7eb}
 body.ui-night .ksa-sigline .thumb{background:#fff}
 
 /* ===== PDF stage (US Letter, measured from the KSA sample ticket — units in pt) ===== */
-.ksa-stage{position:absolute;left:-14000px;top:0;width:612pt;pointer-events:none}
+.ksa-stage{position:absolute;left:-14000px;top:0;width:612pt;pointer-events:none;direction:ltr}
 body.generating-pdf .ksa-stage{left:0;top:0;opacity:0}
-.ksa-page{position:relative;width:612pt;height:792pt;background:#fff;overflow:hidden;color:#000;margin:0}
+.ksa-page{position:relative;width:612pt;height:792pt;background:#fff;overflow:hidden;color:#000;margin:0;direction:ltr;text-align:left}
 .ksa-page *{box-sizing:border-box}
 .ksa-l{position:absolute;background:#000}
 .ksa-t{position:absolute;white-space:nowrap;line-height:1;color:#000;font-family:"KSA Serif","Times New Roman",Times,serif;font-size:10pt;font-weight:700;overflow:visible}
@@ -660,6 +662,7 @@ input[type=date]{min-width:0;max-width:100%}
 <script src="ksa-ts-share.js"></script>
 <script src="signature-pad.js"></script>
 <script src="ksa-parts-ui.js"></script>
+<script src="ksa-user.js"></script>
 <script>
 /* ===================== BIW KSA — Time Sheet (Penetrator Ticket) ===================== */
 (function () {
@@ -672,7 +675,9 @@ input[type=date]{min-width:0;max-width:100%}
   var COMPANIES = ['SLB', 'Baker Hughes', 'Levare', 'Al Khorayef', 'Halliburton'];
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var WDA = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
   var $ = function (id) { return document.getElementById(id); };
+  function T(en, ar) { return window.KSAi18n ? KSAi18n.t(en, ar) : en; }   /* الرسائل باللغة المختارة */
   function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function digits(v) { return String(v == null ? '' : v).replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); }).replace(/[۰-۹]/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); }); }
   function copy(o) { return JSON.parse(JSON.stringify(o)); }
@@ -742,7 +747,7 @@ input[type=date]{min-width:0;max-width:100%}
     box.innerHTML = rows.map(function (r, i) {
       var d = parseDay(r.date);
       return '<div class="ksa-day' + (r.status === 'WORKING' ? ' work' : '') + '" data-d="' + r.date + '">' +
-        '<div class="ksa-day-top"><div class="ksa-day-date">' + fmtDay(r.date) + '<small>' + WD[d.getDay()] + '</small></div>' +
+        '<div class="ksa-day-top"><div class="ksa-day-date">' + fmtDay(r.date) + '<small>' + T(WD[d.getDay()], WDA[d.getDay()]) + '</small></div>' +
         '<div class="ksa-st"><button type="button" class="sb' + (r.status === 'STANDBY' ? ' on' : '') + '" data-st="STANDBY">STANDBY</button><button type="button" class="wk' + (r.status === 'WORKING' ? ' on' : '') + '" data-st="WORKING">WORKING</button></div></div>' +
         '<div class="ksa-day-grid"><input type="time" value="' + esc(r.time) + '" aria-label="Time"><select aria-label="Operation">' + opOptions(r.op) + '</select></div></div>';
     }).join('');
@@ -800,14 +805,14 @@ input[type=date]{min-width:0;max-width:100%}
   window.ksaDatePreview = function () {
     var a = $('modalDateFrom').value, b = $('modalDateTo').value, pa = parseDay(a), pb = parseDay(b);
     var ok = pa && pb && pb >= pa;
-    $('modalDatePreview').textContent = ok ? fmtDay(a) + ' TILL ' + fmtDay(b) : (pa && pb ? 'To Date قبل From Date' : '---');
-    $('modalDaysPreview').textContent = ok ? (Math.round((pb - pa) / 86400000) + 1) + ' days' : '---';
+    $('modalDatePreview').textContent = ok ? fmtDay(a) + ' TILL ' + fmtDay(b) : (pa && pb ? T('To date is before From date', 'تاريخ النهاية قبل تاريخ البداية') : '---');
+    $('modalDaysPreview').textContent = ok ? (Math.round((pb - pa) / 86400000) + 1) + T(' days', ' يوم') : '---';
   };
   window.ksaSaveDate = function () {
     var a = $('modalDateFrom').value, b = $('modalDateTo').value, pa = parseDay(a), pb = parseDay(b);
-    if (!pa || !pb) { alert('اختر From Date و To Date'); return; }
-    if (pb < pa) { alert('To Date لازم يكون بعد أو نفس From Date'); return; }
-    if ((pb - pa) / 86400000 > 119) { alert('الفترة أطول من 120 يوم'); return; }
+    if (!pa || !pb) { alert(T('Choose the From date and the To date.', 'اختر تاريخ البداية وتاريخ النهاية.')); return; }
+    if (pb < pa) { alert(T('The To date must be the same as or after the From date.', 'تاريخ النهاية لازم يكون نفس تاريخ البداية أو بعده.')); return; }
+    if ((pb - pa) / 86400000 > 119) { alert(T('The period is longer than 120 days.', 'الفترة أطول من 120 يوم.')); return; }
     S.dateFrom = a; S.dateTo = b;
     /* نشيل أيام برا الفترة الجديدة */
     var keep = {}; days().forEach(function (d) { if (S.log[d]) keep[d] = S.log[d]; }); S.log = keep;
@@ -835,9 +840,9 @@ input[type=date]{min-width:0;max-width:100%}
   function serialStatus(row) {
     if (row.serialRequired === false) return { cls: 'serial-status-ok', text: 'N/A' };
     var v = String(row.serial || '').trim();
-    if (!v) return { cls: 'serial-status-warn', text: 'Enter 6 digits per serial. Slash is added automatically.' };
-    if (validSerial(v)) return { cls: 'serial-status-ok', text: 'تم' };
-    return { cls: 'serial-status-error', text: 'Each Serial Number must be exactly 6 digits.' };
+    if (!v) return { cls: 'serial-status-warn', text: T('Enter 6 digits per serial. The slash is added automatically.', 'اكتب 6 أرقام لكل سيريال، والشرطة / تنضاف لحالها.') };
+    if (validSerial(v)) return { cls: 'serial-status-ok', text: T('OK ✓', 'تمام ✓') };
+    return { cls: 'serial-status-error', text: T('Each serial number must be exactly 6 digits.', 'كل سيريال لازم يكون 6 أرقام بالضبط.') };
   }
   window.ksaOpenItems = function () { DRAFT = S.items.length ? copy(S.items) : [blankRow()]; renderItems(); $('itemsModal').classList.add('active'); };
   window.ksaAddItemRow = function () { DRAFT.push(blankRow()); renderItems(); };
@@ -926,8 +931,8 @@ input[type=date]{min-width:0;max-width:100%}
         manual: (String(r.manual || '').trim().toUpperCase() || 'N/A'), serial: sr ? String(r.serial || '').trim() : 'N/A', serialRequired: sr };
     }).filter(Boolean);
     for (var i = 0; i < rows.length; i++) {
-      if (!rows[i].desc || !rows[i].part) { alert('Item ' + (i + 1) + ': Description and Part Number are required. اختر القطعة من القائمة أو فعّل Manual Entry.'); return; }
-      if (rows[i].serialRequired && !validSerial(rows[i].serial)) { alert('Item ' + (i + 1) + ': Each Serial Number must be exactly 6 digits. Example: 123456 or 123456/654321.'); return; }
+      if (!rows[i].desc || !rows[i].part) { alert(T('Item ' + (i + 1) + ': Description and Part Number are required. Pick the part from the list or turn on Manual Entry.', 'القطعة ' + (i + 1) + ': الوصف والبارت نمبر مطلوبين. اختر القطعة من القائمة أو فعّل الإدخال اليدوي.')); return; }
+      if (rows[i].serialRequired && !validSerial(rows[i].serial)) { alert(T('Item ' + (i + 1) + ': Each serial number must be exactly 6 digits. Example: 123456 or 123456/654321.', 'القطعة ' + (i + 1) + ': كل سيريال لازم يكون 6 أرقام بالضبط. مثال: 123456 أو 123456/654321.')); return; }
     }
     /* أي قطعة انكتبت يدوي وما هي بالقائمة: تنضاف للقائمة المشتركة */
     if (window.KSAData) rows.forEach(function (r) { if (r.manualMode && r.part && r.desc && !KSAData.findPart(r.part)) KSAData.savePart({ part: r.part, desc: r.desc, manual: r.manual || 'N/A', serialRequired: r.serialRequired }); });
@@ -936,14 +941,14 @@ input[type=date]{min-width:0;max-width:100%}
   window.ksaOpenParts = function () {
     window.KSAPartsUI.open({ onChange: function () { if ($('itemsModal').classList.contains('active')) renderItems(); } });
   };
-  window.ksaClearItems = function () { if (!S.items.length) return; if (!confirm('Clear all Items?')) return; S.items = []; showItems(); save(); };
+  window.ksaClearItems = function () { if (!S.items.length) return; if (!confirm(T('Clear all items?', 'تمسح كل الأغراض؟'))) return; S.items = []; showItems(); save(); };
   function showItems() {
     var n = S.items.length, d = $('itemsDisplay');
-    $('itemCounterBadge').textContent = n; $('topItemCount').textContent = 'Items: ' + n;
+    $('itemCounterBadge').textContent = n; $('topItemCount').textContent = T('Items: ', 'الأغراض: ') + n;
     d.classList.toggle('placeholder', !n);
-    d.innerHTML = n ? '<div class="items-display-title">' + n + ' item(s) added</div><div class="items-display-sub">Tap to review or edit items.</div>'
+    d.innerHTML = n ? '<div class="items-display-title">' + T(n + ' item(s) added', 'تمت إضافة ' + n + (n === 1 ? ' قطعة' : ' قطع')) + '</div><div class="items-display-sub">' + T('Tap to review or edit the items.', 'اضغط لمراجعة الأغراض أو تعديلها.') + '</div>'
                     : '<div class="items-display-title">اضغط لإضافة الأغراض</div><div class="items-display-sub">Search by Description or Part Number — type any part like P177 and pick from the list.</div>';
-    $('itemsSummary').textContent = n ? S.items.map(function (r, i) { return (i + 1) + '. Qty: ' + r.qty + ' | ' + r.desc + ' | ' + r.part + ' | ' + r.manual + ' | ' + r.serial; }).join('\n') : 'No items added yet.';
+    $('itemsSummary').textContent = n ? S.items.map(function (r, i) { return (i + 1) + '. ' + T('Qty', 'العدد') + ': ' + r.qty + ' | ' + r.desc + ' | ' + r.part + ' | ' + r.manual + ' | ' + r.serial; }).join('\n') : T('No items added yet.', 'ما فيه أغراض لين الحين.');
   }
 
   /* ---------- المهندسين والتواقيع ---------- */
@@ -952,7 +957,7 @@ input[type=date]{min-width:0;max-width:100%}
   function fillNames() { $('engNames').innerHTML = (window.KSAData ? KSAData.names() : []).map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join(''); }
   function engIdOf(name) { var s = saved(name); var local = S.engIds[(window.KSAData ? KSAData.key(name) : name)]; return local != null ? local : (s ? s.id_no : ''); }
   function renderEngineers() {
-    if (!S.engineers.length) S.engineers = [''];
+    if (!S.engineers.length) S.engineers = [(window.KSAUser && KSAUser.name()) || ''];   /* أول مهندس = اسم اللي مسجل بالجوال */
     $('engList').innerHTML = S.engineers.map(function (name, i) {
       var s = saved(name), sig = s && s.sig;
       return '<div class="ksa-eng" data-i="' + i + '"><div class="ksa-eng-top"><b>Engineer ' + (i + 1) + '</b>' + (S.engineers.length > 1 ? '<button type="button" class="ksa-btn-del" data-act="del">حذف</button>' : '') + '</div>' +
@@ -990,10 +995,10 @@ input[type=date]{min-width:0;max-width:100%}
     if (act === 'del') { S.engineers.splice(i, 1); renderEngineers(); save(); return; }
     if (act === 'sign') {
       var inp = card.querySelector('input[data-f="name"]'), name = nice(inp.value);
-      if (!name) { alert('اكتب اسمك أول'); inp.focus(); return; }
+      if (!name) { alert(T('Type your name first.', 'اكتب اسمك أول.')); inp.focus(); return; }
       var idv = digits(card.querySelector('input[data-f="id"]').value).trim().toUpperCase();
       S.engineers[i] = name;
-      window.BIWSign.open({ title: 'توقيع BIW Field Service Engineer', name: name, onDone: function (png) {
+      window.BIWSign.open({ title: T('BIW Field Service Engineer signature', 'توقيع مهندس BIW'), name: name, onDone: function (png) {
         if (!png) return;
         persistEngineer(name, idv, png);
         renderEngineers(); save();
@@ -1017,7 +1022,7 @@ input[type=date]{min-width:0;max-width:100%}
       var act = e.target.getAttribute('data-act');
       if (act === 'clear') { S[who].sig = ''; renderOtherSig(who); save(); return; }
       if (act !== 'sign') return;
-      window.BIWSign.open({ title: who === 'rep' ? 'توقيع Company Representative' : 'توقيع ESP Supervisor', name: S[who].name || '', onDone: function (png) {
+      window.BIWSign.open({ title: who === 'rep' ? T('Company Representative signature', 'توقيع ممثل الشركة') : T('ESP Supervisor signature', 'توقيع مشرف ESP'), name: S[who].name || '', onDone: function (png) {
         if (!png) return; S[who].sig = png; renderOtherSig(who); save();
       } });
     });
@@ -1028,8 +1033,8 @@ input[type=date]{min-width:0;max-width:100%}
   function badge(t) { var b = $('autosaveBadge'); if (b) b.textContent = t; }
   function save() {
     if (!draftReady) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); badge('Saved automatically'); clearTimeout(badgeT); badgeT = setTimeout(function () { badge('Auto-save ready'); }, 1200); }
-    catch (e) { badge('Auto-save unavailable'); }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); badge(T('Saved automatically', 'انحفظ تلقائي')); clearTimeout(badgeT); badgeT = setTimeout(function () { badge(T('Auto-save ready', 'الحفظ التلقائي شغّال')); }, 1200); }
+    catch (e) { badge(T('Auto-save unavailable', 'الحفظ التلقائي مب متوفر')); }
     shareSoon();
   }
   function restore() {
@@ -1040,7 +1045,7 @@ input[type=date]{min-width:0;max-width:100%}
         var b = blankState(); for (var k in b) if (st[k] != null) b[k] = st[k];
         b.rep = Object.assign(blankState().rep, b.rep || {}); b.esp = Object.assign(blankState().esp, b.esp || {});
         b.selectedClient = 'Saudi Aramco'; S = b;
-        badge('Restored saved draft'); setTimeout(function () { badge('Auto-save ready'); }, 1500);
+        badge(T('Restored saved draft', 'رجعت المسودة المحفوظة')); setTimeout(function () { badge(T('Auto-save ready', 'الحفظ التلقائي شغّال')); }, 1500);
       }
     } catch (e) {}
     paint();
@@ -1055,11 +1060,11 @@ input[type=date]{min-width:0;max-width:100%}
     showItems(); renderLog(); fillNames(); renderEngineers();
   }
   window.ksaReset = function () {
-    if (!confirm('Reset everything and start again?')) return;
+    if (!confirm(T('Reset everything and start again?', 'تمسح كل شي وتبدأ من جديد؟'))) return;
     shareNow();
     S = blankState();
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-    paint(); badge('Cleared');
+    paint(); badge(T('Cleared', 'انمسح'));
   };
   window.ksaTheme = function (t) { document.body.classList.toggle('ui-night', t === 'night'); try { localStorage.setItem(THEME_KEY, t || 'light'); } catch (e) {} };
 
@@ -1102,7 +1107,7 @@ input[type=date]{min-width:0;max-width:100%}
   function L(pg, x, y, w, h) { var d = document.createElement('div'); d.className = 'ksa-l'; d.style.cssText = 'left:' + x + 'pt;top:' + y + 'pt;width:' + w + 'pt;height:' + h + 'pt'; pg.appendChild(d); return d; }
   function H(pg, x0, x1, y, t) { return L(pg, x0, y, x1 - x0, t); }
   function V(pg, x, y0, y1, t) { return L(pg, x, y0, t, y1 - y0); }
-  function T(pg, txt, x, y, o) {
+  function TXT(pg, txt, x, y, o) {
     o = o || {};
     var d = document.createElement('div'); d.className = 'ksa-t' + (o.r ? ' r' : '') + (o.w != null && o.c ? ' c' : '');
     var size = o.size || 10;
@@ -1125,18 +1130,18 @@ input[type=date]{min-width:0;max-width:100%}
     [44.27, 193.08, 406.93, 566.48].forEach(function (x) { V(pg, x, 18.00, 104.78, 1.5); });
     var img = document.createElement('img'); img.src = 'assets/ksa-logo.jpg'; img.alt = '';
     img.style.cssText = 'position:absolute;left:81.9pt;top:19.5pt;width:106.5pt;height:71.25pt;object-fit:fill'; pg.appendChild(img);
-    T(pg, 'PENETRATOR TICKET', 194.58, 46.28, { size: 14, w: 212.35, c: true, font: '"KSA Calibri",Calibri,Carlito,Arial,sans-serif' });
-    T(pg, 'BIW CONNECTOR SYSTEMS', 408.43, 29.78, { size: 11, w: 158.05, c: true, font: '"KSA Calibri",Calibri,Carlito,Arial,sans-serif' });
+    TXT(pg, 'PENETRATOR TICKET', 194.58, 46.28, { size: 14, w: 212.35, c: true, font: '"KSA Calibri",Calibri,Carlito,Arial,sans-serif' });
+    TXT(pg, 'BIW CONNECTOR SYSTEMS', 408.43, 29.78, { size: 11, w: 158.05, c: true, font: '"KSA Calibri",Calibri,Carlito,Arial,sans-serif' });
     [['500 Tesconi Circle', 54.53], ['Santa Rosa, CA 95401', 65.03], ['Office: 707.523.2300', 75.78], ['Fax: 707.523.3567', 86.28]].forEach(function (a) {
-      T(pg, a[0], 408.43, a[1], { size: 9, w: 158.05, c: true, color: '#808080', font: '"KSA Cambria",Cambria,Caladea,Georgia,serif' });
+      TXT(pg, a[0], 408.43, a[1], { size: 9, w: 158.05, c: true, color: '#808080', font: '"KSA Cambria",Cambria,Caladea,Georgia,serif' });
     });
   }
   function drawLogHeader(pg, yTop, yHead) {
     [41.77, 128.05, 194.83, 473.70, 565.23].forEach(function (x) { V(pg, x, yTop, yHead + 0.5, 1.5); });
     H(pg, 41.77, 566.73, yHead, 0.5);
     var ty = yTop + 1.91;
-    T(pg, 'Date', 43.27, ty, { w: 84.78, c: true }); T(pg, 'Time', 129.55, ty, { w: 65.28, c: true });
-    T(pg, 'Operation Remarks', 196.33, ty, { w: 277.37, c: true }); T(pg, 'Status', 475.20, ty, { w: 90.03, c: true });
+    TXT(pg, 'Date', 43.27, ty, { w: 84.78, c: true }); TXT(pg, 'Time', 129.55, ty, { w: 65.28, c: true });
+    TXT(pg, 'Operation Remarks', 196.33, ty, { w: 277.37, c: true }); TXT(pg, 'Status', 475.20, ty, { w: 90.03, c: true });
   }
   function drawLogRows(pg, rows, bounds) {
     for (var i = 0; i < bounds.length - 1; i++) {
@@ -1144,20 +1149,20 @@ input[type=date]{min-width:0;max-width:100%}
       [41.77, 128.05, 194.83, 473.70, 565.23].forEach(function (x) { V(pg, x, y0, y1 + 0.5, 1.5); });
       H(pg, 41.77, 566.73, y1, 0.5);
       var r = rows[i]; if (!r) continue;
-      T(pg, r.dateTo ? rangeText(r.date, r.dateTo) : fmtDay(r.date), 48.02, y0 + 1.41, { r: true, size: 10, w: 78 });
-      T(pg, r.time || '--:--', 129.55, y0 + 1.84, { r: true, size: 12, w: 65.28, c: true });
-      T(pg, r.op || '', 201.08, y0 + 1.84, { r: true, size: 12, w: 270 });
-      T(pg, r.status, 475.20, y0 + 1.84, { r: true, size: 12, w: 90.03, c: true });
+      TXT(pg, r.dateTo ? rangeText(r.date, r.dateTo) : fmtDay(r.date), 48.02, y0 + 1.41, { r: true, size: 10, w: 78 });
+      TXT(pg, r.time || '--:--', 129.55, y0 + 1.84, { r: true, size: 12, w: 65.28, c: true });
+      TXT(pg, r.op || '', 201.08, y0 + 1.84, { r: true, size: 12, w: 270 });
+      TXT(pg, r.status, 475.20, y0 + 1.84, { r: true, size: 12, w: 90.03, c: true });
     }
   }
   function drawSign(pg) {
     H(pg, 42.27, 568.48, 659.70, 1.5); H(pg, 42.27, 568.48, 684.48, 1.5); H(pg, 42.27, 568.48, 709.23, 1.0); H(pg, 42.27, 568.48, 733.98, 1.0); H(pg, 42.27, 568.48, 758.50, 1.5);
     V(pg, 42.27, 659.70, 760.00, 1.5); V(pg, 82.78, 659.70, 760.00, 1.5); V(pg, 566.98, 659.70, 760.00, 1.5);
     V(pg, 241.10, 659.70, 685.98, 1.5); V(pg, 408.68, 659.70, 685.98, 1.5); V(pg, 241.35, 685.98, 760.00, 1.0); V(pg, 408.93, 685.98, 760.00, 1.0);
-    T(pg, 'BIW Field Service Engineer', 84.28, 667.64, { w: 156.82, c: true });
-    T(pg, 'Company Representative', 242.60, 667.64, { w: 166.08, c: true });
-    T(pg, 'ESP Supervisor', 410.18, 667.64, { w: 156.80, c: true });
-    T(pg, 'Name', 43.77, 692.38, { w: 39.01, c: true }); T(pg, 'ID #', 43.77, 717.13, { w: 39.01, c: true }); T(pg, 'Sign', 43.77, 741.91, { w: 39.01, c: true });
+    TXT(pg, 'BIW Field Service Engineer', 84.28, 667.64, { w: 156.82, c: true });
+    TXT(pg, 'Company Representative', 242.60, 667.64, { w: 166.08, c: true });
+    TXT(pg, 'ESP Supervisor', 410.18, 667.64, { w: 156.80, c: true });
+    TXT(pg, 'Name', 43.77, 692.38, { w: 39.01, c: true }); TXT(pg, 'ID #', 43.77, 717.13, { w: 39.01, c: true }); TXT(pg, 'Sign', 43.77, 741.91, { w: 39.01, c: true });
 
     var engs = S.engineers.filter(Boolean);
     var cols = [
@@ -1184,21 +1189,21 @@ input[type=date]{min-width:0;max-width:100%}
     V(pg, 42.52, 136.30, 193.30, 1.5); V(pg, 111.05, 136.30, 193.30, 1.0); V(pg, 393.18, 136.30, 193.30, 1.5); V(pg, 479.70, 136.30, 193.30, 1.5); V(pg, 568.23, 136.30, 193.30, 1.52);
     [142.55, 229.10, 265.35, 356.40].forEach(function (x) { V(pg, x, 173.05, 193.30, 1.5); });
     var t = totals();
-    T(pg, 'Client', 48.77, 141.96); T(pg, clientText(), 117.05, 141.96, { w: 272 });
-    T(pg, 'Field: ' + (S.field || ''), 399.42, 141.96, { w: 77.5 }); T(pg, 'Well: ' + normCode(S.well), 485.70, 141.96, { w: 80 });
-    T(pg, 'Date', 48.77, 160.21); T(pg, dateText(), 117.05, 160.21, { w: 272 });
-    T(pg, S.location || '', 399.42, 160.21, { w: 77.5 }); T(pg, S.wellType || '', 485.70, 160.21, { w: 80 });
-    T(pg, 'Total Days', 48.77, 178.71, { w: 60 }); T(pg, t.all ? String(t.all) : '', 112.05, 178.71, { w: 30.5, c: true });
-    T(pg, 'Standby Days', 148.83, 178.71, { w: 79 }); T(pg, t.all ? String(t.sb) : '', 230.60, 178.71, { w: 34.75, c: true });
-    T(pg, 'Work Days', 271.63, 178.71, { w: 83 }); T(pg, t.all ? String(t.wk) : '', 357.90, 178.71, { w: 35.28, c: true });
-    T(pg, 'Rig:' + normCode(S.hoist), 399.42, 178.71, { w: 77.5 }); T(pg, 'Island : ' + (String(S.island || '').trim() || 'N/A'), 485.70, 178.71, { w: 80 });
+    TXT(pg, 'Client', 48.77, 141.96); TXT(pg, clientText(), 117.05, 141.96, { w: 272 });
+    TXT(pg, 'Field: ' + (S.field || ''), 399.42, 141.96, { w: 77.5 }); TXT(pg, 'Well: ' + normCode(S.well), 485.70, 141.96, { w: 80 });
+    TXT(pg, 'Date', 48.77, 160.21); TXT(pg, dateText(), 117.05, 160.21, { w: 272 });
+    TXT(pg, S.location || '', 399.42, 160.21, { w: 77.5 }); TXT(pg, S.wellType || '', 485.70, 160.21, { w: 80 });
+    TXT(pg, 'Total Days', 48.77, 178.71, { w: 60 }); TXT(pg, t.all ? String(t.all) : '', 112.05, 178.71, { w: 30.5, c: true });
+    TXT(pg, 'Standby Days', 148.83, 178.71, { w: 79 }); TXT(pg, t.all ? String(t.sb) : '', 230.60, 178.71, { w: 34.75, c: true });
+    TXT(pg, 'Work Days', 271.63, 178.71, { w: 83 }); TXT(pg, t.all ? String(t.wk) : '', 357.90, 178.71, { w: 35.28, c: true });
+    TXT(pg, 'Rig:' + normCode(S.hoist), 399.42, 178.71, { w: 77.5 }); TXT(pg, 'Island : ' + (String(S.island || '').trim() || 'N/A'), 485.70, 178.71, { w: 80 });
 
     /* Items table */
     H(pg, 41.77, 566.73, 215.83, 1.5); H(pg, 41.77, 566.73, 240.33, 1.5); H(pg, 41.77, 566.73, 423.87, 0.5);
     V(pg, 41.77, 215.83, 445.65, 1.5); V(pg, 103.05, 215.83, 424.37, 1.5); V(pg, 328.13, 215.83, 424.37, 1.52); V(pg, 422.68, 215.83, 424.37, 1.5); V(pg, 505.95, 215.83, 424.37, 1.5); V(pg, 565.23, 215.83, 445.65, 1.5);
-    T(pg, 'Quantity', 43.27, 224.49, { w: 59.78, c: true }); T(pg, 'Description', 104.55, 224.49, { w: 223.58, c: true }); T(pg, 'Part Number', 329.65, 224.49, { w: 93.03, c: true });
-    T(pg, 'Instruction', 424.18, 218.74, { w: 81.77, c: true }); T(pg, 'Manual', 424.18, 230.24, { w: 81.77, c: true });
-    T(pg, 'Serial', 507.45, 218.74, { w: 57.78, c: true }); T(pg, 'Number', 507.45, 230.24, { w: 57.78, c: true });
+    TXT(pg, 'Quantity', 43.27, 224.49, { w: 59.78, c: true }); TXT(pg, 'Description', 104.55, 224.49, { w: 223.58, c: true }); TXT(pg, 'Part Number', 329.65, 224.49, { w: 93.03, c: true });
+    TXT(pg, 'Instruction', 424.18, 218.74, { w: 81.77, c: true }); TXT(pg, 'Manual', 424.18, 230.24, { w: 81.77, c: true });
+    TXT(pg, 'Serial', 507.45, 218.74, { w: 57.78, c: true }); TXT(pg, 'Number', 507.45, 230.24, { w: 57.78, c: true });
     var items = S.items, n = items.length, top = 241.83, area = 423.87 - 241.83 - 1;
     if (n) {
       var slot = area / Math.max(n, 4), fs = n <= 6 ? 10 : (n <= 8 ? 9 : (n <= 11 ? 8 : 7));
@@ -1213,8 +1218,8 @@ input[type=date]{min-width:0;max-width:100%}
     }
     /* Transport + remarks */
     V(pg, 315.88, 424.37, 445.15, 1.5); H(pg, 41.77, 566.73, 445.15, 0.5);
-    T(pg, 'Transportation to location by: BIW.', 48.02, 425.59, { r: true, size: 9, w: 265 });
-    T(pg, 'Transportation from location by: BIW.', 48.02, 436.09, { r: true, size: 9, w: 265 });
+    TXT(pg, 'Transportation to location by: BIW.', 48.02, 425.59, { r: true, size: 9, w: 265 });
+    TXT(pg, 'Transportation from location by: BIW.', 48.02, 436.09, { r: true, size: 9, w: 265 });
     var rem = String(S.remarks || '').trim();
     var rb = B(pg, '<b style="font-size:10pt">REMARKS:</b> <span>' + esc(rem) + '</span>', 320.6, 424.9, 243.5, 19.9, { left: true, size: 9, min: 5.5, pad: 1.3 });
     rb.style.alignItems = 'flex-start'; rb.style.display = 'block'; rb.style.lineHeight = '1.08'; rb.style.paddingTop = '0.9pt';
@@ -1226,14 +1231,14 @@ input[type=date]{min-width:0;max-width:100%}
   }
   function drawContPage(pg, rows, pageNo, pageCount) {
     drawHeader(pg);
-    T(pg, 'Well: ' + normCode(S.well) + '  |  Date: ' + dateText() + '  |  (continued)', 44.27, 110.5, { w: 523 }).style.whiteSpace = 'pre';
+    TXT(pg, 'Well: ' + normCode(S.well) + '  |  Date: ' + dateText() + '  |  (continued)', 44.27, 110.5, { w: 523 }).style.whiteSpace = 'pre';
     H(pg, 41.77, 566.73, 125.0, 1.5);
     drawLogHeader(pg, 125.0, 137.5);
     var b = [137.5]; for (var i = 1; i <= rows.length; i++) b.push(+(CONT_TOP + i * CONT_PITCH - 0.5).toFixed(2));
     drawLogRows(pg, rows, b);
     drawSign(pg);
   }
-  function pageNumber(pg, i, n) { if (n > 1) T(pg, 'Page ' + i + ' of ' + n, 444, 772, { r: true, size: 8, w: 124, c: false }).style.textAlign = 'right'; }
+  function pageNumber(pg, i, n) { if (n > 1) TXT(pg, 'Page ' + i + ' of ' + n, 444, 772, { r: true, size: 8, w: 124, c: false }).style.textAlign = 'right'; }
 
   /* يصغّر أي نص ما يدخل مكانه (بدون ما يغيّر الشكل) */
   function fitAll(root) {
@@ -1267,18 +1272,18 @@ input[type=date]{min-width:0;max-width:100%}
 
   function validate() {
     var miss = [];
-    if (!S.selectedCompany) miss.push('Client / Company');
-    if (!S.dateFrom || !S.dateTo) miss.push('Date');
-    if (!String(S.field || '').trim()) miss.push('Field');
-    if (!String(S.well || '').trim()) miss.push('Well');
-    if (!S.location) miss.push('OFFSHORE / ONSHORE');
-    if (!S.wellType) miss.push('NEW WELL / WORKOVER');
-    if (!String(S.hoist || '').trim()) miss.push('Rig');
-    if (!S.engineers.filter(Boolean).length) miss.push('BIW Field Service Engineer name');
+    if (!S.selectedCompany) miss.push(T('Client / Company', 'العميل / الشركة'));
+    if (!S.dateFrom || !S.dateTo) miss.push(T('Date', 'التاريخ'));
+    if (!String(S.field || '').trim()) miss.push(T('Field', 'الحقل'));
+    if (!String(S.well || '').trim()) miss.push(T('Well', 'البئر'));
+    if (!S.location) miss.push(T('Offshore / Onshore', 'أوفشور / أونشور'));
+    if (!S.wellType) miss.push(T('New Well / Workover', 'بئر جديد / ورك أوفر'));
+    if (!String(S.hoist || '').trim()) miss.push(T('Rig', 'الرق'));
+    if (!S.engineers.filter(Boolean).length) miss.push(T('BIW Field Service Engineer name', 'اسم مهندس BIW'));
     var errs = [];
-    if (miss.length) errs.push('Complete: ' + miss.join(', '));
-    S.items.forEach(function (r, i) { if (r.serialRequired !== false && !validSerial(r.serial)) errs.push('Item ' + (i + 1) + ' (' + r.part + '): Each Serial Number must be exactly 6 digits.'); });
-    logRows().forEach(function (r) { if (!String(r.op || '').trim()) errs.push(fmtDay(r.date) + ': choose an operation.'); });
+    if (miss.length) errs.push(T('Please complete: ', 'كمّل هذي الخانات: ') + miss.join(T(', ', '، ')));
+    S.items.forEach(function (r, i) { if (r.serialRequired !== false && !validSerial(r.serial)) errs.push(T('Item ' + (i + 1) + ' (' + r.part + '): each serial number must be exactly 6 digits.', 'القطعة ' + (i + 1) + ' (' + r.part + '): كل سيريال لازم يكون 6 أرقام بالضبط.')); });
+    logRows().forEach(function (r) { if (!String(r.op || '').trim()) errs.push(fmtDay(r.date) + T(': choose an operation.', ': اختر العملية.')); });
     var hint = $('validationHint');
     if (errs.length) { hint.textContent = errs.join('\n'); hint.classList.add('active'); try { hint.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} alert(errs.join('\n')); throw new Error(errs.join('\n')); }
     hint.textContent = ''; hint.classList.remove('active');
@@ -1297,8 +1302,8 @@ input[type=date]{min-width:0;max-width:100%}
   }
   window.createPdfBlob = async function () {
     validate();
-    if (!window.html2canvas || !window.jspdf || !window.jspdf.jsPDF) throw new Error('PDF libraries are not loaded. Open the app online once, then try again.');
-    status('Generating PDF...');
+    if (!window.html2canvas || !window.jspdf || !window.jspdf.jsPDF) throw new Error(T('PDF libraries are not loaded. Open the app online once, then try again.', 'مكتبات الـ PDF ما تحمّلت. افتح التطبيق مرة وأنت متصل بالنت وجرب من جديد.'));
+    status(T('Generating PDF...', 'جاري إنشاء الـ PDF...'));
     await loadFonts();
     document.body.classList.add('generating-pdf');
     try {
@@ -1309,7 +1314,7 @@ input[type=date]{min-width:0;max-width:100%}
       var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter', compress: true });
       for (var i = 0; i < pages.length; i++) {
         var canvas = await html2canvas(pages[i], { scale: 2.5, useCORS: true, allowTaint: true, backgroundColor: '#ffffff', logging: false, width: 816, height: 1056, windowWidth: 816, windowHeight: 1056, scrollX: 0, scrollY: 0 });
-        if (!canvas || canvas.width < 10) throw new Error('PDF canvas is empty.');
+        if (!canvas || canvas.width < 10) throw new Error(T('The PDF page came out empty. Try again.', 'صفحة الـ PDF طلعت فاضية. جرّب مرة ثانية.'));
         if (i) pdf.addPage('letter', 'portrait');
         pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 612, 792, undefined, 'FAST');
       }
@@ -1324,16 +1329,16 @@ input[type=date]{min-width:0;max-width:100%}
       var blob = await window.createPdfBlob(), url = URL.createObjectURL(blob), a = document.createElement('a');
       a.href = url; a.download = wellFile(); document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
-      status('PDF downloaded: ' + wellFile()); setTimeout(function () { status(''); }, 3000);
-    } catch (err) { status(err && err.message ? err.message : 'Failed to generate PDF.'); }
+      status(T('PDF downloaded: ', 'تم تنزيل الملف: ') + wellFile()); setTimeout(function () { status(''); }, 3000);
+    } catch (err) { status(err && err.message ? err.message : T('Failed to generate the PDF.', 'تعذر إنشاء الـ PDF.')); }
   };
   window.sharePDF = async function () {
     try {
       var blob = await window.createPdfBlob(), file = new File([blob], wellFile(), { type: 'application/pdf' });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: wellFile() }); status('Shared: ' + wellFile()); }
-      else { var url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 1500); status('Sharing not supported here. PDF downloaded instead.'); }
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: wellFile() }); status(T('Shared: ', 'تمت المشاركة: ') + wellFile()); }
+      else { var url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 1500); status(T('Sharing is not supported here. The PDF was downloaded instead.', 'المشاركة مب مدعومة هنا، فنزّلنا الملف بدالها.')); }
       setTimeout(function () { status(''); }, 3000);
-    } catch (err) { if (err && err.name === 'AbortError') { status(''); return; } status(err && err.message ? err.message : 'Failed to share PDF.'); }
+    } catch (err) { if (err && err.name === 'AbortError') { status(''); return; } status(err && err.message ? err.message : T('Failed to share the PDF.', 'تعذرت مشاركة الـ PDF.')); }
   };
   window.ksaBuildPagesForTest = buildPages;
 
@@ -1347,6 +1352,7 @@ input[type=date]{min-width:0;max-width:100%}
     if (!a || !$('logList').contains(a)) renderLog();
   });
   setTimeout(shareNow, 1500);
+  window.addEventListener('ksa-user', function () { if (S.engineers.length === 1 && !S.engineers[0]) { S.engineers = [KSAUser.name()]; renderEngineers(); save(); } });
 })();
 </script>
 </body>

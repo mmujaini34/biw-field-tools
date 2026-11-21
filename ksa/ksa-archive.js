@@ -24,7 +24,19 @@
     var v = String(w || '').trim().toUpperCase().replace(/[^A-Z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
     return v;
   }
-  function readMeta() {
+  /* اسم اللي مسجل في هذا الجوال: هو اللي رفع الملف، وينضاف لأسماء الملف عشان الإدارة تلقاه تحت اسمه */
+  function withUser(m) {
+    var me = window.KSAUser ? KSAUser.name() : '';
+    if (me) {
+      var k = function (v) { return String(v || '').toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/g, ''); };
+      m.engineers = (m.engineers || []).slice();
+      if (!m.engineers.some(function (n) { return k(n) === k(me); })) m.engineers.push(me);
+      m.created_by = me;
+    }
+    return m;
+  }
+  function readMeta() { return withUser(readMetaRaw()); }
+  function readMetaRaw() {
     /* الصفحة تقدر تعطي البيانات بنفسها (التايم شيت) */
     if (typeof window.ksaArchiveMeta === 'function') {
       try { var m = window.ksaArchiveMeta(); if (m) { m.tool = TOOL; return m; } } catch (e) {}
