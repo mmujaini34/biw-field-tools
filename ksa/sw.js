@@ -1,5 +1,5 @@
-/* BIW KSA — Service Worker v1.0.0 (copy of the Omani one: Safari-proof, redirect-proof, offline-first). Scope: /ksa/ only */
-const CACHE_NAME = 'biw-ksa-v1.0.0';
+/* BIW KSA — Service Worker v1.1.0 (copy of the Omani one: Safari-proof, redirect-proof, offline-first). Scope: /ksa/ only */
+const CACHE_NAME = 'biw-ksa-v1.1.0';
 /* طابور رفع الأرشيف: نفس الكود المستخدم بالصفحات */
 try { importScripts('./ksa-queue.js'); } catch (e) {}
 const ASSETS = [
@@ -12,6 +12,7 @@ const ASSETS = [
   './ksa-queue.js',
   './ksa-archive.js',
   './ksa-ts-share.js',
+  './ksa-parts-ui.js',
   './signature-pad.js',
   './bg.jpg',
   './libs/html2canvas.min.js',

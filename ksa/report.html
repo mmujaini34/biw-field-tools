@@ -387,7 +387,7 @@ window.addEventListener('error',function(ev){
     <div class="section wizard-step" data-step="1"><h2>2) BIW Part Number Table <span class="ar">/ جدول قطع BIW</span></h2>
       <div class="ar-tip" style="margin-bottom:10px">اختر Description من القائمة عشان تعرف القطعة، لكن في الـ PDF يظهر Part Number فقط. العدد اختياري؛ إذا تركته فاضي يعتبر 1 ولا يظهر بجانب البارت نمبر.</div>
       <div id="partsEditor"></div>
-      <div class="actions"><button class="btn btn-secondary" type="button" onclick="addPartRow()">+ Add Part Number / إضافة قطعة</button></div>
+      <div class="actions"><button class="btn btn-secondary" type="button" onclick="addPartRow()">+ Add Part Number / إضافة قطعة</button> <button class="btn btn-secondary" type="button" onclick="ksaOpenParts()">📋 قائمة القطع — تعديل / إضافة</button></div>
     </div>
 
     <div class="section wizard-step" data-step="2"><h2>3) Cable <span class="ar">/ الكيبل</span></h2>
@@ -503,10 +503,13 @@ window.addEventListener('error',function(ev){
 <script src="libs/html2canvas.min.js"></script>
 <script src="libs/jspdf.umd.min.js"></script><script src="ksa-data.js"></script><script src="ksa-queue.js"></script><script src="ksa-archive.js"></script>
 <script>
-const CATALOG = [{"desc": "PACKER TO MOTOR PENETRATOR MLE/POTHEAD", "part": "EA1591-36-175C", "serialRequired": true}, {"desc": "TRI-LOK PACKER FIELD ATTACHABLE PENETRATOR #4AWG ROUND CABLE TO METAL CLAD MLE", "part": "SPTM03-R40L", "serialRequired": true}, {"desc": "TRI-LOK PACKER F/A PENETRATOR #2AWG ROUND CABLE TO METAL CLAD MLE", "part": "SPTM03-R20L", "serialRequired": true}, {"desc": "TRI-LOK PACKER F/A PENETRATOR #4AWG FLAT CABLE AND #2AWG ROUND CABLE", "part": "SPT120-F40-R20", "serialRequired": true}, {"desc": "TRU-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE", "part": "TLK0077160-R40", "serialRequired": true}, {"desc": "TRU-LOK WELLHEAD F/A PENETRATOR #2 AWG ROUND CABLE", "part": "TLK007160-R20", "serialRequired": true}, {"desc": "TRI-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE", "part": "STW77160-R40", "serialRequired": true}, {"desc": "CROSSOVER ADAPTER 1.90 NU-10RD BOX", "part": "P177-0179", "serialRequired": true}, {"desc": "TRU-LOK SURFACE CONNECTOR EXP & C1D2 HEAVY DUTY", "part": "TLK52A2-EXP", "serialRequired": true}, {"desc": "ASSY. CROSSOVER ADAPTER 3 INTO 1 MONEL AN SEALS", "part": "P177-0317", "serialRequired": true}, {"desc": "1.90-NU-10 RD BOX X PIN", "part": "A177-0326-12", "serialRequired": false}];
+/* KSA: قائمة القطع المشتركة (قاعدة البيانات السعودية) — أي تعديل أو إضافة ينحفظ للكل */
+function ksaCatalog(){ return (window.KSAData ? KSAData.parts() : [{"desc": "PACKER TO MOTOR PENETRATOR MLE/POTHEAD", "part": "EA1591-36-175C", "serialRequired": true}, {"desc": "TRI-LOK PACKER FIELD ATTACHABLE PENETRATOR #4AWG ROUND CABLE TO METAL CLAD MLE", "part": "SPTM03-R40L", "serialRequired": true}, {"desc": "TRI-LOK PACKER F/A PENETRATOR #2AWG ROUND CABLE TO METAL CLAD MLE", "part": "SPTM03-R20L", "serialRequired": true}, {"desc": "TRI-LOK PACKER F/A PENETRATOR #4AWG FLAT CABLE AND #2AWG ROUND CABLE", "part": "SPT120-F40-R20", "serialRequired": true}, {"desc": "TRU-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE", "part": "TLK0077160-R40", "serialRequired": true}, {"desc": "TRU-LOK WELLHEAD F/A PENETRATOR #2 AWG ROUND CABLE", "part": "TLK007160-R20", "serialRequired": true}, {"desc": "TRI-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE", "part": "STW77160-R40", "serialRequired": true}, {"desc": "CROSSOVER ADAPTER 1.90 NU-10RD BOX", "part": "P177-0179", "serialRequired": true}, {"desc": "TRU-LOK SURFACE CONNECTOR EXP & C1D2 HEAVY DUTY", "part": "TLK52A2-EXP", "serialRequired": true}, {"desc": "ASSY. CROSSOVER ADAPTER 3 INTO 1 MONEL AN SEALS", "part": "P177-0317", "serialRequired": true}, {"desc": "1.90-NU-10 RD BOX X PIN", "part": "A177-0326-12", "serialRequired": false}]).map(function(p){ return {desc:p.desc, part:p.part, serialRequired:p.serialRequired!==false}; }); }
+var CATALOG = ksaCatalog();
 var ENGINEERS = (window.KSAData ? KSAData.names() : []);   /* KSA: أسماء مهندسين BIW من قاعدة البيانات السعودية */
 var ENGINEER_SIGNATURES = (window.KSAData ? KSAData.sigMap() : {});   /* KSA: التواقيع المحفوظة بالتايم شيت */
-if (window.KSAData) KSAData.onChange(function(){ ENGINEERS = KSAData.names(); ENGINEER_SIGNATURES = KSAData.sigMap(); try{ updateReport(); }catch(e){} });
+if (window.KSAData) KSAData.onChange(function(){ ENGINEERS = KSAData.names(); ENGINEER_SIGNATURES = KSAData.sigMap(); CATALOG = ksaCatalog(); try{ var a=document.activeElement; if(!a||!document.getElementById('partsEditor').contains(a)) renderPartsEditor(); }catch(e){} try{ updateReport(); }catch(e){} });
+function ksaOpenParts(){ if(window.KSAPartsUI) KSAPartsUI.open({ onChange:function(){ CATALOG = ksaCatalog(); try{ renderPartsEditor(); updateReport(); }catch(e){} } }); }
 const ELECTRICAL_ROWS = [
   'Before Packer','After Packer ins','Before Hanger Inst','After Hanger Inst','On landing leads','After landing the hangar','Before Bonnet Ins','After Bonnet Ins'
 ];
@@ -959,7 +962,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   ready(hookReset);
 })();
 </script>
-<script src="ksa-ts-share.js"></script>
+<script src="ksa-ts-share.js"></script><script src="ksa-parts-ui.js"></script>
 <script>
 /* v3.15.0: تكتب رقم البئر (rb23 / RB23 / RB-23 / rb-23) — لو له تايم شيت محفوظ يطلع فوق زر «استخدام» يعبي القطع والسيريال والبيانات */
 (function(){

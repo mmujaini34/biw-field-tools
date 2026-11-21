@@ -479,6 +479,8 @@ body.generating-pdf .app-back-bar{display:none !important}
 .ksa-ok{color:#15803d}
 .ksa-warn{color:#b45309}
 .ksa-sub{margin:14px 0 6px;font-size:14px;font-weight:900;color:#0f172a}
+.ksa-add-part{border-top:1px dashed #94a3b8!important}
+.ksa-add-part .item-result-desc{color:#0f766e!important;font-weight:900!important}
 body.ui-night .ksa-day,body.ui-night .ksa-eng,body.ui-night .ksa-totals div,body.ui-night .ksa-seg button,body.ui-night .ksa-st button,body.ui-night .ksa-btn-lite{background:#0f172a!important;color:#e5e7eb!important;border-color:#334155!important}
 body.ui-night .ksa-day.work{background:#052e16!important;border-color:#166534!important}
 body.ui-night .ksa-seg button.on{background:linear-gradient(135deg,#1d4ed8,#2563eb)!important;color:#fff!important}
@@ -566,7 +568,7 @@ input[type=date]{min-width:0;max-width:100%}
   <div class="form-section" id="section-items">
     <h3>الأغراض / Items <span id="itemCounterBadge" class="item-counter-badge">0</span></h3>
     <div id="itemsDisplay" class="select-card placeholder" onclick="ksaOpenItems()"><div class="items-display-title">اضغط لإضافة الأغراض</div><div class="items-display-sub">Search by Description or Part Number — type any part like P177 and pick from the list.</div></div>
-    <div class="items-action-line"><button class="btn btn-secondary" type="button" onclick="ksaClearItems()">Clear Items</button></div>
+    <div class="items-action-line"><button class="btn btn-secondary" type="button" onclick="ksaClearItems()">Clear Items</button><button class="btn btn-secondary" type="button" onclick="ksaOpenParts()">📋 قائمة القطع — تعديل / إضافة</button></div>
     <div id="itemsSummary" class="items-summary">No items added yet.</div>
   </div>
 
@@ -579,7 +581,7 @@ input[type=date]{min-width:0;max-width:100%}
   <!-- 4) Daily log -->
   <div class="form-section" id="section-log">
     <h3>السجل اليومي / Daily Log</h3>
-    <div class="ksa-note">كل يوم بين تاريخ البداية والنهاية يطلع هنا تلقائي. اختر العملية والحالة، والوقت اختياري (فاضي = --:--). أي عملية جديدة تكتبها تنحفظ وتطلع للكل.</div>
+    <div class="ksa-note">كل يوم بين تاريخ البداية والنهاية يطلع هنا تلقائي. اختر العملية والحالة، والوقت اختياري (فاضي = --:--). أي عملية جديدة تكتبها تنحفظ وتطلع للكل. لو الأيام أكثر من 12، الأيام اللي ورا بعض بنفس العملية والحالة (وبدون وقت) تنكتب في الـ PDF بسطر واحد: من تاريخ لتاريخ.</div>
     <div id="logList"><div class="ksa-note">اختر التاريخ أول.</div></div>
   </div>
 
@@ -630,7 +632,8 @@ input[type=date]{min-width:0;max-width:100%}
 
 <!-- Items modal -->
 <div id="itemsModal" class="modal-overlay"><div class="modal-box items-modal-box"><h3>Items Information</h3>
-  <p class="items-modal-note">ابحث بالوصف أو البارت نمبر واختر من القائمة. لو القطعة مب موجودة فعّل Manual Entry. السيريال 6 أرقام (وأكثر من سيريال بينهم /).</p>
+  <p class="items-modal-note">ابحث بالوصف أو البارت نمبر واختر من القائمة. لو القطعة مب موجودة أضفها للقائمة (أو فعّل Manual Entry — وبتنضاف للقائمة بروحها). السيريال 6 أرقام (وأكثر من سيريال بينهم /).</p>
+  <div style="margin:0 0 6px"><button class="btn btn-secondary" type="button" onclick="ksaOpenParts()">📋 قائمة القطع — تعديل / إضافة</button></div>
   <div id="itemsEditor"></div>
   <div class="modal-actions" style="flex-wrap:wrap">
     <button class="cancel-btn" type="button" onclick="ksaAddItemRow()">+ Add Item</button>
@@ -656,26 +659,14 @@ input[type=date]{min-width:0;max-width:100%}
 <script src="ksa-archive.js"></script>
 <script src="ksa-ts-share.js"></script>
 <script src="signature-pad.js"></script>
+<script src="ksa-parts-ui.js"></script>
 <script>
 /* ===================== BIW KSA — Time Sheet (Penetrator Ticket) ===================== */
 (function () {
   'use strict';
 
-  /* ---------- القطع (القائمة السعودية) ---------- */
-  var CATALOG = [
-    { part: 'EA1591-36-175C', desc: 'PACKER TO MOTOR PENETRATOR MLE/POTHEAD', manual: 'N/A', serialRequired: true },
-    { part: 'SPTM03-R40L', desc: 'TRI-LOK PACKER FIELD ATTACHABLE PENETRATOR #4AWG ROUND CABLE TO METAL CLAD MLE', manual: 'N/A', serialRequired: true },
-    { part: 'SPTM03-R20L', desc: 'TRI-LOK PACKER F/A PENETRATOR #2AWG ROUND CABLE TO METAL CLAD MLE', manual: 'N/A', serialRequired: true },
-    { part: 'SPT120-F40-R20', desc: 'TRI-LOK PACKER F/A PENETRATOR #4AWG FLAT CABLE AND #2AWG ROUND CABLE', manual: 'N/A', serialRequired: true },
-    { part: 'TLK0077160-R40', desc: 'TRU-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE', manual: 'N/A', serialRequired: true },
-    { part: 'TLK007160-R20', desc: 'TRU-LOK WELLHEAD F/A PENETRATOR #2 AWG ROUND CABLE', manual: 'N/A', serialRequired: true },
-    { part: 'STW77160-R40', desc: 'TRI-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE', manual: 'A400-0392', serialRequired: true },
-    { part: 'P177-0179', desc: 'CROSSOVER ADAPTER 1.90 NU-10RD BOX', manual: 'N/A', serialRequired: true },
-    { part: 'TLK52A2-EXP', desc: 'TRU-LOK SURFACE CONNECTOR EXP & C1D2 HEAVY DUTY', manual: 'N/A', serialRequired: true },
-    { part: 'P177-0317', desc: 'ASSY. CROSSOVER ADAPTER 3 INTO 1 MONEL AN SEALS', manual: 'N/A', serialRequired: true },
-    { part: 'A177-0326-12', desc: '1.90-NU-10 RD BOX X PIN', manual: 'N/A', serialRequired: false }
-  ];
-  window.KSA_CATALOG = CATALOG;
+  /* ---------- القطع: قائمة مشتركة من قاعدة البيانات السعودية (تعديل + إضافة ينحفظ للكل) ---------- */
+  function catalog() { return window.KSAData ? KSAData.parts() : []; }
 
   var STORAGE_KEY = 'ksa_ts_autosave', THEME_KEY = 'ksa_ts_theme';
   var COMPANIES = ['SLB', 'Baker Hughes', 'Levare', 'Al Khorayef', 'Halliburton'];
@@ -717,6 +708,25 @@ input[type=date]{min-width:0;max-width:100%}
   function defaultEntry(i) { return i === 0 ? { time: '', op: 'Arriving at Rig, checking Equipment', status: 'STANDBY' } : { time: '', op: 'Rig Operation', status: 'STANDBY' }; }
   function entry(dayIso, i) { var e = S.log[dayIso]; return e ? { time: e.time || '', op: e.op || '', status: e.status === 'WORKING' ? 'WORKING' : 'STANDBY' } : defaultEntry(i); }
   function logRows() { return days().map(function (d, i) { var e = entry(d, i); return { date: d, time: e.time, op: e.op, status: e.status }; }); }
+  /* الـ PDF: لو الأيام أكثر من 12، الأيام اللي ورا بعض بنفس العملية ونفس الحالة وبدون وقت تنكتب بسطر واحد (من تاريخ لتاريخ) */
+  function pdfRows() {
+    var rows = logRows();
+    if (rows.length <= 12) return rows;
+    var out = [];
+    rows.forEach(function (r) {
+      var last = out[out.length - 1];
+      if (last && !r.time && !last.time && last.op === r.op && last.status === r.status) { last.dateTo = r.date; return; }
+      out.push({ date: r.date, dateTo: '', time: r.time, op: r.op, status: r.status });
+    });
+    return out;
+  }
+  function rangeText(a, b) {
+    var da = parseDay(a), db = parseDay(b);
+    if (!b || !db) return fmtDay(a);
+    if (da.getFullYear() === db.getFullYear() && da.getMonth() === db.getMonth()) return String(da.getDate()).padStart(2, '0') + ' to ' + fmtDay(b);
+    if (da.getFullYear() === db.getFullYear()) return String(da.getDate()).padStart(2, '0') + '-' + MONTHS[da.getMonth()] + ' to ' + fmtDay(b);
+    return fmtDay(a) + ' to ' + fmtDay(b);
+  }
   function totals() { var r = logRows(), w = r.filter(function (x) { return x.status === 'WORKING'; }).length; return { all: r.length, sb: r.length - w, wk: w }; }
 
   function opOptions(cur) {
@@ -857,9 +867,10 @@ input[type=date]{min-width:0;max-width:100%}
   function showResults(i, q) {
     var box = $('ksaRes_' + i); if (!box) return;
     q = String(q || '').trim().toLowerCase();
-    var res = q ? CATALOG.filter(function (x) { return x.desc.toLowerCase().indexOf(q) !== -1 || x.part.toLowerCase().indexOf(q) !== -1; }) : CATALOG;
-    box.innerHTML = res.map(function (it) { return '<button class="item-result-btn" type="button" data-pick="' + esc(it.part) + '"><span class="item-result-desc">' + esc(it.desc) + '</span><span class="item-result-pn">' + esc(it.part) + '</span></button>'; }).join('');
-    box.classList.toggle('active', res.length > 0);
+    var all = catalog(), res = q ? all.filter(function (x) { return x.desc.toLowerCase().indexOf(q) !== -1 || x.part.toLowerCase().indexOf(q) !== -1; }) : all;
+    box.innerHTML = res.map(function (it) { return '<button class="item-result-btn" type="button" data-pick="' + esc(it.part) + '"><span class="item-result-desc">' + esc(it.desc) + '</span><span class="item-result-pn">' + esc(it.part) + '</span></button>'; }).join('') +
+      '<button class="item-result-btn ksa-add-part" type="button" data-addpart="1"><span class="item-result-desc">＋ ' + (res.length ? 'قطعة مب موجودة؟ أضفها للقائمة' : 'ما لقيتها — أضفها للقائمة') + '</span><span class="item-result-pn">ADD</span></button>';
+    box.classList.add('active');
   }
   $('itemsEditor').addEventListener('input', function (e) {
     var rowEl = e.target.closest('.item-editor-row'); if (!rowEl) return;
@@ -878,9 +889,19 @@ input[type=date]{min-width:0;max-width:100%}
     var i = +rowEl.getAttribute('data-index');
     var pick = e.target.closest('[data-pick]');
     if (pick) {
-      var it = CATALOG.filter(function (x) { return x.part === pick.getAttribute('data-pick'); })[0]; if (!it) return;
+      var it = window.KSAData ? KSAData.findPart(pick.getAttribute('data-pick')) : null; if (!it) return;
       DRAFT[i] = { manualMode: false, qty: DRAFT[i].qty, desc: it.desc, part: it.part, manual: it.manual || 'N/A', serial: it.serialRequired ? '' : 'N/A', serialRequired: !!it.serialRequired };
       renderItems(); return;
+    }
+    if (e.target.closest('[data-addpart]')) {
+      var q = String((rowEl.querySelector('[data-act="search"]') || {}).value || '').trim().toUpperCase();
+      var looksPn = /^[A-Z0-9][A-Z0-9-]{3,}$/.test(q.replace(/\s+/g, '')) && /\d/.test(q) && q.indexOf(' ') === -1;
+      window.KSAPartsUI.open({ mode: 'add', prefill: looksPn ? { part: q } : { desc: q }, returnOnSave: true, onSaved: function (it) {
+        if (!it) return;
+        DRAFT[i] = { manualMode: false, qty: DRAFT[i].qty, desc: it.desc, part: it.part, manual: it.manual || 'N/A', serial: it.serialRequired ? '' : 'N/A', serialRequired: !!it.serialRequired };
+        renderItems();
+      } });
+      return;
     }
     var act = e.target.getAttribute('data-act');
     if (act === 'rm') { DRAFT.splice(i, 1); renderItems(); return; }
@@ -908,7 +929,12 @@ input[type=date]{min-width:0;max-width:100%}
       if (!rows[i].desc || !rows[i].part) { alert('Item ' + (i + 1) + ': Description and Part Number are required. اختر القطعة من القائمة أو فعّل Manual Entry.'); return; }
       if (rows[i].serialRequired && !validSerial(rows[i].serial)) { alert('Item ' + (i + 1) + ': Each Serial Number must be exactly 6 digits. Example: 123456 or 123456/654321.'); return; }
     }
+    /* أي قطعة انكتبت يدوي وما هي بالقائمة: تنضاف للقائمة المشتركة */
+    if (window.KSAData) rows.forEach(function (r) { if (r.manualMode && r.part && r.desc && !KSAData.findPart(r.part)) KSAData.savePart({ part: r.part, desc: r.desc, manual: r.manual || 'N/A', serialRequired: r.serialRequired }); });
     S.items = rows; showItems(); ksaCloseModal('itemsModal'); save();
+  };
+  window.ksaOpenParts = function () {
+    window.KSAPartsUI.open({ onChange: function () { if ($('itemsModal').classList.contains('active')) renderItems(); } });
   };
   window.ksaClearItems = function () { if (!S.items.length) return; if (!confirm('Clear all Items?')) return; S.items = []; showItems(); save(); };
   function showItems() {
@@ -1118,7 +1144,7 @@ input[type=date]{min-width:0;max-width:100%}
       [41.77, 128.05, 194.83, 473.70, 565.23].forEach(function (x) { V(pg, x, y0, y1 + 0.5, 1.5); });
       H(pg, 41.77, 566.73, y1, 0.5);
       var r = rows[i]; if (!r) continue;
-      T(pg, fmtDay(r.date), 48.02, y0 + 1.41, { r: true, size: 10, w: 78 });
+      T(pg, r.dateTo ? rangeText(r.date, r.dateTo) : fmtDay(r.date), 48.02, y0 + 1.41, { r: true, size: 10, w: 78 });
       T(pg, r.time || '--:--', 129.55, y0 + 1.84, { r: true, size: 12, w: 65.28, c: true });
       T(pg, r.op || '', 201.08, y0 + 1.84, { r: true, size: 12, w: 270 });
       T(pg, r.status, 475.20, y0 + 1.84, { r: true, size: 12, w: 90.03, c: true });
@@ -1230,7 +1256,7 @@ input[type=date]{min-width:0;max-width:100%}
 
   function buildPages() {
     var stage = $('ksaStage'); stage.innerHTML = '';
-    var rows = logRows(), first = rows.slice(0, 12), rest = rows.slice(12), chunks = [];
+    var rows = pdfRows(), first = rows.slice(0, 12), rest = rows.slice(12), chunks = [];
     while (rest.length) { chunks.push(rest.slice(0, CONT_ROWS)); rest = rest.slice(CONT_ROWS); }
     var total = 1 + chunks.length, pages = [];
     var p1 = newPage(); drawPage1(p1, first); pageNumber(p1, 1, total); stage.appendChild(p1); pages.push(p1);

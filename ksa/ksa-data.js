@@ -1,4 +1,4 @@
-/* BIW KSA — shared data: BIW engineers (name, ID #, saved signature) and the daily-log operations.
+/* BIW KSA — shared data: BIW engineers (name, ID #, saved signature), the daily-log operations and the parts list.
    - Kept on the phone (localStorage) so everything works offline.
    - Synced with the private KSA database (biw-ksa edge function) whenever there is internet.
    - New names / signatures / operations made offline wait in a queue and go up when the connection is back. */
@@ -17,17 +17,34 @@
     { text: 'Hanger Termination', status: 'WORKING' },
     { text: 'Bonnet Termination', status: 'WORKING' }
   ];
+  /* القائمة الأولى (من ورقة محمد) — تستخدم بس لو الجهاز عمره ما اتصل بالقاعدة */
+  var DEFAULT_PARTS = [
+    { part: 'EA1591-36-175C', desc: 'PACKER TO MOTOR PENETRATOR MLE/POTHEAD', manual: 'N/A', serialRequired: true },
+    { part: 'SPTM03-R40L', desc: 'TRI-LOK PACKER FIELD ATTACHABLE PENETRATOR #4AWG ROUND CABLE TO METAL CLAD MLE', manual: 'N/A', serialRequired: true },
+    { part: 'SPTM03-R20L', desc: 'TRI-LOK PACKER F/A PENETRATOR #2AWG ROUND CABLE TO METAL CLAD MLE', manual: 'N/A', serialRequired: true },
+    { part: 'SPT120-F40-R20', desc: 'TRI-LOK PACKER F/A PENETRATOR #4AWG FLAT CABLE AND #2AWG ROUND CABLE', manual: 'N/A', serialRequired: true },
+    { part: 'TLK0077160-R40', desc: 'TRU-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE', manual: 'N/A', serialRequired: true },
+    { part: 'TLK007160-R20', desc: 'TRU-LOK WELLHEAD F/A PENETRATOR #2 AWG ROUND CABLE', manual: 'N/A', serialRequired: true },
+    { part: 'STW77160-R40', desc: 'TRI-LOK WELLHEAD F/A PENETRATOR #4 AWG ROUND CABLE', manual: 'A400-0392', serialRequired: true },
+    { part: 'P177-0179', desc: 'CROSSOVER ADAPTER 1.90 NU-10RD BOX', manual: 'N/A', serialRequired: true },
+    { part: 'TLK52A2-EXP', desc: 'TRU-LOK SURFACE CONNECTOR EXP & C1D2 HEAVY DUTY', manual: 'N/A', serialRequired: true },
+    { part: 'P177-0317', desc: 'ASSY. CROSSOVER ADAPTER 3 INTO 1 MONEL AN SEALS', manual: 'N/A', serialRequired: true },
+    { part: 'A177-0326-12', desc: '1.90-NU-10 RD BOX X PIN', manual: 'N/A', serialRequired: false }
+  ];
 
   function getJSON(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } }
   function setJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function clean(v) { return String(v == null ? '' : v).replace(/\s+/g, ' ').trim(); }
   function key(v) { return clean(v).toLowerCase().replace(/[^a-z0-9؀-ۿ ]/g, ' ').replace(/\s+/g, ' ').trim(); }
   /* أسماء المهندسين: أول حرف من كل كلمة كابيتال */
+  function pkey(v) { return String(v == null ? '' : v).toUpperCase().replace(/\s+/g, ''); }
+  function normPart(x) { return { part: pkey(x.part), desc: clean(x.desc).toUpperCase(), manual: clean(x.manual).toUpperCase() || 'N/A', serialRequired: x.serialRequired !== false }; }
   function niceName(v) { return clean(v).toLowerCase().replace(/(^|[\s\-'])([a-z])/g, function (m, a, b) { return a + b.toUpperCase(); }); }
 
-  var cache = getJSON(CACHE, null) || { engineers: [], ops: DEFAULT_OPS.slice(), at: 0 };
+  var cache = getJSON(CACHE, null) || { engineers: [], ops: DEFAULT_OPS.slice(), parts: DEFAULT_PARTS.slice(), at: 0 };
   if (!Array.isArray(cache.engineers)) cache.engineers = [];
   if (!Array.isArray(cache.ops) || !cache.ops.length) cache.ops = DEFAULT_OPS.slice();
+  if (!Array.isArray(cache.parts) || !cache.parts.length) cache.parts = DEFAULT_PARTS.slice();
   var listeners = [];
 
   function emit() { listeners.forEach(function (f) { try { f(); } catch (e) {} }); }
@@ -36,6 +53,7 @@
   function overlay(base) {
     var out = { engineers: (base.engineers || []).map(function (x) { return { name: x.name, id_no: x.id_no || '', sig: x.sig || '', at: x.at || 0 }; }),
                 ops: (base.ops || []).map(function (x) { return { text: x.text, status: x.status === 'WORKING' ? 'WORKING' : 'STANDBY' }; }),
+                parts: (base.parts || []).map(normPart),
                 at: base.at || Date.now() };
     getJSON(PENDING, []).forEach(function (p) {
       if (p.type === 'eng') {
@@ -45,6 +63,13 @@
         hit.name = p.data.name; hit.id_no = p.data.id_no || '';
         if (p.data.sig) hit.sig = p.data.sig;
         hit.at = p.at || Date.now();
+      } else if (p.type === 'part') {
+        var d = normPart(p.data), oldK = pkey(p.data.old_part), i, at = -1, clash = -1;
+        for (i = 0; i < out.parts.length; i++) { if (oldK && out.parts[i].part === oldK) at = i; if (out.parts[i].part === d.part) clash = i; }
+        if (oldK && oldK !== d.part && clash !== -1) { /* الرقم الجديد موجود: السيرفر بيرفضه — نخليه */ }
+        else if (at !== -1) out.parts[at] = d;
+        else if (clash !== -1) out.parts[clash] = d;
+        else out.parts.push(d);
       } else if (p.type === 'op') {
         var ok = key(p.data.text), has = out.ops.some(function (x) { return key(x.text) === ok; });
         if (!has) out.ops.push({ text: p.data.text, status: p.data.status });
@@ -68,7 +93,7 @@
 
   function accept(j) {
     if (!j || !j.ok || !Array.isArray(j.engineers) || !Array.isArray(j.ops)) return false;
-    cache = overlay({ engineers: j.engineers, ops: j.ops.length ? j.ops : DEFAULT_OPS, at: Date.now() });
+    cache = overlay({ engineers: j.engineers, ops: j.ops.length ? j.ops : DEFAULT_OPS, parts: Array.isArray(j.parts) && j.parts.length ? j.parts : cache.parts, at: Date.now() });
     setJSON(CACHE, cache);
     emit();
     return true;
@@ -82,7 +107,7 @@
       var q = getJSON(PENDING, []);
       if (!q.length) return Promise.resolve(true);
       var p = q[0];
-      var req = p.type === 'eng' ? post('eng-save', p.data, 20000) : post('op-add', p.data);
+      var req = p.type === 'eng' ? post('eng-save', p.data, 20000) : (p.type === 'part' ? post('part-save', p.data) : post('op-add', p.data));
       return req.then(function (j) {
         if (j && (j.ok || (j.__status >= 400 && j.__status < 500))) {   /* نجح، أو مرفوض نهائيًا: نشيله من الطابور */
           var cur = getJSON(PENDING, []);
@@ -142,6 +167,22 @@
       if (hit) return hit;
       queue('op', { text: text, status: status === 'WORKING' ? 'WORKING' : 'STANDBY' });
       return api.findOp(text);
+    },
+    /* القطع: قائمة وحدة للكل — أي تعديل أو إضافة ينحفظ ويطلع لكل المهندسين */
+    parts: function () { return cache.parts.slice(); },
+    findPart: function (part) { var k = pkey(part), hit = null; cache.parts.forEach(function (x) { if (x.part === k) hit = x; }); return hit; },
+    partKey: pkey,
+    savePart: function (o, oldPart) {
+      var d = normPart(o || {});
+      if (!d.part || !d.desc) return { ok: false, error: 'P/N و Description مطلوبين' };
+      var oldK = pkey(oldPart);
+      if (oldK && oldK !== d.part && api.findPart(d.part)) return { ok: false, error: 'البارت نمبر ' + d.part + ' موجود بالقائمة' };
+      var cur = api.findPart(oldK || d.part);
+      if (cur && cur.part === d.part && cur.desc === d.desc && cur.manual === d.manual && cur.serialRequired === d.serialRequired) return { ok: true, part: cur };
+      var data = { part: d.part, desc: d.desc, manual: d.manual, serialRequired: d.serialRequired };
+      if (oldK && oldK !== d.part) data.old_part = oldK;
+      queue('part', data);
+      return { ok: true, part: api.findPart(d.part) };
     },
     pending: function () { return getJSON(PENDING, []).length; },
     refresh: refresh,

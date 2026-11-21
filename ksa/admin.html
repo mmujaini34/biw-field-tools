@@ -136,7 +136,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
     {k:'ksa-timesheet',en:'TIME SHEET',ar:'تايم شيت'},
     {k:'ksa-report',en:'REPORT',ar:'تقرير التركيب'}
   ];
-  var ENGINEERS=[], DBENG=[], DBOPS=[];   /* KSA: الأسماء تجي من قاعدة البيانات + من الملفات نفسها */
+  var ENGINEERS=[], DBENG=[], DBOPS=[], DBPARTS=[];   /* KSA: الأسماء تجي من قاعدة البيانات + من الملفات نفسها */
   function nk(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\u0600-\u06ff ]/g,' ').replace(/\s+/g,' ').trim();}
   function buildEngineers(){
     var seen={},out=[];
@@ -202,7 +202,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
   function load(p){
     return api('list',{pass:p}).then(function(j){
       if(!j.ok)return problem(j);
-      pass=p;items=j.items||[];DBENG=j.engineers||[];DBOPS=j.ops||[];buildEngineers();
+      pass=p;items=j.items||[];DBENG=j.engineers||[];DBOPS=j.ops||[];DBPARTS=j.parts||[];buildEngineers();
       try{sessionStorage.setItem(SS,p);}catch(e){}
       setBar(true);route();
       return null;
@@ -358,6 +358,20 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
         b.disabled=true;
         api('op-delete',{pass:pass,text:o.text}).then(function(j){b.disabled=false;if(!j.ok){if(j.status===403){lock();return;}toast(problem(j));return;}
           DBOPS=j.ops||[];toast('انحذفت');engineersView();},function(){b.disabled=false;toast('ما فيه اتصال بالإنترنت');});
+      };
+      row.appendChild(b);d.appendChild(row);
+    });
+    d.appendChild(el('h3','','قائمة القطع'));
+    d.appendChild(el('p','','التعديل والإضافة من التايم شيت أو التقرير. هنا بس الحذف.'));
+    DBPARTS.forEach(function(pt){
+      var row=el('div','lrow');
+      row.appendChild(el('span','ltr',pt.part+'  ·  '+pt.desc));
+      var b=el('button','',"حذف");b.type='button';
+      b.onclick=function(){
+        if(!confirm('حذف القطعة «'+pt.part+'» من القائمة؟'))return;
+        b.disabled=true;
+        api('part-delete',{pass:pass,part:pt.part}).then(function(j){b.disabled=false;if(!j.ok){if(j.status===403){lock();return;}toast(problem(j));return;}
+          DBPARTS=j.parts||[];toast('انحذفت');engineersView();},function(){b.disabled=false;toast('ما فيه اتصال بالإنترنت');});
       };
       row.appendChild(b);d.appendChild(row);
     });
