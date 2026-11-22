@@ -1,11 +1,11 @@
 {
-  "version": "1.3.0",
+  "version": "1.3.1",
   "notes": [
-    "أداة جديدة: طول الـ MLE — تحسب طول الكيبل من تحت الباكر لين البوت هيد وتطلع رسمة PDF جاهزة",
-    "القراءات تنكتب بـ ft.in أو ft أو in أو cm وكلها تتحول لفيت، مع ستيجات الفيدثرو والإكستنشن"
+    "أداة طول الـ MLE صارت أبسط: تكتب طول الـ MLE وتختار الفيدثرو 2.88 أو 3.38 بس",
+    "الـ PDF يطلع فيه جدول الستيجات الأربعة للفيدثرو"
   ],
   "notes_en": [
-    "New tool: MLE Length — works out the cable length from the packer bottom to the motor pothead and makes a ready PDF drawing",
-    "Readings can be typed in ft.in, ft, in or cm and are all converted to feet, with feedthru stages and extensions"
+    "The MLE Length tool is simpler: type the MLE length and pick the feedthru, 2.88 or 3.38",
+    "The PDF now shows the four feedthru stages in a table"
   ]
 }

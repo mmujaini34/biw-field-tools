@@ -6,53 +6,44 @@
 <title>MLE Length · BIW KSA</title>
 <meta name="theme-color" content="#14101a">
 <link rel="manifest" href="manifest.json">
-<script>var LANG=(function(){try{var v=localStorage.getItem("ksa_lang");return v==="en"?"en":"ar"}catch(e){return "ar"}})();document.documentElement.lang=LANG;document.documentElement.dir=LANG==="ar"?"rtl":"ltr";function T(en,ar){return LANG==="ar"?ar:en}</script>
+<script>var LANG=(function(){if(false)return "en";try{var v=localStorage.getItem("ksa_lang");return v==="en"?"en":"ar"}catch(e){return "ar"}})();
+document.documentElement.lang=LANG;document.documentElement.dir=LANG==="ar"?"rtl":"ltr";
+function T(en,ar){return LANG==="ar"?ar:en}</script>
 <script src="libs/jspdf.umd.min.js"></script>
 <style>
 :root{--ink:#1a1a1a;--muted:#555;--blue:#1d4ed8;--orange:#c2410c;--line:#d6d3cc;--bg:#f6f5f1;--card:#fff}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Helvetica,Arial,sans-serif;padding-bottom:92px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Helvetica,Arial,sans-serif;padding-bottom:84px}
 header{padding:52px 16px 6px;max-width:1180px;margin:0 auto}
+h1{font-size:20px;margin:0 0 2px;letter-spacing:.01em}
+header p{margin:0;color:var(--muted);font-size:13px}
 .biw-topbar{position:fixed;top:8px;left:8px;z-index:99990;font-family:Arial,sans-serif;direction:ltr}
 .biw-topbar a,.biw-topbar button{display:inline-block;vertical-align:middle;margin-right:6px;padding:7px 12px;border-radius:999px;border:1px solid rgba(120,130,150,.45);background:rgba(20,26,38,.82);color:#fff;font-size:12px;text-decoration:none;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .biw-topbar a:active,.biw-topbar button:active{background:rgba(232,163,61,.35)}
 .ksa-badge{display:inline-block;vertical-align:middle;margin-inline-start:6px;padding:2px 8px;border-radius:999px;background:#14101a;color:#ffc46a;font-size:11px;letter-spacing:.06em}
-.num,.seg span,.kv,input[inputmode=decimal]{direction:ltr}
-h1{font-size:20px;margin:0 0 2px;letter-spacing:.01em}
-header p{margin:0;color:var(--muted);font-size:13px}
 main{max-width:1180px;margin:0 auto;padding:8px 12px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
-@media(min-width:1000px){main{grid-template-columns:440px minmax(0,1fr);align-items:start}.preview{position:sticky;top:10px}}
+@media(min-width:1000px){main{grid-template-columns:400px minmax(0,1fr);align-items:start}.preview{position:sticky;top:10px}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
 .card h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px;color:var(--muted)}
 .f{display:block;font-size:12px;color:var(--muted);margin:0 0 3px}
 input,select{font:inherit;font-size:16px;width:100%;padding:8px 9px;border:1px solid #c9c5bb;border-radius:7px;background:#fff;color:var(--ink);min-height:40px}
 input:focus,select:focus{outline:2px solid var(--blue);outline-offset:0;border-color:var(--blue)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .fieldrow{margin-bottom:10px}
-.custom{display:grid;grid-template-columns:1fr 84px;gap:8px;margin-top:6px}
-.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.mrow{display:grid;grid-template-columns:1fr 92px;gap:8px}
+.mrow input{font-size:22px;font-weight:700;direction:ltr}
+.read{margin-top:8px;font-size:14px;color:var(--muted);direction:ltr;text-align:start;unicode-bidi:plaintext}
+.read b{color:var(--orange);font-size:18px}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .seg label{position:relative;display:block}
 .seg input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
-.seg span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:62px;border:1px solid #c9c5bb;border-radius:8px;background:#fff;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;text-align:center;line-height:1.25}
-.seg span b{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.03em}
-.seg span i{font-style:normal;font-size:11px;font-weight:400;color:var(--muted)}
+.seg span{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70px;border:1px solid #c9c5bb;border-radius:8px;background:#fff;font-size:20px;font-weight:700;text-align:center;line-height:1.25;direction:ltr}
+.seg span i{font-style:normal;font-size:12px;font-weight:400;color:var(--muted)}
 .seg input:checked+span{border:2px solid var(--blue);background:#eef3ff;color:var(--blue)}
 .seg input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
-.hint{font-size:12px;color:var(--muted);margin-top:4px}
-.grp{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}
-.grp:first-of-type{border-top:0;margin-top:0;padding-top:0}
-.grphead{display:flex;gap:8px;align-items:center;margin-bottom:6px}
-.grphead input{font-weight:700}
-.sub{font-size:13px;color:var(--blue);font-weight:700;white-space:nowrap;min-width:84px;text-align:end;direction:ltr;unicode-bidi:plaintext}
-.row{display:grid;grid-template-columns:minmax(0,1fr) 96px 70px 74px 40px;gap:6px;align-items:center;margin-bottom:6px}
-.row .ft{font-size:13px;color:var(--muted);text-align:end;direction:ltr;font-variant-numeric:tabular-nums;line-height:1.2}
-.row .ft small{display:block;font-size:11px;color:var(--blue)}
-@media(max-width:560px){.row{grid-template-columns:minmax(0,1fr) 70px 72px 40px}.row .lbl{grid-column:1/-1}}
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
 button{font:inherit;cursor:pointer}
-.x{width:40px;height:40px;border:1px solid #c9c5bb;border-radius:7px;background:#fff;color:var(--muted);font-size:18px;line-height:1}
-.add{border:1px dashed #b9b5aa;background:#fff;border-radius:7px;padding:7px 12px;font-size:14px;color:var(--ink);min-height:40px}
 .preview .svgwrap{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:auto}
 .preview svg{display:block;width:100%;height:auto}
 .preview.zoom svg{width:240%}
@@ -63,11 +54,10 @@ button{font:inherit;cursor:pointer}
 .msg{font-size:13px;margin-top:8px;min-height:18px}
 .msg.err{color:#b42318}.msg.ok{color:#067647}
 .sticky{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 12px;z-index:5}
-.sticky .in{max-width:1180px;margin:0 auto;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.kv{display:flex;gap:14px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
-.kv div{font-size:12px;color:var(--muted)}
-.kv b{display:block;font-size:16px;color:var(--ink)}
-.kv .mle b{color:var(--blue);font-size:20px}
+.sticky .in{max-width:1180px;margin:0 auto;display:flex;gap:18px;align-items:center;flex-wrap:wrap;direction:ltr;font-variant-numeric:tabular-nums}
+.sticky div{font-size:12px;color:var(--muted)}
+.sticky b{display:block;font-size:16px;color:var(--ink)}
+.sticky .mle b{color:var(--orange);font-size:20px}
 </style>
 </head>
 <body>
@@ -77,7 +67,7 @@ button{font:inherit;cursor:pointer}
 </div>
 <header>
 <h1><span data-ar="طول الـ MLE">MLE Length</span><span class="ksa-badge">KSA</span></h1>
-<p data-ar="من تحت الباكر لين البوت هيد · دخّل القراءات بـ ft.in أو ft أو in أو cm — كل شي يتحول لفيت. ملف الـ PDF يطلع إنجليزي.">Packer bottom → motor pothead · enter readings in ft.in, ft, in or cm — everything is converted to ft. The PDF is in English.</p>
+<p data-ar="اكتب طول الـ MLE واختر الفيدثرو 2.88 أو 3.38 — يطلع لك PDF فيه الرسمة والستيجات. ملف الـ PDF يطلع إنجليزي.">Type the MLE length and pick the feedthru, 2.88 or 3.38 — you get a PDF with the drawing and the stages.</p>
 </header>
 <main>
 <section style="display:grid;gap:14px">
@@ -90,47 +80,23 @@ button{font:inherit;cursor:pointer}
     </div>
   </div>
   <div class="card">
-    <h2 data-ar="الباكر والفيدثرو والبوت هيد">Packer, feedthru &amp; pothead</h2>
-    <div class="fieldrow">
-      <label class="f" for="Jval" data-ar="J · سكندري بور جوينت (اكتب الطول)">J · Secondary bore joint (enter)</label>
-      <div class="custom" style="margin-top:0"><input id="Jval" inputmode="decimal" placeholder="length" data-ar-ph="الطول"><select id="Junit" aria-label="J unit"><option>ft</option><option>ft.in</option><option>in</option><option>cm</option></select></div>
-
-    </div>
-    <div class="fieldrow">
-      <div class="f" id="Xlbl" data-ar="X · ستيج الفيدثرو (كل ستيج 2 إنش)">X · BIW feedthru stage (2 in per stage)</div>
-      <div class="seg" role="radiogroup" aria-labelledby="Xlbl" id="Xseg">
-        <label><input type="radio" name="xst" value="1"><span><b data-ar="ستيج 1">Stage 1</b>2.88 ft<i>34.51 in</i></span></label>
-        <label><input type="radio" name="xst" value="2"><span><b data-ar="ستيج 2">Stage 2</b>3.05 ft<i>36.51 in</i></span></label>
-        <label><input type="radio" name="xst" value="3"><span><b data-ar="ستيج 3">Stage 3</b>3.21 ft<i>38.51 in</i></span></label>
-        <label><input type="radio" name="xst" value="4"><span><b data-ar="ستيج 4">Stage 4</b>3.38 ft<i>40.51 in</i></span></label>
-      </div>
-    </div>
-    <div class="fieldrow">
-      <div class="f" id="Elbl" data-ar="E · الإكستنشن (إذا ركبته)">E · Extension (if fitted)</div>
-      <div class="seg" role="radiogroup" aria-labelledby="Elbl" id="Eseg">
-        <label><input type="radio" name="ext" value="0"><span><b data-ar="بدون">None</b>0.00 ft<i>—</i></span></label>
-        <label><input type="radio" name="ext" value="6"><span><b>6 in</b>0.50 ft<i>ext.</i></span></label>
-        <label><input type="radio" name="ext" value="12"><span><b>12 in</b>1.00 ft<i>ext.</i></span></label>
-        <label><input type="radio" name="ext" value="18"><span><b>18 in</b>1.50 ft<i>ext.</i></span></label>
-      </div>
-    </div>
-    <div class="fieldrow" style="margin-bottom:0">
-      <label class="f" for="Popt" data-ar="P · إزاحة البوت هيد (من البوت هيد لأسفل السيل)">P · Pothead offset (pothead to bottom of seal)</label>
-      <select id="Popt"><option value="bh">Baker Hughes · 0.70 ft</option><option value="borets">Borets · 0.55 ft</option><option value="custom" data-ar="رقم يدوي…">Custom…</option></select>
-      <div class="custom" id="Pc" hidden style="grid-template-columns:1fr 1fr 84px"><input id="Pname" aria-label="Motor vendor" placeholder="Vendor" data-ar-ph="الشركة"><input id="Pval" inputmode="decimal" aria-label="P custom value" placeholder="value" data-ar-ph="القيمة"><select id="Punit" aria-label="P unit"><option>ft</option><option>in</option><option>cm</option></select></div>
-    </div>
+    <h2 data-ar="طول الـ MLE">MLE length</h2>
+    <div class="mrow"><input id="Mval" inputmode="decimal" placeholder="170.23" aria-label="MLE length"><select id="Munit" aria-label="Unit"><option>ft.in</option><option>ft</option><option>in</option><option>cm</option></select></div>
+    <div class="read" id="Mread">—</div>
+    <div class="hint" data-ar="ft.in: الرقم بعد النقطة إنشات — 170.23 = ‎170 ft + 23 in‎ = ‎171.92 ft‎">ft.in: the number after the point is inches — 170.23 = 170 ft + 23 in = 171.92 ft</div>
   </div>
   <div class="card">
-    <h2 data-ar="قراءات السترينج ← S">String readings → S</h2>
-    <div id="groups"></div>
-    <div class="hint" data-ar="وحدة ft.in: الرقم بعد النقطة إنشات — 170.23 = ‎170 ft + 23 in‎ = ‎171.92 ft‎. كل مجموعة قطعة من الرسمة، وتقدر تضيف أكثر من قراءة لنفس القطعة (مثلاً أكثر من بمب أو بوب) وتنجمع.">Unit <b>ft.in</b>: the number after the point is inches — 170.23 = 170 ft + 23 in = 171.92 ft. Each group is one part of the picture; add more readings to a group (e.g. several pumps or pups) and they are summed.</div>
-    <div style="margin-top:12px"><button class="btn ghost" id="reset" type="button" data-ar="امسح كل القراءات">Clear all readings</button></div>
+    <h2 id="Xlbl" data-ar="الفيدثرو">Feedthru</h2>
+    <div class="seg" role="radiogroup" aria-labelledby="Xlbl">
+      <label><input type="radio" name="xb" value="2.88"><span>2.88 ft<i>34.51 in</i></span></label>
+      <label><input type="radio" name="xb" value="3.38"><span>3.38 ft<i>40.51 in</i></span></label>
+    </div>
   </div>
 </section>
 <section class="card preview" id="preview">
   <div class="pbar">
     <h2 style="margin:0" data-ar="الرسمة · PDF A3">Drawing · A3 PDF</h2>
-    <div style="display:flex;gap:8px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn ghost" id="zoom" type="button" data-ar="تكبير">Zoom</button>
       <button class="btn ghost" id="share" type="button" data-ar="مشاركة PDF">Share PDF</button>
       <button class="btn primary" id="pdf" type="button" data-ar="تنزيل PDF">Download PDF</button>
@@ -141,9 +107,7 @@ button{font:inherit;cursor:pointer}
 </section>
 </main>
 <div class="sticky"><div class="in">
-  <div class="kv">
-    <div>S<b id="rS">—</b></div><div id="lJX">J + X<b id="rJX">—</b></div><div>L<b id="rL">—</b></div><div>P<b id="rP">—</b></div><div class="mle">MLE<b id="rM">—</b></div>
-  </div>
+  <div class="mle">MLE<b id="rM">—</b></div><div>X<b id="rX">—</b></div>
 </div></div>
 
 <script>
@@ -153,38 +117,25 @@ const COL={ink:[26,26,26],muted:[85,85,85],blue:[29,78,216],orange:[194,65,12],r
 const hex=c=>'#'+c.map(v=>v.toString(16).padStart(2,'0')).join('');
 const IMG_TOP=34, IMG_H=246, K=IMG_H/GEO.h, IMG_W=GEO.w*K, IMG_LEFT=75;
 const py=p=>IMG_TOP+p*K, px=p=>IMG_LEFT+p*K;
-const GROUPS=[
- {key:'tubing',def:'Tubing & pup joints',top:'pen_bottom',bot:'discharge_top'},
- {key:'discharge',def:'Discharge head assy',top:'discharge_top',bot:'pump_top'},
- {key:'pump',def:'Pump(s)',top:'pump_top',bot:'intake_top'},
- {key:'intake',def:'Intake',top:'intake_top',bot:'gassep_top'},
- {key:'gassep',def:'Gas separator',top:'gassep_top',bot:'seal_top'},
- {key:'seal',def:'Seal(s)',top:'seal_top',bot:'seal_bottom'}];
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
-function blank(){return{well:'',date:today(),prepared:(function(){try{return localStorage.getItem('ksa_user')||''}catch(e){return ''}})(),J:{val:'',unit:'ft'},X:{stage:1},E:0,P:{opt:'bh',name:'',val:'',unit:'ft'},
- groups:GROUPS.map(g=>({key:g.key,name:g.def,rows:[{label:'',val:'',unit:'ft.in'}]})),labels:{packer:'Packer',motor:'Motor',sensor:'Sensor / gauge'}}}
-const KEY='ksa-mle-v1';
-let S=blank();S.v2=1;S.v3=1;
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&s.groups&&s.groups.length===GROUPS.length){S=Object.assign(blank(),s); if(!s.v2){S.J=blank().J;S.X=blank().X;S.v2=1} if(!S.v3){S.groups.forEach(g=>g.rows.forEach(r=>{if(String(r.val).trim()==='')r.unit='ft.in'}));S.v3=1} if(!S.X.stage){S.X={stage:S.X.opt==='3.38'?4:1}}}}catch(e){}
+const devName=()=>{try{return localStorage.getItem('ksa_user')||''}catch(e){return ''}};
+function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},Xb:'2.88'}}
+const KEY='ksa-mle-v2';
+let S=blank();
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M)S=Object.assign(blank(),s)}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 // ---------- maths
-const num=v=>{if(v===null||v===undefined)return NaN;const t=String(v).trim().replace(',','.');if(t==='')return NaN;const n=Number(t);return isFinite(n)?n:NaN};
+const num=v=>{const t=String(v??'').trim().replace(',','.');if(t==='')return NaN;const n=Number(t);return isFinite(n)?n:NaN};
 const ftin=v=>{const m=String(v??'').trim().replace(',','.').match(/^(\d*)(?:\.(\d*))?$/);if(!m||(m[1]===''&&!m[2]))return null;return{ft:Number(m[1]||0),inch:Number(m[2]||0)}};
 const toFt=(v,u)=>{if(u==='ft.in'){const p=ftin(v);return p?p.ft+p.inch/12:NaN}const n=num(v);if(isNaN(n))return NaN;return u==='cm'?n/30.48:u==='in'?n/12:n};
-const f2=n=>isNaN(n)?'—':n.toFixed(2);
 const fmtRaw=(v,u)=>{if(u==='ft.in'){const p=ftin(v);return p?p.ft+' ft '+p.inch+' in':''}const n=num(v);return isNaN(n)?'':(String(v).trim().replace(',','.')+' '+u)};
+// feedthru stages: 2.88 ft, then +2 in per stage up to 3.38 ft (from 3.38 the other way)
+const STAGES=[1,2,3,4].map(k=>({k,inch:34.51+2*(k-1),ft:2.88+(k-1)*2/12}));
 function calc(){
- const groups=S.groups.map((g,i)=>{const rows=g.rows.map(r=>({...r,ft:toFt(r.val,r.unit)}));const valid=rows.filter(r=>!isNaN(r.ft));
-  return{...g,def:GROUPS[i],rows,valid,sum:valid.length?valid.reduce((a,r)=>a+r.ft,0):NaN}});
- const any=groups.some(g=>g.valid.length);
- const s=any?groups.reduce((a,g)=>a+(isNaN(g.sum)?0:g.sum),0):NaN;
- const J=toFt(S.J.val,S.J.unit), Jsrc=S.J.unit==='ft'?'':fmtRaw(S.J.val,S.J.unit);
- const stg=Math.min(4,Math.max(1,Number(S.X.stage)||1)), X=2.88+(stg-1)*2/12, Xsrc=(34.51+2*(stg-1)).toFixed(2)+' in';
- let P,Pname,Psrc; if(S.P.opt==='custom'){P=toFt(S.P.val,S.P.unit);Pname=S.P.name.trim()||'Custom';Psrc=fmtRaw(S.P.val,S.P.unit)}else if(S.P.opt==='borets'){P=0.55;Pname='Borets';Psrc='0.55 ft'}else{P=0.70;Pname='Baker Hughes';Psrc='0.70 ft'}
- const Ein=[6,12,18].includes(Number(S.E))?Number(S.E):0, E=Ein/12;
- const L=s+J+X+E, M=L-P;
- return{groups,S:s,J,Jsrc,X,Xsrc,Xstage:stg,E,Ein,P,Pname,Psrc,L,M};
+ const M=toFt(S.M.val,S.M.unit), Msrc=fmtRaw(S.M.val,S.M.unit);
+ const up=S.Xb!=='3.38', start=up?1:4, X=up?2.88:3.38;
+ return{M,Msrc,mUnit:S.M.unit,X,Xin:up?'34.51 in':'40.51 in',up,start};
 }
 
 // ---------- text width (Helvetica metrics via canvas, mm)
@@ -194,18 +145,18 @@ function tw(str,pt,bold){mctx.font=(bold?'bold ':'')+(pt*0.3528*10)+'px Helvetic
 // ---------- renderers (mm, A3 landscape 420 x 297)
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 function SvgR(){const P=[];return{
- line(x1,y1,x2,y2,o={}){P.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${hex(o.color||COL.ink)}" stroke-width="${o.w||0.2}"${o.dash?` stroke-dasharray="${o.dash.join(' ')}"`:''} stroke-linecap="round"/>`)},
+ line(x1,y1,x2,y2,o={}){P.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${hex(o.color||COL.ink)}" stroke-width="${o.w||0.2}" stroke-linecap="round"/>`)},
  rect(x,y,w,h,o={}){P.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${o.fill?hex(o.fill):'none'}" stroke="${o.stroke?hex(o.stroke):'none'}" stroke-width="${o.w||0.2}"/>`)},
- text(s,x,y,o={}){const a=o.align==='right'?'end':o.align==='center'?'middle':'start';P.push(`<text x="${x}" y="${y}" font-family="Helvetica, Arial, sans-serif" font-size="${(o.size||8)*0.3528}" font-weight="${o.bold?700:400}"${o.italic?' font-style="italic"':''} fill="${hex(o.color||COL.ink)}" text-anchor="${a}">${esc(s)}</text>`)},
+ text(s,x,y,o={}){const a=o.align==='right'?'end':o.align==='center'?'middle':'start';P.push(`<text x="${x}" y="${y}" font-family="Helvetica, Arial, sans-serif" font-size="${(o.size||8)*0.3528}" font-weight="${o.bold?700:400}"${o.italic?' font-style="italic"':''} fill="${hex(o.color||COL.ink)}" text-anchor="${a}" direction="ltr">${esc(s)}</text>`)},
  image(x,y,w,h){P.push(`<image href="${IMG}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none"/>`)},
  dot(x,y,r,o={}){P.push(`<circle cx="${x}" cy="${y}" r="${r}" fill="${hex(o.fill||COL.ink)}"/>`)},
  tri(a,b,c,o={}){P.push(`<polygon points="${a[0]},${a[1]} ${b[0]},${b[1]} ${c[0]},${c[1]}" fill="${hex(o.fill||COL.ink)}"/>`)},
  poly(pts,o={}){P.push(`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${hex(o.color||COL.ink)}" stroke-width="${o.w||0.2}" stroke-linejoin="round" stroke-linecap="round"/>`)},
- out(){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 297" role="img" aria-label="MLE length drawing"><rect width="420" height="297" fill="#fff"/>${P.join('')}</svg>`}}}
+ out(){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 297" role="img" aria-label="MLE length drawing" direction="ltr"><rect width="420" height="297" fill="#fff"/>${P.join('')}</svg>`}}}
 function PdfR(doc){
  const sd=c=>doc.setDrawColor(c[0],c[1],c[2]), sf=c=>doc.setFillColor(c[0],c[1],c[2]);
  return{
- line(x1,y1,x2,y2,o={}){sd(o.color||COL.ink);doc.setLineWidth(o.w||0.2);doc.setLineDashPattern(o.dash||[],0);doc.line(x1,y1,x2,y2);doc.setLineDashPattern([],0)},
+ line(x1,y1,x2,y2,o={}){sd(o.color||COL.ink);doc.setLineWidth(o.w||0.2);doc.line(x1,y1,x2,y2)},
  rect(x,y,w,h,o={}){doc.setLineWidth(o.w||0.2);let st='';if(o.fill){sf(o.fill);st+='F'}if(o.stroke){sd(o.stroke);st+='D'}if(st)doc.rect(x,y,w,h,st==='FD'?'FD':st)},
  text(s,x,y,o={}){doc.setFont('helvetica',o.bold?'bold':(o.italic?'italic':'normal'));doc.setFontSize(o.size||8);const c=o.color||COL.ink;doc.setTextColor(c[0],c[1],c[2]);doc.text(String(s),x,y,{align:o.align||'left'})},
  image(x,y,w,h){doc.addImage(IMG,'JPEG',x,y,w,h)},
@@ -219,59 +170,60 @@ function gapLabel(R,x,yMid,lines){const lh=lines.map(l=>l.size*0.3528*1.35);cons
 
 function drawSheet(R,c){
  const fmtFt=n=>isNaN(n)?'— ft':n.toFixed(2)+' ft';
- // frame + heading
  R.rect(10,10,400,277,{stroke:COL.ink,w:0.5});
  R.text('MLE LENGTH — PACKER TO MOTOR POTHEAD',16,21,{size:15,bold:true});
  R.text('BIW packer-to-motor penetrator · Centrilink MLE / pothead · all dimensions in feet (ft) · not to scale',16,26.6,{size:8.5,color:COL.muted});
- // picture
  R.image(IMG_LEFT,IMG_TOP,IMG_W,IMG_H);
- // MLE cable: one continuous band from the penetrator down to the pothead on the motor head
+ // MLE cable from the penetrator down to the pothead on the motor head
  const cx=px(GEO.cable_x), cxr=px(GEO.body_x1+28), yStub=py(GEO.cable_stub_end), yPh=py(GEO.pothead_y);
  const phL=px(GEO.body_x1)-0.2, phW=1.6, phH=3.4;
  const route=[[cx,yStub-0.4],[cx,yStub+2.2],[cxr,yStub+2.2],[cxr,yPh],[phL+phW,yPh]];
- R.poly(route,{color:COL.cableDark,w:1.15});
- R.poly(route,{color:COL.orange,w:0.7});
+ R.poly(route,{color:COL.cableDark,w:1.15}); R.poly(route,{color:COL.orange,w:0.7});
  R.rect(phL,yPh-phH/2,phW,phH,{fill:COL.orange,stroke:COL.cableDark,w:0.25});
- // dimensions, right side only: J and X on the packer part, MLE from packer bottom to the pothead
- const yDat=py(GEO.packer_bottom), yJX=py(GEO.jx_boundary), yPen=py(GEO.pen_bottom);
+ // dimensions on the right: X on the feedthru, MLE from packer bottom to the pothead
+ const yDat=py(GEO.packer_bottom), yPen=py(GEO.pen_bottom);
  const xPkR=px(GEO.packer_x1)+0.8, xPenR=px(GEO.pen_x1)+0.8;
  const Jx=IMG_LEFT+IMG_W+8.5, Tx=Jx+3, Mx=Tx+62, rule={color:COL.rule,w:0.18};
  R.line(xPkR,yDat,Mx+1.5,yDat,rule);
- R.line(xPenR,yJX,Jx+1.5,yJX,rule);
  R.line(xPenR,yPen,Jx+1.5,yPen,rule);
  R.line(cxr+0.9,yPh,Mx+1.5,yPh,rule);
  R.text('PACKER BOTTOM (DATUM)',Tx,yDat-1.2,{size:6.5,bold:true,color:COL.muted});
  R.text('POTHEAD (MOTOR HEAD)',Tx,yPh-1.2,{size:6.5,bold:true,color:COL.orange});
- arrowV(R,Jx,yDat,yJX,COL.blue); arrowV(R,Jx,yJX,yPen,COL.blue);
- R.text('J · SECONDARY BORE JOINT',Tx,(yDat+yJX)/2-0.6,{size:6.8,bold:true});
- R.text(fmtFt(c.J)+(c.Jsrc?'  ('+c.Jsrc+')':''),Tx,(yDat+yJX)/2+3,{size:8,bold:true,color:COL.blue});
- R.text('X · BIW FEEDTHRU (EA1591) · STAGE '+c.Xstage,Tx,(yJX+yPen)/2-0.6,{size:6.8,bold:true});
- R.text(fmtFt(c.X)+'  ('+(c.Xsrc||'—')+')',Tx,(yJX+yPen)/2+3,{size:8,bold:true,color:COL.blue});
- if(c.Ein) R.text('+ E · EXTENSION '+c.Ein+' in = '+c.E.toFixed(2)+' ft',Tx,(yJX+yPen)/2+6.6,{size:7.5,bold:true,color:COL.blue});
+ arrowV(R,Jx,yDat,yPen,COL.blue);
+ const ym=(yDat+yPen)/2;
+ R.text('X · BIW FEEDTHRU (EA1591)',Tx,ym-2.4,{size:6.8,bold:true});
+ R.text(c.X.toFixed(2)+' ft  ('+c.Xin+')',Tx,ym+1.4,{size:8.5,bold:true,color:COL.blue});
+ R.text('STAGE '+c.start+' OF 4 · '+(c.up?'+':'-')+'2 in PER STAGE',Tx,ym+5,{size:6.5,bold:true,color:COL.muted});
  arrowV(R,Mx,yDat,yPh,COL.orange);
- gapLabel(R,Mx,(yDat+yPh)/2,[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:13,bold:true,color:COL.orange},{t:'L - P',size:6.5,color:COL.muted}]);
- // legend
+ const ml=[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:13,bold:true,color:COL.orange}];
+ if(c.Msrc&&c.mUnit!=='ft') ml.push({t:'('+c.Msrc+')',size:6.5,color:COL.muted});
+ gapLabel(R,Mx,(yDat+yPh)/2,ml);
  R.line(16,283,22,283,{color:COL.blue,w:0.5}); R.text('Dimension (ft)',23.5,284,{size:6.5,color:COL.muted});
  R.line(44,283,50,283,{color:COL.orange,w:0.55}); R.text('MLE cable / length',51.5,284,{size:6.5,color:COL.muted});
  R.text('cm ÷ 30.48 = ft · in ÷ 12 = ft · NTS',76,284,{size:6.5,color:COL.muted});
- // ---- right: only what is on the drawing, as a table just above the title block
- const X0=240,X1=410,TB=247;
- const trows=[{k:'J',d:'Secondary bore joint',o:c.Jsrc,v:c.J,col:COL.blue},{k:'X',d:'BIW feedthru (EA1591) · stage '+c.Xstage,o:c.Xsrc,v:c.X,col:COL.blue},...(c.Ein?[{k:'E',d:'Extension',o:c.Ein+' in',v:c.E,col:COL.blue}]:[]),{k:'MLE',d:'Packer bottom to pothead',o:'',v:c.M,col:COL.orange,big:true}];
- const rh=9, hh=7, tTop=TB-5-hh-trows.length*rh, cK=X0+3, cD=X0+21, cO=X0+129, cV=X1-3;
- R.text('DIMENSIONS ON DRAWING (ft)',X0,tTop-2.5,{size:8,bold:true});
- trows.forEach((r,i)=>{if(r.big)R.rect(X0,tTop+hh+i*rh,X1-X0,rh,{fill:COL.mleHi})});
- R.rect(X0,tTop,X1-X0,hh+trows.length*rh,{stroke:COL.ink,w:0.4});
- R.line(X0,tTop+hh,X1,tTop+hh,{w:0.3});
- for(const xv of [X0+18,X0+100,X0+132]) R.line(xv,tTop,xv,tTop+hh+trows.length*rh,{w:0.2});
- R.text('REF',cK,tTop+4.7,{size:6.5,bold:true,color:COL.muted});R.text('ITEM',cD,tTop+4.7,{size:6.5,bold:true,color:COL.muted});
- R.text('ORIGINAL',cO,tTop+4.7,{size:6.5,bold:true,color:COL.muted,align:'right'});R.text('FT',cV,tTop+4.7,{size:6.5,bold:true,color:COL.muted,align:'right'});
- trows.forEach((r,i)=>{const y0=tTop+hh+i*rh, yb=y0+rh/2+1.5;
-  if(i) R.line(X0,y0,X1,y0,{color:COL.light,w:0.2});
-  R.text(r.k,cK,yb,{size:9,bold:true,color:r.col});
-  R.text(r.d,cD,yb,{size:8.5,bold:!!r.big});
-  if(r.o) R.text(r.o,cO,yb,{size:8,color:COL.muted,align:'right'});
-  R.text(isNaN(r.v)?'—':r.v.toFixed(2),cV,yb+(r.big?0.6:0),{size:r.big?12:9.5,bold:true,color:r.col,align:'right'});
- });
+ // ---- right side: feedthru stages + dimensions, above the title block
+ const X0=240,X1=410,TB=247,rh=8,hh=7;
+ const box=(title,top,rows,cols)=>{ // rows: [{cells:[..],hi,col,big}]
+  R.text(title,X0,top-2.5,{size:8,bold:true});
+  rows.forEach((r,i)=>{if(r.hi)R.rect(X0,top+hh+i*rh,X1-X0,rh,{fill:r.hi})});
+  R.rect(X0,top,X1-X0,hh+rows.length*rh,{stroke:COL.ink,w:0.4});
+  R.line(X0,top+hh,X1,top+hh,{w:0.3});
+  cols.slice(1).forEach(cl=>R.line(cl.at,top,cl.at,top+hh+rows.length*rh,{w:0.2}));
+  cols.forEach(cl=>R.text(cl.h,cl.x,top+4.7,{size:6.5,bold:true,color:COL.muted,align:cl.al||'left'}));
+  rows.forEach((r,i)=>{const y0=top+hh+i*rh,yb=y0+rh/2+1.5;if(i)R.line(X0,y0,X1,y0,{color:COL.light,w:0.2});
+   r.cells.forEach((v,j)=>{const cl=cols[j];R.text(v,cl.x,yb+(r.big&&j===cols.length-1?0.5:0),{size:r.big&&j===cols.length-1?12:(j===0?9:8.5),bold:j===0||r.bold||(r.big&&j===cols.length-1),color:(j===0||j===cols.length-1)?(r.col||COL.ink):COL.ink,align:cl.al||'left'})})});
+  return top+hh+rows.length*rh;
+ };
+ const dimCols=[{h:'REF',x:X0+3,at:X0},{h:'ITEM',x:X0+21,at:X0+18},{h:'ORIGINAL',x:X0+129,at:X0+100,al:'right'},{h:'FT',x:X1-3,at:X0+132,al:'right'}];
+ const dimRows=[{cells:['X','BIW feedthru (EA1591) · stage '+c.start,c.Xin,c.X.toFixed(2)],col:COL.blue},
+  {cells:['MLE','Packer bottom to pothead',c.mUnit==='ft'?'':(c.Msrc||''),isNaN(c.M)?'—':c.M.toFixed(2)],col:COL.orange,hi:COL.mleHi,big:true,bold:true}];
+ const dimTop=TB-5-hh-dimRows.length*rh;
+ const order=c.up?[0,1,2,3]:[3,2,1,0];
+ const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:'FEEDTHRU (in)',x:X0+66,at:X0+40,al:'right'},{h:'FEEDTHRU (ft)',x:X0+112,at:X0+75,al:'right'},{h:'',x:X1-3,at:X0+118,al:'right'}];
+ const stRows=order.map(i=>{const s=STAGES[i],on=s.k===c.start;return{cells:[String(s.k),s.inch.toFixed(2),s.ft.toFixed(2),on?'SELECTED':(c.up?'+':'-')+(2*Math.abs(s.k-c.start))+' in'],col:on?COL.blue:COL.ink,hi:on?COL.hi:null,bold:on}});
+ const stTop=dimTop-14-hh-stRows.length*rh;
+ box('FEEDTHRU STAGES ('+(c.up?'from 2.88 ft, +2 in per stage':'from 3.38 ft, -2 in per stage')+')',stTop,stRows,stCols);
+ box('DIMENSIONS ON DRAWING (ft)',dimTop,dimRows,dimCols);
  // title block
  const TBh=40, cw=(410-X0)/4;
  R.rect(X0,TB,410-X0,TBh,{stroke:COL.ink,w:0.5});
@@ -285,35 +237,21 @@ function drawSheet(R,c){
 
 // ---------- UI
 const $=id=>document.getElementById(id);
-function groupsUI(){const box=$('groups');box.innerHTML='';
- S.groups.forEach((g,gi)=>{const d=document.createElement('div');d.className='grp';
-  d.innerHTML=`<div class="grphead"><input aria-label="Group name" value="${esc(g.name)}" data-g="${gi}" data-k="name"><span class="sub" id="sub${gi}">—</span></div>`+
-  g.rows.map((r,ri)=>`<div class="row"><input class="lbl" aria-label="${esc(g.name)} reading ${ri+1} label" placeholder="${T('label (optional)','وصف (اختياري)')}" value="${esc(r.label)}" data-g="${gi}" data-r="${ri}" data-k="label"><input aria-label="${esc(g.name)} reading ${ri+1} value" inputmode="decimal" placeholder="${T('length','الطول')}" value="${esc(r.val)}" data-g="${gi}" data-r="${ri}" data-k="val"><select aria-label="${esc(g.name)} reading ${ri+1} unit" data-g="${gi}" data-r="${ri}" data-k="unit">${['ft.in','ft','in','cm'].map(u=>`<option${u===r.unit?' selected':''}>${u}</option>`).join('')}</select><span class="ft" id="ft${gi}_${ri}">—</span><button class="x" type="button" aria-label="Remove reading" data-del="${gi}_${ri}">×</button></div>`).join('')+
-  `<button class="add" type="button" data-add="${gi}">${T('+ Add reading','+ أضف قراءة')}</button>`;
-  box.appendChild(d)});
-}
-$('groups').addEventListener('input',e=>{const t=e.target;if(!t.dataset.k)return;const g=S.groups[+t.dataset.g];if(t.dataset.r===undefined)g[t.dataset.k]=t.value;else g.rows[+t.dataset.r][t.dataset.k]=t.value;update()});
-$('groups').addEventListener('change',e=>{const t=e.target;if(t.tagName==='SELECT'){S.groups[+t.dataset.g].rows[+t.dataset.r].unit=t.value;update()}});
-$('groups').addEventListener('click',e=>{const t=e.target;if(t.dataset.add!==undefined){const g=S.groups[+t.dataset.add];const last=g.rows[g.rows.length-1];g.rows.push({label:'',val:'',unit:last?last.unit:'ft'});groupsUI();update()}
- if(t.dataset.del){const [gi,ri]=t.dataset.del.split('_').map(Number);const g=S.groups[gi];if(g.rows.length>1)g.rows.splice(ri,1);else g.rows[0]={label:'',val:'',unit:g.rows[0].unit};groupsUI();update()}});
-function bindSimple(){
- const map=[['well',v=>S.well=v,()=>S.well],['date',v=>S.date=v,()=>S.date],['prepared',v=>S.prepared=v,()=>S.prepared],
- ['Jval',v=>S.J.val=v,()=>S.J.val],['Junit',v=>S.J.unit=v,()=>S.J.unit],
- ['Popt',v=>S.P.opt=v,()=>S.P.opt],['Pname',v=>S.P.name=v,()=>S.P.name],['Pval',v=>S.P.val=v,()=>S.P.val],['Punit',v=>S.P.unit=v,()=>S.P.unit]];
- for(const [id,set,get] of map){const el=$(id);el.value=get();const h=()=>{set(el.value);update()};el.addEventListener('input',h);el.addEventListener('change',h)}
-}
+function msg(t,k){const m=$('msg');m.textContent=t;m.className='msg'+(k?' '+k:'')}
 function update(){
- $('Pc').hidden=S.P.opt!=='custom';
  const c=calc();
- c.groups.forEach((g,gi)=>{const sub=$('sub'+gi);if(sub)sub.textContent=isNaN(g.sum)?'—':g.sum.toFixed(2)+' ft';g.rows.forEach((r,ri)=>{const el=$('ft'+gi+'_'+ri);if(el){if(isNaN(r.ft))el.textContent='—';else if(r.unit==='ft.in'){const q=ftin(r.val);el.innerHTML=r.ft.toFixed(2)+' ft<small>'+q.ft+' ft '+q.inch+' in</small>'}else el.textContent=r.ft.toFixed(2)+' ft'}})});
- $('rS').textContent=f2(c.S);$('lJX').firstChild.textContent=c.Ein?'J + X + E':'J + X';$('rJX').textContent=f2(c.J+c.X+c.E);$('rL').textContent=f2(c.L);$('rP').textContent=f2(c.P);$('rM').textContent=isNaN(c.M)?'—':c.M.toFixed(2)+' ft';
+ $('Mread').innerHTML=isNaN(c.M)?'—':(c.mUnit==='ft'?'':esc(c.Msrc)+' = ')+'<b>'+c.M.toFixed(2)+' ft</b>';
+ $('rM').textContent=isNaN(c.M)?'—':c.M.toFixed(2)+' ft';$('rX').textContent=c.X.toFixed(2)+' ft';
  const R=SvgR();drawSheet(R,c);$('svgwrap').innerHTML=R.out();
  save();
 }
+if(LANG==='ar'){document.querySelectorAll('[data-ar]').forEach(el=>{el.textContent=el.getAttribute('data-ar')});document.querySelectorAll('[data-ar-ph]').forEach(el=>{el.placeholder=el.getAttribute('data-ar-ph')})}
+[['well','well'],['date','date'],['prepared','prepared']].forEach(([id,k])=>{const el=$(id);el.value=S[k]||'';const h=()=>{S[k]=el.value;update()};el.addEventListener('input',h);el.addEventListener('change',h)});
+$('Mval').value=S.M.val;$('Munit').value=S.M.unit;
+$('Mval').addEventListener('input',()=>{S.M.val=$('Mval').value;update()});
+$('Munit').addEventListener('change',()=>{S.M.unit=$('Munit').value;update()});
+document.querySelectorAll('input[name=xb]').forEach(r=>{r.checked=r.value===S.Xb;r.addEventListener('change',()=>{if(r.checked){S.Xb=r.value;update()}})});
 $('zoom').addEventListener('click',()=>{const p=$('preview');p.classList.toggle('zoom');$('zoom').textContent=p.classList.contains('zoom')?T('Fit','ملاءمة'):T('Zoom','تكبير')});
-$('reset').addEventListener('click',()=>{S.groups=GROUPS.map(g=>({key:g.key,name:g.def,rows:[{label:'',val:'',unit:'ft.in'}]}));groupsUI();update();msg(T('Readings cleared.','انمسحت القراءات.'),'ok')});
-function msg(t,k){const m=$('msg');m.textContent=t;m.className='msg'+(k?' '+k:'')}
-
 function buildPdf(){
  const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a3',compress:true});
  doc.setProperties({title:'MLE length – '+(S.well||'well'),subject:'Packer to motor pothead',creator:'MLE Length Tool'});
@@ -321,18 +259,14 @@ function buildPdf(){
 }
 window.__buildPdf=()=>buildPdf().output('arraybuffer');
 function pdfName(){return('MLE_'+(S.well||'well')+'_'+(S.date||today())).replace(/[^A-Za-z0-9._-]+/g,'_')+'.pdf'}
-function pdfBlob(){if(!window.jspdf)throw new Error(T('PDF library did not load — tap ⟳ and try again.','مكتبة الـ PDF ما تحملت — اضغط ⟳ وجرب مرة ثانية.'));return buildPdf().output('blob')}
+function pdfBlob(){if(!window.jspdf)throw new Error(T('PDF library did not load — reload and try again.','مكتبة الـ PDF ما تحملت — اضغط ⟳ وجرب مرة ثانية.'));return buildPdf().output('blob')}
 function dl(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
 $('pdf').addEventListener('click',()=>{try{const n=pdfName();dl(pdfBlob(),n);msg(T('PDF downloaded: ','تم تنزيل الملف: ')+n,'ok')}catch(e){msg(e.message||T('Failed to generate the PDF.','تعذر إنشاء الـ PDF.'),'err')}});
 $('share').addEventListener('click',async()=>{try{const n=pdfName(),blob=pdfBlob(),file=new File([blob],n,{type:'application/pdf'});
  if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:n});msg(T('Shared: ','تمت المشاركة: ')+n,'ok')}
  else{dl(blob,n);msg(T('Sharing is not supported here. The PDF was downloaded instead.','المشاركة مب مدعومة هنا، فنزّلنا الملف بدالها.'),'ok')}}
  catch(e){if(e&&e.name==='AbortError'){msg('');return}msg(e.message||T('Failed to share the PDF.','تعذرت مشاركة الـ PDF.'),'err')}});
-if(LANG==='ar'){document.querySelectorAll('[data-ar]').forEach(el=>{el.textContent=el.getAttribute('data-ar')});document.querySelectorAll('[data-ar-ph]').forEach(el=>{el.placeholder=el.getAttribute('data-ar-ph')})}
-bindSimple();
-document.querySelectorAll('input[name=xst]').forEach(r=>{r.checked=Number(r.value)===Number(S.X.stage);r.addEventListener('change',()=>{if(r.checked){S.X.stage=Number(r.value);update()}})});
-document.querySelectorAll('input[name=ext]').forEach(r=>{r.checked=Number(r.value)===(Number(S.E)||0);r.addEventListener('change',()=>{if(r.checked){S.E=Number(r.value);update()}})});
-groupsUI();update();
+update();
 </script>
 </body>
 </html>
