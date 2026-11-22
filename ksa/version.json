@@ -1,15 +1,11 @@
 {
-  "version": "1.2.1",
+  "version": "1.3.0",
   "notes": [
-    "التطبيق كله صار عربي أو إنجليزي: اختر اللغة من فوق في الصفحة الرئيسية",
-    "أول مرة تفتح التطبيق تختار اللغة وتكتب اسمك، والملفات تنرفع للإدارة باسمك",
-    "رسالة الترحيب ورسالة «أنت على أحدث نسخة» تغيّرت",
-    "تحسين عرض التواريخ في الوضع العربي"
+    "أداة جديدة: طول الـ MLE — تحسب طول الكيبل من تحت الباكر لين البوت هيد وتطلع رسمة PDF جاهزة",
+    "القراءات تنكتب بـ ft.in أو ft أو in أو cm وكلها تتحول لفيت، مع ستيجات الفيدثرو والإكستنشن"
   ],
   "notes_en": [
-    "The whole app is now in Arabic or English: choose the language at the top of the home page",
-    "The first time you open the app you choose the language and type your name; files go to management under your name",
-    "New welcome message and a new “You are on the latest version” message",
-    "Better date display in Arabic mode"
+    "New tool: MLE Length — works out the cable length from the packer bottom to the motor pothead and makes a ready PDF drawing",
+    "Readings can be typed in ft.in, ft, in or cm and are all converted to feet, with feedthru stages and extensions"
   ]
 }

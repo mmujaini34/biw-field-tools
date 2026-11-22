@@ -442,6 +442,11 @@ nav{position:fixed;right:10px;top:50%;z-index:6;
     <span class="glass-en">REPORT</span>
     <span class="glass-ar">تقرير التركيب</span>
   </a>
+  <a class="glass" href="mle.html">
+    <span class="glass-orb"><svg class="glass-ico" viewBox="0 0 34 34"><rect x="8" y="4" width="10" height="6" rx="1.5"/><line x1="13" y1="10" x2="13" y2="30"/><path d="M16 11 v3 h4 v14 h-4"/><line x1="27" y1="6" x2="27" y2="30"/><path d="M24.5 8.5 l2.5 -2.5 l2.5 2.5"/><path d="M24.5 27.5 l2.5 2.5 l2.5 -2.5"/></svg></span>
+    <span class="glass-en">MLE LENGTH</span>
+    <span class="glass-ar">طول الـ MLE</span>
+  </a>
 </nav>
 
 <nav class="nav-left" id="navLeft">
@@ -458,7 +463,7 @@ nav{position:fixed;right:10px;top:50%;z-index:6;
   <div class="dock-inner">
     <span class="net" id="net"><span class="dot"></span><span id="netTx">ONLINE</span></span>
     <span class="sep"></span>
-    <span class="ver" id="verTx">v1.2.1</span>
+    <span class="ver" id="verTx">v1.3.0</span>
     <span class="sep"></span>
     <span class="ver" id="cacheState">...</span>
   </div>
@@ -543,7 +548,7 @@ nav{position:fixed;right:10px;top:50%;z-index:6;
 })();
 /* فحص التحديث: تلقائي عند الفتح + يدوي بزر ⟳ */
 (function(){
-  var CUR='1.2.1';                       /* نسخة هذا الملف */
+  var CUR='1.3.0';                       /* نسخة هذا الملف */
   var vt=document.getElementById('verTx');if(vt)vt.textContent='v'+CUR;   /* الرقم المعروض يتبع نسخة الملف دائمًا */
   function toNum(v){var p=String(v).replace(/^v/,'').split('.');return (+p[0]||0)*10000+(+p[1]||0)*100+(+p[2]||0);}
   function doUpdate(btn){
@@ -638,7 +643,7 @@ nav{position:fixed;right:10px;top:50%;z-index:6;
   function verify(){
     /* نتأكد فعليًا إن كل الصفحات والمكتبات بالكاش */
     if(!window.caches){setState('READY',true);return;}
-    var must=['timesheet.html','report.html','admin.html','libs/jspdf.umd.min.js','libs/html2canvas.min.js','bg.jpg','ksa-data.js','ksa-queue.js','ksa-archive.js','ksa-ts-share.js','ksa-parts-ui.js','ksa-i18n.js','ksa-dict.js','ksa-user.js','signature-pad.js','assets/ksa-logo.jpg','fonts/LiberationSerif-Regular.woff2','fonts/LiberationSerif-Bold.woff2','fonts/Carlito-Bold.woff2','fonts/Caladea-Bold.woff2'];
+    var must=['timesheet.html','report.html','admin.html','mle.html','libs/jspdf.umd.min.js','libs/html2canvas.min.js','bg.jpg','ksa-data.js','ksa-queue.js','ksa-archive.js','ksa-ts-share.js','ksa-parts-ui.js','ksa-i18n.js','ksa-dict.js','ksa-user.js','signature-pad.js','assets/ksa-logo.jpg','fonts/LiberationSerif-Regular.woff2','fonts/LiberationSerif-Bold.woff2','fonts/Carlito-Bold.woff2','fonts/Caladea-Bold.woff2'];
     caches.keys().then(function(ks){
       var name=null;
       for(var i=0;i<ks.length;i++){if(ks[i].indexOf('biw-ksa-')===0){name=ks[i];}}
