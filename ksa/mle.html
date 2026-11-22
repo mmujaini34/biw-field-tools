@@ -43,6 +43,11 @@ input:focus,select:focus{outline:2px solid var(--blue);outline-offset:0;border-c
 .seg input:checked+span{border:2px solid var(--blue);background:#eef3ff;color:var(--blue)}
 .seg input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
+.seg3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-size:16px;font-weight:700;cursor:pointer}
+.chk input{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--blue)}
+.tot{margin-top:4px;font-size:14px;color:var(--muted);direction:ltr;text-align:start}
+.tot b{color:var(--blue);font-size:22px}
 button{font:inherit;cursor:pointer}
 .preview .svgwrap{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:auto}
 .preview svg{display:block;width:100%;height:auto}
@@ -57,7 +62,8 @@ button{font:inherit;cursor:pointer}
 .sticky .in{max-width:1180px;margin:0 auto;display:flex;gap:18px;align-items:center;flex-wrap:wrap;direction:ltr;font-variant-numeric:tabular-nums}
 .sticky div{font-size:12px;color:var(--muted)}
 .sticky b{display:block;font-size:16px;color:var(--ink)}
-.sticky .mle b{color:var(--orange);font-size:20px}
+.sticky .mle b{color:var(--orange);font-size:18px}
+.sticky .total b{color:var(--blue);font-size:20px}
 </style>
 </head>
 <body>
@@ -67,7 +73,7 @@ button{font:inherit;cursor:pointer}
 </div>
 <header>
 <h1><span data-ar="طول الـ MLE">MLE Length</span><span class="ksa-badge">KSA</span></h1>
-<p data-ar="اكتب طول الـ MLE واختر الفيدثرو 2.88 أو 3.38 — يطلع لك PDF فيه الرسمة والستيجات. ملف الـ PDF يطلع إنجليزي.">Type the MLE length and pick the feedthru, 2.88 or 3.38 — you get a PDF with the drawing and the stages.</p>
+<p data-ar="اكتب طول الـ MLE والسكندري بور جوينت، واختر الفيدثرو والإكستنشن — يطلع لك الطول الكلي من تحت الباكر لين البوت هيد و PDF فيه الرسمة. ملف الـ PDF يطلع إنجليزي.">Type the MLE length and the secondary bore joint, pick the feedthru and any extension — you get the total length from the packer bottom to the pothead and a PDF drawing.</p>
 </header>
 <main>
 <section style="display:grid;gap:14px">
@@ -86,11 +92,26 @@ button{font:inherit;cursor:pointer}
     <div class="hint" data-ar="ft.in: الرقم بعد النقطة إنشات — 170.23 = ‎170 ft + 23 in‎ = ‎171.92 ft‎">ft.in: the number after the point is inches — 170.23 = 170 ft + 23 in = 171.92 ft</div>
   </div>
   <div class="card">
-    <h2 id="Xlbl" data-ar="الفيدثرو">Feedthru</h2>
+    <h2 data-ar="J · سكندري بور جوينت (في الباكر)">J · Secondary bore joint (packer)</h2>
+    <div class="mrow"><input id="Jval" inputmode="decimal" placeholder="1.02" aria-label="Secondary bore joint length"><select id="Junit" aria-label="Unit"><option>ft</option><option>ft.in</option><option>in</option><option>cm</option></select></div>
+    <div class="read" id="Jread">—</div>
+  </div>
+  <div class="card">
+    <h2 id="Xlbl" data-ar="X · الفيدثرو">X · Feedthru</h2>
     <div class="seg" role="radiogroup" aria-labelledby="Xlbl">
       <label><input type="radio" name="xb" value="2.88"><span>2.88 ft<i>34.51 in</i></span></label>
       <label><input type="radio" name="xb" value="3.38"><span>3.38 ft<i>40.51 in</i></span></label>
     </div>
+    <label class="chk" style="margin-top:12px"><input type="checkbox" id="Eon"><span data-ar="أضف إكستنشن">Add extension</span></label>
+    <div class="seg seg3" role="radiogroup" aria-label="Extension length" id="Eseg" hidden>
+      <label><input type="radio" name="ext" value="6"><span>6 in<i>0.50 ft</i></span></label>
+      <label><input type="radio" name="ext" value="12"><span>12 in<i>1.00 ft</i></span></label>
+      <label><input type="radio" name="ext" value="18"><span>18 in<i>1.50 ft</i></span></label>
+    </div>
+  </div>
+  <div class="card">
+    <h2 data-ar="الطول الكلي (من تحت الباكر لين البوت هيد)">Total (packer bottom to pothead)</h2>
+    <div class="tot" id="Tread">—</div>
   </div>
 </section>
 <section class="card preview" id="preview">
@@ -107,7 +128,7 @@ button{font:inherit;cursor:pointer}
 </section>
 </main>
 <div class="sticky"><div class="in">
-  <div class="mle">MLE<b id="rM">—</b></div><div>X<b id="rX">—</b></div>
+  <div class="mle">MLE<b id="rM">—</b></div><div>J<b id="rJ">—</b></div><div>X<b id="rX">—</b></div><div>E<b id="rE">—</b></div><div class="total">TOTAL<b id="rT">—</b></div>
 </div></div>
 
 <script>
@@ -119,10 +140,10 @@ const IMG_TOP=34, IMG_H=246, K=IMG_H/GEO.h, IMG_W=GEO.w*K, IMG_LEFT=75;
 const py=p=>IMG_TOP+p*K, px=p=>IMG_LEFT+p*K;
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const devName=()=>{try{return localStorage.getItem('ksa_user')||''}catch(e){return ''}};
-function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},Xb:'2.88'}}
-const KEY='ksa-mle-v2';
+function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},J:{val:'',unit:'ft'},Xb:'2.88',E:{on:false,inch:6}}}
+const KEY='ksa-mle-v3';
 let S=blank();
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M)S=Object.assign(blank(),s)}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M){S=Object.assign(blank(),s);if(!S.J)S.J=blank().J;if(!S.E)S.E=blank().E}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 // ---------- maths
@@ -134,8 +155,11 @@ const fmtRaw=(v,u)=>{if(u==='ft.in'){const p=ftin(v);return p?p.ft+' ft '+p.inch
 const STAGES=[1,2,3,4].map(k=>({k,inch:34.51+2*(k-1),ft:2.88+(k-1)*2/12}));
 function calc(){
  const M=toFt(S.M.val,S.M.unit), Msrc=fmtRaw(S.M.val,S.M.unit);
+ const J=toFt(S.J.val,S.J.unit), Jsrc=fmtRaw(S.J.val,S.J.unit);
  const up=S.Xb!=='3.38', start=up?1:4, X=up?2.88:3.38;
- return{M,Msrc,mUnit:S.M.unit,X,Xin:up?'34.51 in':'40.51 in',up,start};
+ const Ein=S.E&&S.E.on&&[6,12,18].includes(Number(S.E.inch))?Number(S.E.inch):0, E=Ein/12;
+ const Tot=M+J+X+E;
+ return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,Tot};
 }
 
 // ---------- text width (Helvetica metrics via canvas, mm)
@@ -181,23 +205,28 @@ function drawSheet(R,c){
  R.poly(route,{color:COL.cableDark,w:1.15}); R.poly(route,{color:COL.orange,w:0.7});
  R.rect(phL,yPh-phH/2,phW,phH,{fill:COL.orange,stroke:COL.cableDark,w:0.25});
  // dimensions on the right: X on the feedthru, MLE from packer bottom to the pothead
- const yDat=py(GEO.packer_bottom), yPen=py(GEO.pen_bottom);
+ const yDat=py(GEO.packer_bottom), yJX=py(GEO.jx_boundary), yPen=py(GEO.pen_bottom);
  const xPkR=px(GEO.packer_x1)+0.8, xPenR=px(GEO.pen_x1)+0.8;
- const Jx=IMG_LEFT+IMG_W+8.5, Tx=Jx+3, Mx=Tx+62, rule={color:COL.rule,w:0.18};
- R.line(xPkR,yDat,Mx+1.5,yDat,rule);
- R.line(xPenR,yPen,Jx+1.5,yPen,rule);
- R.line(cxr+0.9,yPh,Mx+1.5,yPh,rule);
+ const Jx=IMG_LEFT+IMG_W+8.5, Tx=Jx+3, Mx=Tx+62, Lx=Mx+24, rule={color:COL.rule,w:0.18};
+ R.line(xPkR,yDat,Lx+1.5,yDat,rule);
+ R.line(xPenR,yJX,Jx+1.5,yJX,rule);
+ R.line(xPenR,yPen,Mx+1.5,yPen,rule);
+ R.line(cxr+0.9,yPh,Lx+1.5,yPh,rule);
  R.text('PACKER BOTTOM (DATUM)',Tx,yDat-1.2,{size:6.5,bold:true,color:COL.muted});
  R.text('POTHEAD (MOTOR HEAD)',Tx,yPh-1.2,{size:6.5,bold:true,color:COL.orange});
- arrowV(R,Jx,yDat,yPen,COL.blue);
- const ym=(yDat+yPen)/2;
- R.text('X · BIW FEEDTHRU (EA1591)',Tx,ym-2.4,{size:6.8,bold:true});
- R.text(c.X.toFixed(2)+' ft  ('+c.Xin+')',Tx,ym+1.4,{size:8.5,bold:true,color:COL.blue});
- R.text('STAGE '+c.start+' OF 4 · '+(c.up?'+':'-')+'2 in PER STAGE',Tx,ym+5,{size:6.5,bold:true,color:COL.muted});
- arrowV(R,Mx,yDat,yPh,COL.orange);
- const ml=[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:13,bold:true,color:COL.orange}];
+ arrowV(R,Jx,yDat,yJX,COL.blue); arrowV(R,Jx,yJX,yPen,COL.blue);
+ const yj=(yDat+yJX)/2, ym=(yJX+yPen)/2;
+ R.text('J · SECONDARY BORE JOINT',Tx,yj-0.6,{size:6.8,bold:true});
+ R.text(fmtFt(c.J)+(c.Jsrc&&c.jUnit!=='ft'?'  ('+c.Jsrc+')':''),Tx,yj+3,{size:8.5,bold:true,color:COL.blue});
+ R.text('X · BIW FEEDTHRU (EA1591) · STAGE '+c.start+' OF 4',Tx,ym-2.6,{size:6.8,bold:true});
+ R.text(c.X.toFixed(2)+' ft  ('+c.Xin+')',Tx,ym+1,{size:8.5,bold:true,color:COL.blue});
+ if(c.Ein) R.text('+ E · EXTENSION '+c.Ein+' in = '+c.E.toFixed(2)+' ft',Tx,ym+4.8,{size:7.5,bold:true,color:COL.blue});
+ arrowV(R,Mx,yPen,yPh,COL.orange);
+ const ml=[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:12,bold:true,color:COL.orange}];
  if(c.Msrc&&c.mUnit!=='ft') ml.push({t:'('+c.Msrc+')',size:6.5,color:COL.muted});
- gapLabel(R,Mx,(yDat+yPh)/2,ml);
+ gapLabel(R,Mx,(yPen+yPh)/2+8,ml);
+ arrowV(R,Lx,yDat,yPh,COL.blue);
+ gapLabel(R,Lx,(yDat+yPh)/2-12,[{t:'TOTAL',size:8,bold:true,color:COL.blue},{t:fmtFt(c.Tot),size:12,bold:true,color:COL.blue},{t:'J + X'+(c.Ein?' + E':'')+' + MLE',size:6.5,color:COL.muted}]);
  R.line(16,283,22,283,{color:COL.blue,w:0.5}); R.text('Dimension (ft)',23.5,284,{size:6.5,color:COL.muted});
  R.line(44,283,50,283,{color:COL.orange,w:0.55}); R.text('MLE cable / length',51.5,284,{size:6.5,color:COL.muted});
  R.text('cm ÷ 30.48 = ft · in ÷ 12 = ft · NTS',76,284,{size:6.5,color:COL.muted});
@@ -215,8 +244,12 @@ function drawSheet(R,c){
   return top+hh+rows.length*rh;
  };
  const dimCols=[{h:'REF',x:X0+3,at:X0},{h:'ITEM',x:X0+21,at:X0+18},{h:'ORIGINAL',x:X0+129,at:X0+100,al:'right'},{h:'FT',x:X1-3,at:X0+132,al:'right'}];
- const dimRows=[{cells:['X','BIW feedthru (EA1591) · stage '+c.start,c.Xin,c.X.toFixed(2)],col:COL.blue},
-  {cells:['MLE','Packer bottom to pothead',c.mUnit==='ft'?'':(c.Msrc||''),isNaN(c.M)?'—':c.M.toFixed(2)],col:COL.orange,hi:COL.mleHi,big:true,bold:true}];
+ const f=n=>isNaN(n)?'—':n.toFixed(2);
+ const dimRows=[{cells:['J','Secondary bore joint',c.jUnit==='ft'?'':(c.Jsrc||''),f(c.J)],col:COL.blue},
+  {cells:['X','BIW feedthru (EA1591) · stage '+c.start,c.Xin,c.X.toFixed(2)],col:COL.blue},
+  ...(c.Ein?[{cells:['E','Extension',c.Ein+' in',c.E.toFixed(2)],col:COL.blue}]:[]),
+  {cells:['MLE','MLE cable (penetrator to pothead)',c.mUnit==='ft'?'':(c.Msrc||''),f(c.M)],col:COL.orange,hi:COL.mleHi,bold:true},
+  {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+X+E+MLE':'J+X+MLE',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
  const dimTop=TB-5-hh-dimRows.length*rh;
  const order=c.up?[0,1,2,3]:[3,2,1,0];
  const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:'FEEDTHRU (in)',x:X0+66,at:X0+40,al:'right'},{h:'FEEDTHRU (ft)',x:X0+112,at:X0+75,al:'right'},{h:'',x:X1-3,at:X0+118,al:'right'}];
@@ -241,7 +274,12 @@ function msg(t,k){const m=$('msg');m.textContent=t;m.className='msg'+(k?' '+k:''
 function update(){
  const c=calc();
  $('Mread').innerHTML=isNaN(c.M)?'—':(c.mUnit==='ft'?'':esc(c.Msrc)+' = ')+'<b>'+c.M.toFixed(2)+' ft</b>';
- $('rM').textContent=isNaN(c.M)?'—':c.M.toFixed(2)+' ft';$('rX').textContent=c.X.toFixed(2)+' ft';
+ const ft=n=>isNaN(n)?'—':n.toFixed(2)+' ft';
+ $('Jread').innerHTML=isNaN(c.J)?'—':(c.jUnit==='ft'?'':esc(c.Jsrc)+' = ')+'<b style="color:var(--blue)">'+c.J.toFixed(2)+' ft</b>';
+ $('Eseg').hidden=!S.E.on;
+ $('Tread').innerHTML=isNaN(c.Tot)?T('Enter the MLE length and J','اكتب طول الـ MLE و J'):
+  'J '+c.J.toFixed(2)+' + X '+c.X.toFixed(2)+(c.Ein?' + E '+c.E.toFixed(2):'')+' + MLE '+c.M.toFixed(2)+' = <b>'+c.Tot.toFixed(2)+' ft</b>';
+ $('rM').textContent=ft(c.M);$('rJ').textContent=ft(c.J);$('rX').textContent=ft(c.X);$('rE').textContent=c.Ein?ft(c.E):'—';$('rT').textContent=ft(c.Tot);
  const R=SvgR();drawSheet(R,c);$('svgwrap').innerHTML=R.out();
  save();
 }
@@ -250,6 +288,11 @@ if(LANG==='ar'){document.querySelectorAll('[data-ar]').forEach(el=>{el.textConte
 $('Mval').value=S.M.val;$('Munit').value=S.M.unit;
 $('Mval').addEventListener('input',()=>{S.M.val=$('Mval').value;update()});
 $('Munit').addEventListener('change',()=>{S.M.unit=$('Munit').value;update()});
+$('Jval').value=S.J.val;$('Junit').value=S.J.unit;
+$('Jval').addEventListener('input',()=>{S.J.val=$('Jval').value;update()});
+$('Junit').addEventListener('change',()=>{S.J.unit=$('Junit').value;update()});
+$('Eon').checked=!!S.E.on;$('Eon').addEventListener('change',()=>{S.E.on=$('Eon').checked;update()});
+document.querySelectorAll('input[name=ext]').forEach(r=>{r.checked=Number(r.value)===Number(S.E.inch);r.addEventListener('change',()=>{if(r.checked){S.E.inch=Number(r.value);update()}})});
 document.querySelectorAll('input[name=xb]').forEach(r=>{r.checked=r.value===S.Xb;r.addEventListener('change',()=>{if(r.checked){S.Xb=r.value;update()}})});
 $('zoom').addEventListener('click',()=>{const p=$('preview');p.classList.toggle('zoom');$('zoom').textContent=p.classList.contains('zoom')?T('Fit','ملاءمة'):T('Zoom','تكبير')});
 function buildPdf(){

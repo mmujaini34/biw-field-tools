@@ -1,11 +1,13 @@
 {
-  "version": "1.3.1",
+  "version": "1.3.2",
   "notes": [
-    "أداة طول الـ MLE صارت أبسط: تكتب طول الـ MLE وتختار الفيدثرو 2.88 أو 3.38 بس",
-    "الـ PDF يطلع فيه جدول الستيجات الأربعة للفيدثرو"
+    "أداة طول الـ MLE: رجع السكندري بور جوينت (J) تكتبه بنفسك",
+    "خيار «أضف إكستنشن» وتختار 6 أو 12 أو 18 إنش",
+    "يطلع الطول الكلي من تحت الباكر لين البوت هيد = J + الفيدثرو + الإكستنشن + الـ MLE"
   ],
   "notes_en": [
-    "The MLE Length tool is simpler: type the MLE length and pick the feedthru, 2.88 or 3.38",
-    "The PDF now shows the four feedthru stages in a table"
+    "MLE Length tool: the secondary bore joint (J) is back — you type it",
+    "New “Add extension” option: pick 6, 12 or 18 in",
+    "Shows the total from the packer bottom to the pothead = J + feedthru + extension + MLE"
   ]
 }
