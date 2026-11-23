@@ -1,13 +1,11 @@
 {
-  "version": "1.3.17",
+  "version": "1.3.18",
   "notes": [
-    "الصفحة الرئيسية: لو فيه رسالة جديدة لكم تطلع أول ما تفتحون التطبيق — اقروها واضغطوا «تمام»",
-    "الرسالة تظل محفوظة في الجوال حتى بدون نت",
-    "قائمة القطع تتحدث للكل من القاعدة"
+    "رسمة الـ MLE: خط الـ MLE يبدأ من تحت الفيدثرو وينزل لين البوت هيد",
+    "خط الـ TOTAL من تحت الباكر لين رأس الموتور"
   ],
   "notes_en": [
-    "Home screen: a new message for you shows as soon as you open the app — read it and tap OK",
-    "The message stays on the phone even without internet",
-    "The parts list updates for everyone from the database"
+    "MLE drawing: the MLE line runs from the bottom of the feedthru down to the pothead",
+    "The TOTAL line runs from the packer bottom to the motor head"
   ]
 }

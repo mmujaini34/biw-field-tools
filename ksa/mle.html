@@ -227,8 +227,8 @@ function drawSheet(R,c){
  R.line(xPkR,yDat,Lx+1.5,yDat,ruleB);
  const hasE=c.Ein>0, yE0=py(G.ext_top), yE1=py(G.ext_bottom), yXt=hasE?yE1:yJX;
  R.line(xPenR,yJX,Jx+1.5,yJX,ruleB); if(hasE) R.line(xPenR,yE1,Jx+1.5,yE1,ruleB);
- R.line(xPenR,yPen,Jx+1.5,yPen,ruleB);   /* نهاية الـ X بس — الـ MLE صار يبدأ من خط تحت الباكر */
- R.line(cxr+0.6,yMe,Mx+1.5,yMe,ruleO); R.line(phL+phW+0.3,yTot,Lx+1.5,yTot,ruleB);
+ R.line(xPenR,yPen,Mx+1.5,yPen,ruleO);   /* الـ MLE يبدأ من نهاية الـ X (تحت الفيدثرو) — رقم ١ في رسمته */
+ R.line(cxr+0.6,yMe,Lx+1.5,yMe,ruleB); R.line(phL+phW+0.3,yTot,Mx+1.5,yTot,ruleO);   /* الـ TOTAL يوقف عند رأس الموتور · الـ MLE ينزل لين البوت هيد تحت */
  R.text('PACKER BOTTOM (DATUM)',Tx,yDat-1.2,{size:6.5,bold:true,color:COL.muted});
  R.text('POTHEAD (MOTOR HEAD)',Tx,yMe-1.2,{size:6.5,bold:true,color:COL.orange});
  R.text('P · POTHEAD OFFSET = '+c.P.toFixed(2)+' ft ('+c.Pname+')',Tx,yTot+3.6,{size:7,bold:true,color:COL.orange});
@@ -239,11 +239,11 @@ function drawSheet(R,c){
  R.text(fmtFt(c.J)+(c.Jsrc&&c.jUnit!=='ft'?'  ('+c.Jsrc+')':''),Tx,yj+3,{size:8.5,bold:true,color:COL.blue});
  R.text('X · BIW FEEDTHRU (EA1591) · STAGE '+c.start+' OF 4',Tx,ym-2.6,{size:6.8,bold:true});
  R.text(c.X.toFixed(2)+' ft  ('+c.Xin+')',Tx,ym+1,{size:8.5,bold:true,color:COL.blue});
- arrowV(R,Mx,yDat,yMe,COL.orange);   /* الـ MLE من تحت الباكر — نفس خط الـ DATUM */
+ arrowV(R,Mx,yPen,yTot,COL.orange);
  const ml=[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:12,bold:true,color:COL.orange}];
  if(c.Msrc&&c.mUnit!=='ft') ml.push({t:'('+c.Msrc+')',size:6.5,color:COL.muted});
- gapLabel(R,Mx,(yDat+yMe)/2+8,ml);
- arrowV(R,Lx,yDat,yTot,COL.blue);
+ gapLabel(R,Mx,(yPen+yTot)/2+8,ml);
+ arrowV(R,Lx,yDat,yMe,COL.blue);   /* رقم ٢ في رسمته */
  gapLabel(R,Lx,(yDat+yPh)/2-12,[{t:'TOTAL',size:8,bold:true,color:COL.blue},{t:fmtFt(c.Tot),size:12,bold:true,color:COL.blue},{t:'J + X'+(c.Ein?' + E':'')+' + MLE - P',size:6.5,color:COL.muted}]);
  R.line(16,283,22,283,{color:COL.blue,w:0.5}); R.text('Dimension (ft)',23.5,284,{size:6.5,color:COL.muted});
  R.line(44,283,50,283,{color:COL.orange,w:0.55}); R.text('MLE cable / length',51.5,284,{size:6.5,color:COL.muted});
