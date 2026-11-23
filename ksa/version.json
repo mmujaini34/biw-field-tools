@@ -1,13 +1,13 @@
 {
-  "version": "1.3.10",
+  "version": "1.3.11",
   "notes": [
-    "رسمة الـ MLE في الـ PDF: خط الـ TOTAL صار ينزل لربع الموتور",
-    "خط الـ MLE الأحمر صار يوصل لآخر البوت هيد",
+    "رسمة الـ MLE في الـ PDF: خط الـ TOTAL صار ينزل لربع الموتور، وخط الـ MLE الأحمر يوصل لآخر البوت هيد",
+    "شرح خانة الـ ft.in صار مرتب وواضح بالعربي",
     "الحسبة والأرقام ما تغيرت"
   ],
   "notes_en": [
-    "MLE drawing in the PDF: the TOTAL line now goes down to a quarter of the motor",
-    "The red MLE line now runs to the end of the pothead",
+    "MLE drawing in the PDF: the TOTAL line now goes down to a quarter of the motor, and the red MLE line runs to the end of the pothead",
+    "The ft.in hint now reads correctly in Arabic",
     "The calculation and numbers are unchanged"
   ]
 }
