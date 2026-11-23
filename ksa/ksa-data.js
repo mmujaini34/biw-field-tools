@@ -8,7 +8,7 @@
 
   var FN = 'https://szomlyrlpznrdyewknec.supabase.co/functions/v1/biw-ksa';
   var TOKEN = 'biw-ksa-2026';
-  var CACHE = 'ksa_boot', PENDING = 'ksa_pending';
+  var CACHE = 'ksa_boot', PENDING = 'ksa_pending', NOTICE = 'ksa_notice';
   var DEFAULT_OPS = [
     { text: 'Arriving at Rig, checking Equipment', status: 'STANDBY' },
     { text: 'Rig Operation', status: 'STANDBY' },
@@ -96,6 +96,7 @@
     if (!j || !j.ok || !Array.isArray(j.engineers) || !Array.isArray(j.ops)) return false;
     cache = overlay({ engineers: j.engineers, ops: j.ops.length ? j.ops : DEFAULT_OPS, parts: Array.isArray(j.parts) && j.parts.length ? j.parts : cache.parts, at: Date.now() });
     setJSON(CACHE, cache);
+    if ('notice' in j) setJSON(NOTICE, j.notice && j.notice.text ? { text: String(j.notice.text), at: +j.notice.at || 0 } : null);   /* رسالة الإدارة */
     emit();
     return true;
   }
@@ -186,6 +187,8 @@
       return { ok: true, part: api.findPart(d.part) };
     },
     pending: function () { return getJSON(PENDING, []).length; },
+    /* رسالة الإدارة للمهندسين (آخر نسخة من السيرفر، تبقى بدون نت) */
+    notice: function () { return getJSON(NOTICE, null); },
     refresh: refresh,
     flush: flush,
     onChange: function (f) { if (typeof f === 'function') listeners.push(f); },

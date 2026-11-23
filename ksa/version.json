@@ -1,13 +1,13 @@
 {
-  "version": "1.3.16",
+  "version": "1.3.17",
   "notes": [
-    "تقرير التركيب: قراءة فاز-أرضي تنكتب رقم مثل 3.2 وتطلع في الـ PDF 3.2GΩ (جيجا أوم)",
-    "علامة + ما تطلع في الـ PDF",
-    "الحسبة والأرقام ما تغيرت"
+    "الصفحة الرئيسية: لو فيه رسالة جديدة لكم تطلع أول ما تفتحون التطبيق — اقروها واضغطوا «تمام»",
+    "الرسالة تظل محفوظة في الجوال حتى بدون نت",
+    "قائمة القطع تتحدث للكل من القاعدة"
   ],
   "notes_en": [
-    "Installation Report: type the phase-to-ground reading as a number like 3.2 and it prints in the PDF as 3.2GΩ (giga-ohm)",
-    "A + sign is no longer printed in the PDF",
-    "The calculation and numbers are unchanged"
+    "Home screen: a new message for you shows as soon as you open the app — read it and tap OK",
+    "The message stays on the phone even without internet",
+    "The parts list updates for everyone from the database"
   ]
 }

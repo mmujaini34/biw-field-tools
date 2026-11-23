@@ -117,6 +117,24 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
 .lrow{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:13.5px}
 .lrow span{flex:1;min-width:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lrow button{flex:none;margin:0!important;padding:6px 12px!important;font-size:12.5px!important}
+
+/* v1.3.17: نموذج القطع + رسالة الإدارة */
+.pform{margin:10px 0 4px;padding:12px;border-radius:14px;border:1px solid rgba(255,196,106,.45);background:rgba(255,196,106,.06)}
+.pform .fl{display:block;margin:8px 0 4px;font-size:12.5px;font-weight:800;color:rgba(244,238,230,.75)}
+.pform input.fin,.pform textarea{display:block;width:100%;box-sizing:border-box;padding:11px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.06);color:#fff;font:inherit;font-size:15px;text-align:left;direction:ltr;outline:none}
+.pform textarea{min-height:92px;resize:vertical;text-align:start;direction:auto;line-height:1.6}
+.pform input.fin:focus,.pform textarea:focus{border-color:#ffc46a;background:rgba(255,196,106,.08)}
+.pform .seg2{display:flex;gap:8px}
+.pform .seg2 button{flex:1!important;padding:10px!important;border-radius:11px!important;font-size:14px!important}
+.pform .seg2 button.on{background:#ffc46a;border-color:#ffc46a;color:#1a1208}
+.pform .acts{display:flex;gap:8px;margin-top:12px}
+.pform .acts button{flex:1!important;padding:11px!important;border-radius:11px!important;font-size:14px!important}
+button.gold{background:#ffc46a!important;border-color:#ffc46a!important;color:#1a1208!important}
+.pmeta{font-size:11.5px;color:rgba(244,238,230,.5);margin-top:6px}
+.lrow .rb{display:flex;gap:6px;flex:none}
+.addp{margin-top:10px!important;padding:9px 14px!important}
+.lrow.pr span.ltr{white-space:normal;line-height:1.45;word-break:break-word}
 </style>
 </head>
 <body>
@@ -143,7 +161,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
     {k:'ksa-timesheet',en:'TIME SHEET',ar:'تايم شيت'},
     {k:'ksa-report',en:'REPORT',ar:'تقرير التركيب'}
   ];
-  var ENGINEERS=[], DBENG=[], DBOPS=[], DBPARTS=[];   /* KSA: الأسماء تجي من قاعدة البيانات + من الملفات نفسها */
+  var ENGINEERS=[], DBENG=[], DBOPS=[], DBPARTS=[], NOTICE=null, PEDIT=null;   /* KSA: الأسماء تجي من قاعدة البيانات + من الملفات نفسها */
   function nk(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\u0600-\u06ff ]/g,' ').replace(/\s+/g,' ').trim();}
   function buildEngineers(){
     var seen={},out=[];
@@ -209,7 +227,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
   function load(p){
     return api('list',{pass:p}).then(function(j){
       if(!j.ok)return problem(j);
-      pass=p;items=j.items||[];DBENG=j.engineers||[];DBOPS=j.ops||[];DBPARTS=j.parts||[];buildEngineers();
+      pass=p;items=j.items||[];DBENG=j.engineers||[];DBOPS=j.ops||[];DBPARTS=j.parts||[];NOTICE=j.notice||null;buildEngineers();
       try{sessionStorage.setItem(SS,p);}catch(e){}
       setBar(true);route();
       return null;
@@ -269,6 +287,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
       b.onclick=function(){location.hash='#/e/'+i;};
       view.appendChild(b);
     });
+    view.appendChild(noticeBox());
     view.appendChild(listsBox());
   }
 
@@ -338,6 +357,65 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
   }
 
   /* ---------- الأسماء والعمليات المحفوظة (حذف الغلط) ---------- */
+  /* ---------- رسالة للمهندسين: تطلع لهم في الصفحة الرئيسية ---------- */
+  function noticeBox(){
+    var d=el('div','dev');
+    d.appendChild(el('h3','','رسالة للمهندسين'));
+    d.appendChild(el('p','','تطلع لكل المهندسين في الصفحة الرئيسية لين يضغطون «تمام». رسالة جديدة تطلع لهم من جديد.'));
+    var f=el('div','pform');
+    var ta=document.createElement('textarea');ta.id='noticeText';ta.maxLength=600;ta.value=NOTICE&&NOTICE.text?NOTICE.text:'';
+    ta.placeholder='اكتب الرسالة هنا';
+    f.appendChild(ta);
+    if(NOTICE&&NOTICE.text){var m=el('div','pmeta','الرسالة الحالية منشورة: ');m.appendChild(el('span','ltr',when(new Date(NOTICE.at).toISOString())));f.appendChild(m);}
+    var acts=el('div','acts');
+    var send=el('button','gold','نشر الرسالة');send.type='button';
+    var clr=el('button','','مسح الرسالة');clr.type='button';clr.disabled=!(NOTICE&&NOTICE.text);
+    function go(text,btn,msg){
+      btn.disabled=true;
+      api('notice-set',{pass:pass,text:text}).then(function(j){btn.disabled=false;if(!j.ok){if(j.status===403){lock();return;}toast(problem(j));return;}
+        NOTICE=j.notice||null;toast(msg);engineersView();},function(){btn.disabled=false;toast('ما فيه اتصال بالإنترنت');});
+    }
+    send.onclick=function(){var v=ta.value.trim();if(!v){toast('اكتب الرسالة أول');ta.focus();return;}go(v,send,'انرسلت للمهندسين');};
+    clr.onclick=function(){if(!confirm('مسح الرسالة من عند كل المهندسين؟'))return;go('',clr,'انمسحت الرسالة');};
+    acts.appendChild(send);acts.appendChild(clr);f.appendChild(acts);d.appendChild(f);
+    return d;
+  }
+
+  /* ---------- نموذج القطعة: إضافة أو تعديل ---------- */
+  function partForm(pt){
+    var f=el('div','pform');
+    f.appendChild(el('div','',pt?'تعديل القطعة':'قطعة جديدة')).style.cssText='font-weight:800;color:#ffc46a';
+    f.appendChild(el('label','fl','البارت نمبر'));
+    var pn=el('input','fin');pn.id='pfPart';pn.maxLength=40;pn.autocomplete='off';pn.placeholder='Example: P177-0179';pn.value=pt?pt.part:'';f.appendChild(pn);
+    f.appendChild(el('label','fl','الوصف (Description)'));
+    var ds=el('input','fin');ds.id='pfDesc';ds.maxLength=160;ds.autocomplete='off';ds.placeholder='Example: CROSSOVER ADAPTER 1.90 NU-10RD BOX';ds.value=pt?pt.desc:'';f.appendChild(ds);
+    f.appendChild(el('label','fl','يحتاج سيريال نمبر؟'));
+    var sr=pt?pt.serialRequired!==false:true;
+    var seg=el('div','seg2');var yes=el('button','','نعم');yes.type='button';yes.id='pfSnYes';var no=el('button','','لا');no.type='button';no.id='pfSnNo';
+    function paint(){yes.className=sr?'on':'';no.className=sr?'':'on';}
+    yes.onclick=function(){sr=true;paint();};no.onclick=function(){sr=false;paint();};paint();
+    seg.appendChild(yes);seg.appendChild(no);f.appendChild(seg);
+    var acts=el('div','acts');
+    var sv=el('button','gold','حفظ');sv.type='button';sv.id='pfSave';
+    var cn=el('button','','إلغاء');cn.type='button';
+    cn.onclick=function(){PEDIT=null;engineersView();};
+    sv.onclick=function(){
+      var part=pn.value.toUpperCase().replace(/\s+/g,''),desc=ds.value.replace(/\s+/g,' ').trim().toUpperCase();
+      if(!part||!desc){toast('اكتب البارت نمبر والوصف');(part?ds:pn).focus();return;}
+      if((!pt||pt.part!==part)&&DBPARTS.some(function(x){return x.part===part;})){toast('البارت نمبر '+part+' موجود بالقائمة');pn.focus();return;}
+      var body={pass:pass,part:part,desc:desc,manual:pt&&pt.manual?pt.manual:'N/A',serialRequired:sr};
+      if(pt&&pt.part!==part)body.old_part=pt.part;
+      sv.disabled=true;
+      api('part-save',body).then(function(j){sv.disabled=false;
+        if(!j.ok){if(j.status===409){toast('البارت نمبر '+part+' موجود بالقائمة');return;}toast(problem(j));return;}
+        DBPARTS=j.parts||DBPARTS;PEDIT=null;toast(pt?'انحفظ التعديل':'انضافت القطعة');engineersView();
+      },function(){sv.disabled=false;toast('ما فيه اتصال بالإنترنت');});
+    };
+    acts.appendChild(sv);acts.appendChild(cn);f.appendChild(acts);
+    setTimeout(function(){try{(pt?ds:pn).focus();}catch(e){}},50);
+    return f;
+  }
+
   function listsBox(){
     var d=el('div','dev');
     d.appendChild(el('h3','','الأسماء المحفوظة'));
@@ -370,10 +448,16 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
       row.appendChild(b);d.appendChild(row);
     });
     d.appendChild(el('h3','','قائمة القطع'));
-    d.appendChild(el('p','','التعديل والإضافة من التايم شيت أو التقرير. هنا بس الحذف.'));
+    d.appendChild(el('p','','أضف قطعة أو عدّلها أو احذفها — تنحفظ في القاعدة وتطلع لكل المهندسين.'));
+    if(PEDIT&&PEDIT.isNew)d.appendChild(partForm(null));
+    else{var ab=el('button','addp','+ إضافة قطعة');ab.type='button';ab.onclick=function(){PEDIT={isNew:true};engineersView();};d.appendChild(ab);}
     DBPARTS.forEach(function(pt){
-      var row=el('div','lrow');
-      row.appendChild(el('span','ltr',pt.part+'  ·  '+pt.desc));
+      if(PEDIT&&!PEDIT.isNew&&PEDIT.part===pt.part){d.appendChild(partForm(pt));return;}
+      var row=el('div','lrow pr');
+      row.appendChild(el('span','ltr',pt.part+'  ·  '+pt.desc+'  ·  '+(pt.serialRequired===false?'S/N: NO':'S/N: YES')));
+      var rb=el('span','rb');
+      var eb=el('button','','تعديل');eb.type='button';
+      eb.onclick=function(){PEDIT={part:pt.part};engineersView();};
       var b=el('button','',"حذف");b.type='button';
       b.onclick=function(){
         if(!confirm('حذف القطعة «'+pt.part+'» من القائمة؟'))return;
@@ -381,7 +465,7 @@ main{max-width:760px;margin:0 auto;padding:16px 14px calc(34px + env(safe-area-i
         api('part-delete',{pass:pass,part:pt.part}).then(function(j){b.disabled=false;if(!j.ok){if(j.status===403){lock();return;}toast(problem(j));return;}
           DBPARTS=j.parts||[];toast('انحذفت');engineersView();},function(){b.disabled=false;toast('ما فيه اتصال بالإنترنت');});
       };
-      row.appendChild(b);d.appendChild(row);
+      rb.appendChild(eb);rb.appendChild(b);row.appendChild(rb);d.appendChild(row);
     });
     return d;
   }
