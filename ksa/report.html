@@ -405,7 +405,7 @@ window.addEventListener('error',function(ev){
 
     <div class="section wizard-step" data-step="3"><h2>4) Electrical Test <span class="ar">/ الفحص الكهربائي</span></h2>
       <div id="electricalEditor"></div>
-      <div class="small-help">اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ سيظهر في PDF بصيغة 03:30 PM، وMegger Voltage يصبح 2000 تلقائيًا. خانة Ph-G تُستخدم مع السطر الذي فيه وقت، وإذا كتبت رقمًا ستظهر في PDF بصيغة GΩ مثل 1200GΩ.</div>
+      <div class="small-help">اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ سيظهر في PDF بصيغة 03:30 PM، وMegger Voltage يصبح 2000 تلقائيًا. خانة Ph-G تُستخدم مع السطر الذي فيه وقت، وإذا كتبت رقمًا ستظهر في PDF بصيغة GΩ مثل 3.2GΩ.</div>
     </div>
 
     <div class="section wizard-step" data-step="4"><h2>5) Wellhead / Packer / ESP <span class="ar">/ رأس البئر والباكر و ESP</span></h2>
@@ -542,7 +542,7 @@ function normalizeTime(v){
 }
 function phgFormat(v){
   // GΩ (giga-ohm). Handles both Greek Omega (Ω) and Ohm Sign (Ω), plus MOHM/GOHM text.
-  v=toEnglishDigits(v).trim(); return v ? v.replace(/[MG]Ω|[MG]Ω|[MG]OHM/ig,'') + 'GΩ' : '';
+  v=toEnglishDigits(v).replace(/\+/g,'').replace(/[MG]Ω|[MG]Ω|[MG]OHM/ig,'').trim(); return v ? v + 'GΩ' : '';   /* بدون + — الرقم مثل 3.2 بالجيجا أوم */
 }
 function numberWithM(v){v=toEnglishDigits(v).trim(); return v ? v + 'm' : '';}
 function fractionHtml(type){
@@ -627,7 +627,7 @@ function renderElectricalEditor(){
   $('electricalEditor').innerHTML = elecRows.map((r,i)=>`<div class="elec-row"><div class="elec-title">${esc(r.name)}</div><div class="elec-grid">
     <div class="field"><label>Time / الوقت</label><input value="${esc(r.time)}" placeholder="Example: 3:40pm" oninput="elecRows[${i}].time=this.value;updateReport()"></div>
     <div class="field"><label>Ph-Ph (Ohms) / قراءة فاز-فاز</label><input value="${esc(r.phph)}" oninput="this.value=toEnglishDigits(this.value);elecRows[${i}].phph=this.value;updateReport()"></div>
-    <div class="field"><label>Ph-G (Ohms) / قراءة فاز-أرضي</label><input value="${esc(r.phg)}" placeholder="Example: 1200" oninput="this.value=toEnglishDigits(this.value);elecRows[${i}].phg=this.value;updateReport()"><div class="small-help">PDF adds GΩ / يضيف GΩ تلقائيًا</div></div>
+    <div class="field"><label>Ph-G (Ohms) / قراءة فاز-أرضي</label><input value="${esc(r.phg)}" placeholder="Example: 3.2" oninput="this.value=toEnglishDigits(this.value);elecRows[${i}].phg=this.value;updateReport()"><div class="small-help">PDF adds GΩ / يضيف GΩ تلقائيًا</div></div>
   </div></div>`).join('');
 }
 function renderElectricalOutputs(){
