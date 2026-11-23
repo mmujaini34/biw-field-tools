@@ -255,10 +255,10 @@
     'Time / الوقت': ['Time', 'الوقت'],
     'Ph-Ph (Ohms) / قراءة فاز-فاز': ['Ph-Ph (Ohms)', 'قراءة فاز-فاز (أوم)'],
     'Ph-G (Ohms) / قراءة فاز-أرضي': ['Ph-G (Ohms)', 'قراءة فاز-أرضي (أوم)'],
-    'PDF adds MΩ / يضيف MΩ تلقائيًا': ['MΩ is added in the PDF', 'تنضاف MΩ لحالها في الـ PDF'],
-    'اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ سيظهر في PDF بصيغة 03:30 PM، وMegger Voltage يصبح 2000 تلقائيًا. خانة Ph-G تُستخدم مع السطر الذي فيه وقت، وإذا كتبت رقمًا ستظهر في PDF بصيغة MΩ مثل 1200MΩ.':
-      ['Type the time like 3:30pm; it shows in the PDF as 03:30 PM and the Megger Voltage becomes 2000 automatically. Ph-G goes with the line that has a time; a number shows in the PDF as MΩ, e.g. 1200MΩ.',
-       'اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ يطلع في الـ PDF بصيغة 03:30 PM، والـ Megger Voltage يصير 2000 لحاله. خانة Ph-G مع السطر اللي فيه وقت، وإذا كتبت رقم يطلع في الـ PDF بصيغة MΩ مثل 1200MΩ.'],
+    'PDF adds GΩ / يضيف GΩ تلقائيًا': ['GΩ is added in the PDF', 'تنضاف GΩ لحالها في الـ PDF'],
+    'اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ سيظهر في PDF بصيغة 03:30 PM، وMegger Voltage يصبح 2000 تلقائيًا. خانة Ph-G تُستخدم مع السطر الذي فيه وقت، وإذا كتبت رقمًا ستظهر في PDF بصيغة GΩ مثل 1200GΩ.':
+      ['Type the time like 3:30pm; it shows in the PDF as 03:30 PM and the Megger Voltage becomes 2000 automatically. Ph-G goes with the line that has a time; a number shows in the PDF as GΩ, e.g. 1200GΩ.',
+       'اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ يطلع في الـ PDF بصيغة 03:30 PM، والـ Megger Voltage يصير 2000 لحاله. خانة Ph-G مع السطر اللي فيه وقت، وإذا كتبت رقم يطلع في الـ PDF بصيغة GΩ مثل 1200GΩ.'],
     'Casing Size / مقاس الكيسنج': ['Casing Size', 'مقاس الكيسنج'],
     'Tubing Size / مقاس التيوبنج': ['Tubing Size', 'مقاس التيوبنج'],
     'Packer Manufacturer / شركة الباكر': ['Packer Manufacturer', 'شركة الباكر'],
