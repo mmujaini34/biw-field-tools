@@ -110,6 +110,13 @@ button{font:inherit;cursor:pointer}
     </div>
   </div>
   <div class="card">
+    <h2 id="Plbl" data-ar="P · إزاحة البوت هيد (حسب شركة الموتور)">P · Pothead offset (motor vendor)</h2>
+    <div class="seg" role="radiogroup" aria-labelledby="Plbl">
+      <label><input type="radio" name="pv" value="bh"><span>0.70 ft<i>Baker Hughes</i></span></label>
+      <label><input type="radio" name="pv" value="borets"><span>0.55 ft<i>Borets</i></span></label>
+    </div>
+  </div>
+  <div class="card">
     <h2 data-ar="الطول الكلي (من تحت الباكر لين البوت هيد)">Total (packer bottom to pothead)</h2>
     <div class="tot" id="Tread">—</div>
   </div>
@@ -128,7 +135,7 @@ button{font:inherit;cursor:pointer}
 </section>
 </main>
 <div class="sticky"><div class="in">
-  <div class="mle">MLE<b id="rM">—</b></div><div>J<b id="rJ">—</b></div><div>X<b id="rX">—</b></div><div>E<b id="rE">—</b></div><div class="total">TOTAL<b id="rT">—</b></div>
+  <div class="mle">MLE<b id="rM">—</b></div><div>J<b id="rJ">—</b></div><div>X<b id="rX">—</b></div><div>E<b id="rE">—</b></div><div>P<b id="rP">—</b></div><div class="total">TOTAL<b id="rT">—</b></div>
 </div></div>
 
 <script>
@@ -140,10 +147,10 @@ const IMG_TOP=34, IMG_H=246, K=IMG_H/GEO.h, IMG_W=GEO.w*K, IMG_LEFT=75;
 const py=p=>IMG_TOP+p*K, px=p=>IMG_LEFT+p*K;
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const devName=()=>{try{return localStorage.getItem('ksa_user')||''}catch(e){return ''}};
-function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},J:{val:'',unit:'ft'},Xb:'2.88',E:{on:false,inch:6}}}
+function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},J:{val:'',unit:'ft'},Xb:'2.88',E:{on:false,inch:6},P:'bh'}}
 const KEY='ksa-mle-v3';
 let S=blank();
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M){S=Object.assign(blank(),s);if(!S.J)S.J=blank().J;if(!S.E)S.E=blank().E}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M){S=Object.assign(blank(),s);if(!S.J)S.J=blank().J;if(!S.E)S.E=blank().E;if(!S.P)S.P='bh'}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 // ---------- maths
@@ -158,8 +165,9 @@ function calc(){
  const J=toFt(S.J.val,S.J.unit), Jsrc=fmtRaw(S.J.val,S.J.unit);
  const up=S.Xb!=='3.38', start=up?1:4, X=up?2.88:3.38;
  const Ein=S.E&&S.E.on&&[6,12,18].includes(Number(S.E.inch))?Number(S.E.inch):0, E=Ein/12;
- const Tot=M+J+X+E;
- return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,Tot};
+ const borets=S.P==='borets', P=borets?0.55:0.70, Pname=borets?'Borets':'Baker Hughes';
+ const Tot=M+J+X+E-P;
+ return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,P,Pname,Tot};
 }
 
 // ---------- text width (Helvetica metrics via canvas, mm)
@@ -214,6 +222,7 @@ function drawSheet(R,c){
  R.line(cxr+0.9,yPh,Lx+1.5,yPh,rule);
  R.text('PACKER BOTTOM (DATUM)',Tx,yDat-1.2,{size:6.5,bold:true,color:COL.muted});
  R.text('POTHEAD (MOTOR HEAD)',Tx,yPh-1.2,{size:6.5,bold:true,color:COL.orange});
+ R.text('P · POTHEAD OFFSET = '+c.P.toFixed(2)+' ft ('+c.Pname+')',Tx,yPh+4.4,{size:7,bold:true,color:COL.orange});
  arrowV(R,Jx,yDat,yJX,COL.blue); arrowV(R,Jx,yJX,yPen,COL.blue);
  const yj=(yDat+yJX)/2, ym=(yJX+yPen)/2;
  R.text('J · SECONDARY BORE JOINT',Tx,yj-0.6,{size:6.8,bold:true});
@@ -226,7 +235,7 @@ function drawSheet(R,c){
  if(c.Msrc&&c.mUnit!=='ft') ml.push({t:'('+c.Msrc+')',size:6.5,color:COL.muted});
  gapLabel(R,Mx,(yPen+yPh)/2+8,ml);
  arrowV(R,Lx,yDat,yPh,COL.blue);
- gapLabel(R,Lx,(yDat+yPh)/2-12,[{t:'TOTAL',size:8,bold:true,color:COL.blue},{t:fmtFt(c.Tot),size:12,bold:true,color:COL.blue},{t:'J + X'+(c.Ein?' + E':'')+' + MLE',size:6.5,color:COL.muted}]);
+ gapLabel(R,Lx,(yDat+yPh)/2-12,[{t:'TOTAL',size:8,bold:true,color:COL.blue},{t:fmtFt(c.Tot),size:12,bold:true,color:COL.blue},{t:'J + X'+(c.Ein?' + E':'')+' + MLE - P',size:6.5,color:COL.muted}]);
  R.line(16,283,22,283,{color:COL.blue,w:0.5}); R.text('Dimension (ft)',23.5,284,{size:6.5,color:COL.muted});
  R.line(44,283,50,283,{color:COL.orange,w:0.55}); R.text('MLE cable / length',51.5,284,{size:6.5,color:COL.muted});
  R.text('cm ÷ 30.48 = ft · in ÷ 12 = ft · NTS',76,284,{size:6.5,color:COL.muted});
@@ -249,7 +258,8 @@ function drawSheet(R,c){
   {cells:['X','BIW feedthru (EA1591) · stage '+c.start,c.Xin,c.X.toFixed(2)],col:COL.blue},
   ...(c.Ein?[{cells:['E','Extension',c.Ein+' in',c.E.toFixed(2)],col:COL.blue}]:[]),
   {cells:['MLE','MLE cable (penetrator to pothead)',c.mUnit==='ft'?'':(c.Msrc||''),f(c.M)],col:COL.orange,hi:COL.mleHi,bold:true},
-  {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+X+E+MLE':'J+X+MLE',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
+  {cells:['P','Pothead offset — '+c.Pname,'minus',c.P.toFixed(2)],col:COL.orange},
+  {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+X+E+MLE-P':'J+X+MLE-P',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
  const dimTop=TB-5-hh-dimRows.length*rh;
  const order=c.up?[0,1,2,3]:[3,2,1,0];
  const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:'FEEDTHRU (in)',x:X0+66,at:X0+40,al:'right'},{h:'FEEDTHRU (ft)',x:X0+112,at:X0+75,al:'right'},{h:'',x:X1-3,at:X0+118,al:'right'}];
@@ -278,8 +288,8 @@ function update(){
  $('Jread').innerHTML=isNaN(c.J)?'—':(c.jUnit==='ft'?'':esc(c.Jsrc)+' = ')+'<b style="color:var(--blue)">'+c.J.toFixed(2)+' ft</b>';
  $('Eseg').hidden=!S.E.on;
  $('Tread').innerHTML=isNaN(c.Tot)?T('Enter the MLE length and J','اكتب طول الـ MLE و J'):
-  'J '+c.J.toFixed(2)+' + X '+c.X.toFixed(2)+(c.Ein?' + E '+c.E.toFixed(2):'')+' + MLE '+c.M.toFixed(2)+' = <b>'+c.Tot.toFixed(2)+' ft</b>';
- $('rM').textContent=ft(c.M);$('rJ').textContent=ft(c.J);$('rX').textContent=ft(c.X);$('rE').textContent=c.Ein?ft(c.E):'—';$('rT').textContent=ft(c.Tot);
+  'J '+c.J.toFixed(2)+' + X '+c.X.toFixed(2)+(c.Ein?' + E '+c.E.toFixed(2):'')+' + MLE '+c.M.toFixed(2)+' − P '+c.P.toFixed(2)+' = <b>'+c.Tot.toFixed(2)+' ft</b>';
+ $('rM').textContent=ft(c.M);$('rJ').textContent=ft(c.J);$('rX').textContent=ft(c.X);$('rE').textContent=c.Ein?ft(c.E):'—';$('rP').textContent=ft(c.P);$('rT').textContent=ft(c.Tot);
  const R=SvgR();drawSheet(R,c);$('svgwrap').innerHTML=R.out();
  save();
 }
@@ -293,6 +303,7 @@ $('Jval').addEventListener('input',()=>{S.J.val=$('Jval').value;update()});
 $('Junit').addEventListener('change',()=>{S.J.unit=$('Junit').value;update()});
 $('Eon').checked=!!S.E.on;$('Eon').addEventListener('change',()=>{S.E.on=$('Eon').checked;update()});
 document.querySelectorAll('input[name=ext]').forEach(r=>{r.checked=Number(r.value)===Number(S.E.inch);r.addEventListener('change',()=>{if(r.checked){S.E.inch=Number(r.value);update()}})});
+document.querySelectorAll('input[name=pv]').forEach(r=>{r.checked=r.value===S.P;r.addEventListener('change',()=>{if(r.checked){S.P=r.value;update()}})});
 document.querySelectorAll('input[name=xb]').forEach(r=>{r.checked=r.value===S.Xb;r.addEventListener('change',()=>{if(r.checked){S.Xb=r.value;update()}})});
 $('zoom').addEventListener('click',()=>{const p=$('preview');p.classList.toggle('zoom');$('zoom').textContent=p.classList.contains('zoom')?T('Fit','ملاءمة'):T('Zoom','تكبير')});
 function buildPdf(){

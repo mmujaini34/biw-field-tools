@@ -1,13 +1,11 @@
 {
-  "version": "1.3.2",
+  "version": "1.3.3",
   "notes": [
-    "أداة طول الـ MLE: رجع السكندري بور جوينت (J) تكتبه بنفسك",
-    "خيار «أضف إكستنشن» وتختار 6 أو 12 أو 18 إنش",
-    "يطلع الطول الكلي من تحت الباكر لين البوت هيد = J + الفيدثرو + الإكستنشن + الـ MLE"
+    "أداة طول الـ MLE: رجع اختيار شركة الموتور — Baker Hughes ‏0.70 أو Borets ‏0.55",
+    "الإزاحة تنطرح من الطول الكلي: J + الفيدثرو + الإكستنشن + الـ MLE − P"
   ],
   "notes_en": [
-    "MLE Length tool: the secondary bore joint (J) is back — you type it",
-    "New “Add extension” option: pick 6, 12 or 18 in",
-    "Shows the total from the packer bottom to the pothead = J + feedthru + extension + MLE"
+    "MLE Length tool: the motor vendor choice is back — Baker Hughes 0.70 or Borets 0.55",
+    "The offset is subtracted from the total: J + feedthru + extension + MLE − P"
   ]
 }
