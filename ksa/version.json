@@ -1,11 +1,13 @@
 {
-  "version": "1.3.8",
+  "version": "1.3.9",
   "notes": [
-    "أداة طول الـ MLE: إذا أضفت إكستنشن تطلع الرسمة فيها قطعة الإكستنشن، وبدونه تطلع الرسمة العادية",
-    "خط قياس للإكستنشن مكتوب عليه مجموعه بالفيت والإنش، وسطر الإكستنشن رجع في الجدول"
+    "فحص شامل لكل الأدوات ✓ — التايم شيت، تقرير التركيب، وطول الـ MLE: كلها شغالة وتطلع الـ PDF صح بالعربي والإنجليزي",
+    "تشتغل كلها بدون نت ✓ — يكفي تفتح التطبيق مرة وأنت متصل",
+    "كل شي جاهز للشغل في الموقع — بالتوفيق"
   ],
   "notes_en": [
-    "MLE Length tool: with an extension the drawing shows the extension piece; without one it shows the normal drawing",
-    "The extension has its own dimension line with its total in feet and inches, and its own row in the table again"
+    "Full check of every tool ✓ — Time Sheet, Installation Report and MLE Length all work and produce correct PDFs in Arabic and English",
+    "Everything works offline ✓ — just open the app once while online",
+    "All set for the job site — good luck"
   ]
 }
