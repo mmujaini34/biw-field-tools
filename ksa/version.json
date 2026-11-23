@@ -1,13 +1,15 @@
 {
-  "version": "1.3.11",
+  "version": "1.3.12",
   "notes": [
-    "رسمة الـ MLE في الـ PDF: خط الـ TOTAL صار ينزل لربع الموتور، وخط الـ MLE الأحمر يوصل لآخر البوت هيد",
-    "شرح خانة الـ ft.in صار مرتب وواضح بالعربي",
+    "رسمة الـ MLE: البوت هيد صار قاعد على خط الـ MLE، وخط الـ TOTAL نازل لين وصلة الموتور",
+    "كل خط في الرسمة صار بلون قياسه: خطوط الأزرق زرقا وخطوط الأحمر حمرا",
+    "تقرير التركيب بالإنجليزي: العنوان ما عاد يتغطى بزر HOME",
     "الحسبة والأرقام ما تغيرت"
   ],
   "notes_en": [
-    "MLE drawing in the PDF: the TOTAL line now goes down to a quarter of the motor, and the red MLE line runs to the end of the pothead",
-    "The ft.in hint now reads correctly in Arabic",
+    "MLE drawing: the pothead now sits on the MLE line, and the TOTAL line goes down to the motor joint",
+    "Every line in the drawing now has the colour of its dimension: blue lines blue, red lines red",
+    "Installation Report in English: the title is no longer covered by the HOME button",
     "The calculation and numbers are unchanged"
   ]
 }
