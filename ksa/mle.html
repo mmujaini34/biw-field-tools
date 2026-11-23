@@ -216,10 +216,10 @@ function drawSheet(R,c){
  // MLE cable from the penetrator down to the pothead on the motor head
  const cx=px(G.cable_x), cxr=px(G.body_x1+28), yStub=py(G.cable_stub_end), yPh=py(G.pothead_y);
  const phL=px(G.body_x1)-0.2, phW=1.6, phH=3.4;
- const yMe=yPh+phH/2;   /* خط الـ MLE: البوت هيد قاعد عليه */
- const route=[[cx,yStub-0.4],[cx,yStub+2.2],[cxr,yStub+2.2],[cxr,yMe],[phL+phW,yMe]];
+ const yMe=yPh+phH/2, yTot=py(G.motor_bottom);   /* خط الـ MLE عند رأس الموتور · البوت هيد قاعد على خط الـ TOTAL عند وصلة الموتور — مثل رسمته */
+ const route=[[cx,yStub-0.4],[cx,yStub+2.2],[cxr,yStub+2.2],[cxr,yTot-0.9],[phL+phW,yTot-0.9]];
  R.poly(route,{color:COL.cableDark,w:1.15}); R.poly(route,{color:COL.orange,w:0.7});
- R.rect(phL,yMe-phH/2,phW,phH,{fill:COL.orange,stroke:COL.cableDark,w:0.25});
+ R.rect(phL,yTot-phH/2,phW,phH,{fill:COL.orange,stroke:COL.cableDark,w:0.25});
  // dimensions on the right: X on the feedthru, MLE from packer bottom to the pothead
  const yDat=py(G.packer_bottom), yJX=py(G.jx_boundary), yPen=py(G.pen_bottom);
  const xPkR=px(G.packer_x1)+0.8, xPenR=px(G.pen_x1)+0.8;
@@ -228,8 +228,7 @@ function drawSheet(R,c){
  const hasE=c.Ein>0, yE0=py(G.ext_top), yE1=py(G.ext_bottom), yXt=hasE?yE1:yJX;
  R.line(xPenR,yJX,Jx+1.5,yJX,ruleB); if(hasE) R.line(xPenR,yE1,Jx+1.5,yE1,ruleB);
  R.line(xPenR,yPen,Jx,yPen,ruleB); R.line(Jx,yPen,Mx+1.5,yPen,ruleO);
- const yTot=py(G.motor_bottom);   /* TOTAL ينزل لين وصلة الموتور — مثل رسمته */
- R.line(phL+phW+0.3,yMe,Mx+1.5,yMe,ruleO); R.line(px(G.body_x1)+0.8,yTot,Lx+1.5,yTot,ruleB);
+ R.line(cxr+0.6,yMe,Mx+1.5,yMe,ruleO); R.line(phL+phW+0.3,yTot,Lx+1.5,yTot,ruleB);
  R.text('PACKER BOTTOM (DATUM)',Tx,yDat-1.2,{size:6.5,bold:true,color:COL.muted});
  R.text('POTHEAD (MOTOR HEAD)',Tx,yMe-1.2,{size:6.5,bold:true,color:COL.orange});
  R.text('P · POTHEAD OFFSET = '+c.P.toFixed(2)+' ft ('+c.Pname+')',Tx,yTot+3.6,{size:7,bold:true,color:COL.orange});

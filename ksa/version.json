@@ -1,15 +1,13 @@
 {
-  "version": "1.3.12",
+  "version": "1.3.13",
   "notes": [
-    "رسمة الـ MLE: البوت هيد صار قاعد على خط الـ MLE، وخط الـ TOTAL نازل لين وصلة الموتور",
-    "كل خط في الرسمة صار بلون قياسه: خطوط الأزرق زرقا وخطوط الأحمر حمرا",
-    "تقرير التركيب بالإنجليزي: العنوان ما عاد يتغطى بزر HOME",
+    "رسمة الـ MLE: مربع البوت هيد نزل وصار قاعد على خط الـ TOTAL عند وصلة الموتور، والكيبل الأحمر نازل لين يوصله",
+    "الخطوط والألوان مثل ما هي",
     "الحسبة والأرقام ما تغيرت"
   ],
   "notes_en": [
-    "MLE drawing: the pothead now sits on the MLE line, and the TOTAL line goes down to the motor joint",
-    "Every line in the drawing now has the colour of its dimension: blue lines blue, red lines red",
-    "Installation Report in English: the title is no longer covered by the HOME button",
+    "MLE drawing: the pothead box now sits on the TOTAL line at the motor joint, and the red cable runs down to it",
+    "Lines and colours stay as they were",
     "The calculation and numbers are unchanged"
   ]
 }
