@@ -3,7 +3,9 @@
    - The signature is trimmed to its ink, saved as a transparent PNG in the same navy ink as the
      engineers' signatures, and shown in the PDF signature spot with the same box styling.
    - The signature belongs to the name it was signed for: change the name and it is not printed.
-   - Saved on this device only (localStorage), cleared with the tool's Reset. */
+   - v3.16.3: saved per name on this device (localStorage 'biw_sigs'), shared by all the Omani tools,
+     kept after Reset / a new job; type or pick a saved name and its signature comes back.
+     Removed only with "مسح التوقيع". */
 (function () {
   'use strict';
   if (window.BIWSign) return;
@@ -133,12 +135,39 @@
 
   /* ---------------- ربطه بأداة ---------------- */
   /* cfg: {tool, nameInputId, imgId, title, label, resetFns:[...]} */
+  /* مكتبة التواقيع: توقيع لكل اسم، مشتركة بين كل أدوات عمان، ما تنمسح مع التصفير */
+  var LIB = 'biw_sigs', LIB_MAX = 40;
+  function libLoad() { try { var o = JSON.parse(localStorage.getItem(LIB) || 'null'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+  function libStore(o) {
+    var ks = Object.keys(o).sort(function (a, b) { return (o[b].at || 0) - (o[a].at || 0); });
+    ks.slice(LIB_MAX).forEach(function (k) { delete o[k]; });
+    for (var n = 0; n < 6; n++) {
+      try { localStorage.setItem(LIB, JSON.stringify(o)); return true; }
+      catch (e) { ks = Object.keys(o).sort(function (a, b) { return (o[a].at || 0) - (o[b].at || 0); }); if (!ks.length) return false; delete o[ks[0]]; }
+    }
+    return false;
+  }
+  function libGet(name) { var k = norm(name); if (!k) return null; var s = libLoad()[k]; return s && s.sig ? s : null; }
+  function libPut(name, sig) { var o = libLoad(); o[norm(name)] = { name: String(name).trim(), sig: sig, at: Date.now() }; return libStore(o); }
+  function libDel(name) { var o = libLoad(); delete o[norm(name)]; libStore(o); }
+  (function migrate() {                  /* التواقيع المحفوظة بالطريقة القديمة (واحد لكل أداة) تنتقل للمكتبة */
+    try {
+      var o = libLoad(), old = [];
+      ['timesheet', 'empty-timesheet', 'delivery-note', 'report'].forEach(function (tool) {
+        var k = 'biw_sig_' + tool, v = null;
+        if (localStorage.getItem(k) === null) return;
+        try { v = JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) {}
+        if (v && v.sig && norm(v.name) && !o[norm(v.name)]) o[norm(v.name)] = { name: String(v.name).trim(), sig: v.sig, at: v.at || Date.now() };
+        old.push(k);
+      });
+      if (old.length && libStore(o)) old.forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+  })();
+
   function attach(cfg) {
-    var KEY = 'biw_sig_' + cfg.tool;
     var input = document.getElementById(cfg.nameInputId), img = document.getElementById(cfg.imgId);
     if (!input || !img) return;
-    function load() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
-    function save(v) { try { if (v) localStorage.setItem(KEY, JSON.stringify(v)); else localStorage.removeItem(KEY); } catch (e) {} }
+    var label = cfg.label || 'ESP Engineer';
 
     var box = el('div', 'margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;direction:rtl');
     var btn = el('button', 'font:inherit;font-size:14px;font-weight:800;padding:10px 14px;border-radius:12px;border:1.5px solid #0f766e;background:#ecfdf5;color:#0b3b33;cursor:pointer;min-height:44px');
@@ -149,40 +178,61 @@
     var del = el('button', 'display:none;font:inherit;font-size:13px;font-weight:700;padding:8px 12px;border-radius:10px;border:1px solid #fecaca;background:#fff;color:#b91c1c;cursor:pointer;min-height:40px', 'مسح التوقيع');
     del.type = 'button';
     var note = el('div', 'flex-basis:100%;font-size:12.5px;color:#b45309;font-weight:700;display:none');
-    box.appendChild(btn); box.appendChild(thumb); box.appendChild(del); box.appendChild(note);
+    var saved = el('div', 'flex-basis:100%;display:none;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;color:#475569;font-weight:700');
+    box.appendChild(btn); box.appendChild(thumb); box.appendChild(del); box.appendChild(note); box.appendChild(saved);
     var host = input.closest('.field, .form-field, .modal-field, .form-group, label') || input.parentNode;
     if (host === input.parentNode) input.insertAdjacentElement('afterend', box); else host.appendChild(box);
 
+    function pick(name) {
+      input.value = name;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      render();
+      if (typeof cfg.onChange === 'function') { try { cfg.onChange(); } catch (e) {} }
+    }
+    function renderSaved() {
+      var o = libLoad(), cur = norm(input.value);
+      var list = Object.keys(o).filter(function (k) { return o[k] && o[k].sig && k !== cur; })
+        .sort(function (a, b) { return (o[b].at || 0) - (o[a].at || 0); }).slice(0, 12);
+      while (saved.firstChild) saved.removeChild(saved.firstChild);
+      if (!list.length) { saved.style.display = 'none'; return; }
+      saved.appendChild(el('span', '', 'تواقيع محفوظة:'));
+      list.forEach(function (k) {
+        var c = el('button', 'font:inherit;font-size:13px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid #99f6e4;background:#f0fdfa;color:#0b3b33;cursor:pointer;direction:ltr;min-height:34px');
+        c.type = 'button'; c.textContent = o[k].name;
+        c.addEventListener('click', function () { pick(o[k].name); });
+        saved.appendChild(c);
+      });
+      saved.style.display = 'flex';
+    }
     function render() {
-      var s = load(), name = input.value;
-      var valid = !!(s && s.sig && norm(s.name) === norm(name) && norm(name));
-      if (valid) { img.src = s.sig; img.style.display = 'block'; }
+      var s = libGet(input.value);
+      if (s) { img.src = s.sig; img.style.display = 'block'; }
       else { img.removeAttribute('src'); img.style.display = 'none'; }
-      btn.textContent = s && s.sig ? '✍️ وقّع من جديد' : '✍️ توقيع ' + (cfg.label || 'ESP Engineer') + ' (اختياري)';
-      thumb.style.display = s && s.sig ? 'flex' : 'none'; if (s && s.sig) timg.src = s.sig;
-      del.style.display = s && s.sig ? 'inline-block' : 'none';
+      btn.textContent = s ? '✍️ وقّع من جديد' : '✍️ توقيع ' + label + ' (اختياري)';
+      thumb.style.display = s ? 'flex' : 'none'; if (s) timg.src = s.sig;
+      del.style.display = s ? 'inline-block' : 'none';
       note.style.display = 'none';
-      if (s && s.sig && !valid) {
-        note.style.display = 'block';
-        note.textContent = norm(name) ? 'التوقيع محفوظ لاسم «' + s.name + '». الاسم تغيّر، فما بيطلع في الملف. وقّع من جديد إذا تبي.' : 'اكتب الاسم عشان يطلع التوقيع في الملف.';
-      }
+      renderSaved();
     }
     btn.addEventListener('click', function () {
       var name = input.value.trim();
-      if (!name) { note.style.display = 'block'; note.textContent = 'اكتب اسم ' + (cfg.label || 'ESP Engineer') + ' أول.'; input.focus(); return; }
-      open({ title: cfg.title || ('توقيع ' + (cfg.label || 'ESP Engineer')), name: name, onDone: function (png) {
+      if (!name) { note.style.display = 'block'; note.textContent = 'اكتب اسم ' + label + ' أول.'; input.focus(); return; }
+      open({ title: cfg.title || ('توقيع ' + label), name: name, onDone: function (png) {
         if (!png) return;
-        save({ name: name, sig: png, at: Date.now() }); render();
+        if (!libPut(name, png)) { render(); note.style.display = 'block'; note.textContent = 'ما قدرت أحفظ التوقيع — ذاكرة المتصفح ممتلئة.'; return; }
+        render();
         if (typeof cfg.onChange === 'function') { try { cfg.onChange(); } catch (e) {} }
       } });
     });
-    del.addEventListener('click', function () { save(null); render(); if (typeof cfg.onChange === 'function') { try { cfg.onChange(); } catch (e) {} } });
+    del.addEventListener('click', function () { libDel(input.value); render(); if (typeof cfg.onChange === 'function') { try { cfg.onChange(); } catch (e) {} } });
     input.addEventListener('input', render); input.addEventListener('change', render);
+    window.addEventListener('storage', function (e) { if (e.key === LIB) render(); });
 
     (cfg.resetFns || []).forEach(function (fn) {
       function hook() {
         var f = window[fn]; if (typeof f !== 'function' || f['__biwSig_' + cfg.tool]) return;
-        var w = function () { var r = f.apply(this, arguments); setTimeout(function () { if (!String(input.value || '').trim()) { save(null); } render(); }, 0); return r; };
+        var w = function () { var r = f.apply(this, arguments); setTimeout(render, 0); return r; };   /* التصفير ما يمسح التواقيع المحفوظة */
         w['__biwSig_' + cfg.tool] = true; window[fn] = w;
       }
       hook(); setTimeout(hook, 500);
