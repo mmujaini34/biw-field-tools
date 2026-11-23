@@ -1,13 +1,9 @@
 {
-  "version": "1.3.4",
+  "version": "1.3.5",
   "notes": [
-    "أداة طول الـ MLE: جدول الستيجات يبين لكل ستيج الفرق بالإنش والفيت والطول الكلي",
-    "تحت الجدول الرينج من ستيج 1 إلى ستيج 4",
-    "شلنا أرقام الأمثلة من الخانات"
+    "أداة طول الـ MLE: زر ⟳ فوق يمسح كل شي ويبدأ من جديد"
   ],
   "notes_en": [
-    "MLE Length tool: the stages table shows each stage's change in inches and feet and the total length",
-    "The range from stage 1 to stage 4 is shown under the table",
-    "Example numbers removed from the input boxes"
+    "MLE Length tool: the ⟳ button at the top clears everything and starts again"
   ]
 }
