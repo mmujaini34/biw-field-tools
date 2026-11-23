@@ -1,11 +1,11 @@
 {
-  "version": "1.3.6",
+  "version": "1.3.7",
   "notes": [
-    "أداة طول الـ MLE: تقدر تضيف أكثر من إكستنشن — كل ضغطة على «أضف إكستنشن» تزيد واحد، وتختار له 6 أو 12 أو 18 إنش",
-    "الإكستنشنات كلها تنجمع وتتحول لفيت وتدخل في الحسبة"
+    "أداة طول الـ MLE: الإكستنشن صار ينضاف على طول الفيدثرو نفسه — مثلاً 2.88 مع إكستنشن 12 إنش تصير 3.88",
+    "جدول الستيجات كله يتحسب مع الإكستنشن"
   ],
   "notes_en": [
-    "MLE Length tool: you can add more than one extension — each tap on “Add extension” adds one, set to 6, 12 or 18 in",
-    "All extensions are added up, converted to feet and included in the total"
+    "MLE Length tool: extensions are now added to the feedthru length itself — e.g. 2.88 with a 12 in extension becomes 3.88",
+    "The whole stages table is worked out with the extensions included"
   ]
 }

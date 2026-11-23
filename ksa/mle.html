@@ -136,7 +136,7 @@ button{font:inherit;cursor:pointer}
 </section>
 </main>
 <div class="sticky"><div class="in">
-  <div class="mle">MLE<b id="rM">—</b></div><div>J<b id="rJ">—</b></div><div>X<b id="rX">—</b></div><div>E<b id="rE">—</b></div><div>P<b id="rP">—</b></div><div class="total">TOTAL<b id="rT">—</b></div>
+  <div class="mle">MLE<b id="rM">—</b></div><div>J<b id="rJ">—</b></div><div id="lX">X<b id="rX">—</b></div><div>P<b id="rP">—</b></div><div class="total">TOTAL<b id="rT">—</b></div>
 </div></div>
 
 <script>
@@ -230,7 +230,7 @@ function drawSheet(R,c){
  R.text(fmtFt(c.J)+(c.Jsrc&&c.jUnit!=='ft'?'  ('+c.Jsrc+')':''),Tx,yj+3,{size:8.5,bold:true,color:COL.blue});
  R.text('X · BIW FEEDTHRU (EA1591) · STAGE '+c.start+' OF 4',Tx,ym-2.6,{size:6.8,bold:true});
  R.text(c.X.toFixed(2)+' ft  ('+c.Xin+')',Tx,ym+1,{size:8.5,bold:true,color:COL.blue});
- if(c.Ein) R.text('+ E · '+(c.En>1?c.En+' EXTENSIONS ('+c.Elist.join('+')+' in) = '+c.Ein+' in':'EXTENSION '+c.Ein+' in')+' = '+c.E.toFixed(2)+' ft',Tx,ym+4.8,{size:7.5,bold:true,color:COL.blue});
+ if(c.Ein) R.text('+ E '+(c.En>1?c.En+' EXT. ':'')+c.Ein+' in = '+c.E.toFixed(2)+' ft   =>   X + E = '+(c.X+c.E).toFixed(2)+' ft',Tx,ym+4.8,{size:7.5,bold:true,color:COL.blue});
  arrowV(R,Mx,yPen,yPh,COL.orange);
  const ml=[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:12,bold:true,color:COL.orange}];
  if(c.Msrc&&c.mUnit!=='ft') ml.push({t:'('+c.Msrc+')',size:6.5,color:COL.muted});
@@ -256,18 +256,19 @@ function drawSheet(R,c){
  const dimCols=[{h:'REF',x:X0+3,at:X0},{h:'ITEM',x:X0+21,at:X0+18},{h:'ORIGINAL',x:X0+129,at:X0+100,al:'right'},{h:'FT',x:X1-3,at:X0+132,al:'right'}];
  const f=n=>isNaN(n)?'—':n.toFixed(2);
  const dimRows=[{cells:['J','Secondary bore joint',c.jUnit==='ft'?'':(c.Jsrc||''),f(c.J)],col:COL.blue},
-  {cells:['X','BIW feedthru (EA1591) · stage '+c.start,c.Xin,c.X.toFixed(2)],col:COL.blue},
-  ...(c.Ein?[{cells:['E',c.En>1?'Extensions x'+c.En+' ('+c.Elist.join(' + ')+' in)':'Extension',c.Ein+' in',c.E.toFixed(2)],col:COL.blue}]:[]),
+  {cells:[c.Ein?'X+E':'X','BIW feedthru (EA1591) · stage '+c.start+(c.Ein?' + ext. '+c.Elist.join('+')+' in':''),c.Ein?c.Xin.replace(' in','')+' + '+c.Ein+' in':c.Xin,(c.X+c.E).toFixed(2)],col:COL.blue},
   {cells:['MLE','MLE cable (penetrator to pothead)',c.mUnit==='ft'?'':(c.Msrc||''),f(c.M)],col:COL.orange,hi:COL.mleHi,bold:true},
   {cells:['P','Pothead offset — '+c.Pname,'minus',c.P.toFixed(2)],col:COL.orange},
-  {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+X+E+MLE-P':'J+X+MLE-P',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
+  {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+(X+E)+MLE-P':'J+X+MLE-P',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
  const dimTop=TB-5-hh-dimRows.length*rh;
  const order=c.up?[0,1,2,3]:[3,2,1,0];
- const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:'FEEDTHRU (in)',x:X0+49,at:X0+20,al:'right'},{h:'FEEDTHRU (ft)',x:X0+77,at:X0+52,al:'right'},{h:'CHANGE',x:X0+125,at:X0+80,al:'right'},{h:'TOTAL (ft)',x:X1-3,at:X0+128,al:'right'}];
+ const fh=c.Ein?'FT + EXT':'FEEDTHRU';
+ const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:fh+' (in)',x:X0+49,at:X0+20,al:'right'},{h:fh+' (ft)',x:X0+77,at:X0+52,al:'right'},{h:'CHANGE',x:X0+125,at:X0+80,al:'right'},{h:'TOTAL (ft)',x:X1-3,at:X0+128,al:'right'}];
  const chg=k=>{const d=2*Math.abs(k-c.start),sg=c.up?'+':'-';return k===c.start?'SELECTED':sg+d+' in = '+sg+(d/12).toFixed(2)+' ft'};
- const stRows=order.map(i=>{const s=STAGES[i],on=s.k===c.start,tv=c.totAt(s.k);return{cells:[String(s.k),s.inch.toFixed(2),s.ft.toFixed(2),chg(s.k),isNaN(tv)?'—':tv.toFixed(2)],col:on?COL.blue:COL.ink,hi:on?COL.hi:null,bold:on}});
+ const stRows=order.map(i=>{const s=STAGES[i],on=s.k===c.start,tv=c.totAt(s.k);return{cells:[String(s.k),(s.inch+c.Ein).toFixed(2),(s.ft+c.E).toFixed(2),chg(s.k),isNaN(tv)?'—':tv.toFixed(2)],col:on?COL.blue:COL.ink,hi:on?COL.hi:null,bold:on}});
  const stTop=dimTop-17-hh-stRows.length*rh;
- const stBot=box('FEEDTHRU STAGES ('+(c.up?'from 2.88 ft, +2 in per stage':'from 3.38 ft, -2 in per stage')+')',stTop,stRows,stCols);
+ const base=(c.up?2.88:3.38)+c.E, stTitle=c.Ein?'FEEDTHRU STAGES + '+c.Ein+' in EXTENSION (from '+base.toFixed(2)+' ft, '+(c.up?'+':'-')+'2 in per stage)':'FEEDTHRU STAGES ('+(c.up?'from 2.88 ft, +2 in per stage':'from 3.38 ft, -2 in per stage')+')';
+ const stBot=box(stTitle,stTop,stRows,stCols);
  R.text('RANGE  stage 1 to stage 4:  '+(isNaN(c.rMin)?'—':c.rMin.toFixed(2)+' ft  to  '+c.rMax.toFixed(2)+' ft'),X0,stBot+6,{size:9,bold:true,color:COL.blue});
  box('DIMENSIONS ON DRAWING (ft)',dimTop,dimRows,dimCols);
  // title block
@@ -289,11 +290,11 @@ function update(){
  $('Mread').innerHTML=isNaN(c.M)?'—':(c.mUnit==='ft'?'':esc(c.Msrc)+' = ')+'<b>'+c.M.toFixed(2)+' ft</b>';
  const ft=n=>isNaN(n)?'—':n.toFixed(2)+' ft';
  $('Jread').innerHTML=isNaN(c.J)?'—':(c.jUnit==='ft'?'':esc(c.Jsrc)+' = ')+'<b style="color:var(--blue)">'+c.J.toFixed(2)+' ft</b>';
- $('Esum').textContent=c.En?(c.En>1?c.Elist.join(' + ')+' = ':'')+c.Ein+' in = '+c.E.toFixed(2)+' ft':'';
+ $('Esum').textContent=c.En?(c.En>1?c.Elist.join(' + ')+' = ':'')+c.Ein+' in = '+c.E.toFixed(2)+' ft   →   '+c.X.toFixed(2)+' + '+c.E.toFixed(2)+' = '+(c.X+c.E).toFixed(2)+' ft':'';
  $('Tread').innerHTML=isNaN(c.Tot)?T('Enter the MLE length and J','اكتب طول الـ MLE و J'):
   'J '+c.J.toFixed(2)+' + X '+c.X.toFixed(2)+(c.Ein?' + E '+c.E.toFixed(2):'')+' + MLE '+c.M.toFixed(2)+' − P '+c.P.toFixed(2)+' = <b>'+c.Tot.toFixed(2)+' ft</b>';
  $('Rread').innerHTML=isNaN(c.rMin)?'':T('Range, stage 1 to stage 4: ','الرينج من ستيج 1 إلى ستيج 4: ')+'<b dir="ltr" style="unicode-bidi:isolate;display:inline-block;color:var(--blue);font-size:16px">'+c.rMin.toFixed(2)+' – '+c.rMax.toFixed(2)+' ft</b>';
- $('rM').textContent=ft(c.M);$('rJ').textContent=ft(c.J);$('rX').textContent=ft(c.X);$('rE').textContent=c.Ein?ft(c.E):'—';$('rP').textContent=ft(c.P);$('rT').textContent=ft(c.Tot);
+ $('rM').textContent=ft(c.M);$('rJ').textContent=ft(c.J);$('lX').firstChild.textContent=c.Ein?'X + E':'X';$('rX').textContent=ft(c.X+c.E);$('rP').textContent=ft(c.P);$('rT').textContent=ft(c.Tot);
  const R=SvgR();drawSheet(R,c);$('svgwrap').innerHTML=R.out();
  save();
 }
