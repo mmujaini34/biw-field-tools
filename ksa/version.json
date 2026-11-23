@@ -1,13 +1,13 @@
 {
-  "version": "1.3.9",
+  "version": "1.3.10",
   "notes": [
-    "فحص شامل لكل الأدوات ✓ — التايم شيت، تقرير التركيب، وطول الـ MLE: كلها شغالة وتطلع الـ PDF صح بالعربي والإنجليزي",
-    "تشتغل كلها بدون نت ✓ — يكفي تفتح التطبيق مرة وأنت متصل",
-    "كل شي جاهز للشغل في الموقع — بالتوفيق"
+    "رسمة الـ MLE في الـ PDF: خط الـ TOTAL صار ينزل لربع الموتور",
+    "خط الـ MLE الأحمر صار يوصل لآخر البوت هيد",
+    "الحسبة والأرقام ما تغيرت"
   ],
   "notes_en": [
-    "Full check of every tool ✓ — Time Sheet, Installation Report and MLE Length all work and produce correct PDFs in Arabic and English",
-    "Everything works offline ✓ — just open the app once while online",
-    "All set for the job site — good luck"
+    "MLE drawing in the PDF: the TOTAL line now goes down to a quarter of the motor",
+    "The red MLE line now runs to the end of the pothead",
+    "The calculation and numbers are unchanged"
   ]
 }
