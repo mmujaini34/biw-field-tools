@@ -227,7 +227,7 @@ function drawSheet(R,c){
  R.line(xPkR,yDat,Lx+1.5,yDat,ruleB);
  const hasE=c.Ein>0, yE0=py(G.ext_top), yE1=py(G.ext_bottom), yXt=hasE?yE1:yJX;
  R.line(xPenR,yJX,Jx+1.5,yJX,ruleB); if(hasE) R.line(xPenR,yE1,Jx+1.5,yE1,ruleB);
- R.line(xPenR,yPen,Jx,yPen,ruleB); R.line(Jx,yPen,Mx+1.5,yPen,ruleO);
+ R.line(xPenR,yPen,Mx+1.5,yPen,ruleO);   /* خط بداية الـ MLE برتقالي كامل — مثل خط تحت الباكر */
  R.line(cxr+0.6,yMe,Mx+1.5,yMe,ruleO); R.line(phL+phW+0.3,yTot,Lx+1.5,yTot,ruleB);
  R.text('PACKER BOTTOM (DATUM)',Tx,yDat-1.2,{size:6.5,bold:true,color:COL.muted});
  R.text('POTHEAD (MOTOR HEAD)',Tx,yMe-1.2,{size:6.5,bold:true,color:COL.orange});

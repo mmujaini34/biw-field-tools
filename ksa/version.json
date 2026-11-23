@@ -1,13 +1,11 @@
 {
-  "version": "1.3.13",
+  "version": "1.3.14",
   "notes": [
-    "رسمة الـ MLE: مربع البوت هيد نزل وصار قاعد على خط الـ TOTAL عند وصلة الموتور، والكيبل الأحمر نازل لين يوصله",
-    "الخطوط والألوان مثل ما هي",
+    "رسمة الـ MLE: خط بداية الـ MLE صار برتقالي كامل، مثل خط تحت الباكر",
     "الحسبة والأرقام ما تغيرت"
   ],
   "notes_en": [
-    "MLE drawing: the pothead box now sits on the TOTAL line at the motor joint, and the red cable runs down to it",
-    "Lines and colours stay as they were",
+    "MLE drawing: the line where the MLE starts is now fully orange, like the packer bottom line",
     "The calculation and numbers are unchanged"
   ]
 }
