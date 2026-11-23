@@ -87,13 +87,13 @@ button{font:inherit;cursor:pointer}
   </div>
   <div class="card">
     <h2 data-ar="طول الـ MLE">MLE length</h2>
-    <div class="mrow"><input id="Mval" inputmode="decimal" placeholder="170.23" aria-label="MLE length"><select id="Munit" aria-label="Unit"><option>ft.in</option><option>ft</option><option>in</option><option>cm</option></select></div>
+    <div class="mrow"><input id="Mval" inputmode="decimal" aria-label="MLE length"><select id="Munit" aria-label="Unit"><option>ft.in</option><option>ft</option><option>in</option><option>cm</option></select></div>
     <div class="read" id="Mread">—</div>
     <div class="hint" data-ar="ft.in: الرقم بعد النقطة إنشات — 170.23 = ‎170 ft + 23 in‎ = ‎171.92 ft‎">ft.in: the number after the point is inches — 170.23 = 170 ft + 23 in = 171.92 ft</div>
   </div>
   <div class="card">
     <h2 data-ar="J · سكندري بور جوينت (في الباكر)">J · Secondary bore joint (packer)</h2>
-    <div class="mrow"><input id="Jval" inputmode="decimal" placeholder="1.02" aria-label="Secondary bore joint length"><select id="Junit" aria-label="Unit"><option>ft</option><option>ft.in</option><option>in</option><option>cm</option></select></div>
+    <div class="mrow"><input id="Jval" inputmode="decimal" aria-label="Secondary bore joint length"><select id="Junit" aria-label="Unit"><option>ft</option><option>ft.in</option><option>in</option><option>cm</option></select></div>
     <div class="read" id="Jread">—</div>
   </div>
   <div class="card">
@@ -119,6 +119,7 @@ button{font:inherit;cursor:pointer}
   <div class="card">
     <h2 data-ar="الطول الكلي (من تحت الباكر لين البوت هيد)">Total (packer bottom to pothead)</h2>
     <div class="tot" id="Tread">—</div>
+    <div class="read" id="Rread"></div>
   </div>
 </section>
 <section class="card preview" id="preview">
@@ -166,8 +167,8 @@ function calc(){
  const up=S.Xb!=='3.38', start=up?1:4, X=up?2.88:3.38;
  const Ein=S.E&&S.E.on&&[6,12,18].includes(Number(S.E.inch))?Number(S.E.inch):0, E=Ein/12;
  const borets=S.P==='borets', P=borets?0.55:0.70, Pname=borets?'Borets':'Baker Hughes';
- const Tot=M+J+X+E-P;
- return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,P,Pname,Tot};
+ const Tot=M+J+X+E-P, totAt=k=>M+J+STAGES[k-1].ft+E-P;
+ return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,P,Pname,Tot,totAt,rMin:totAt(1),rMax:totAt(4)};
 }
 
 // ---------- text width (Helvetica metrics via canvas, mm)
@@ -262,10 +263,12 @@ function drawSheet(R,c){
   {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+X+E+MLE-P':'J+X+MLE-P',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
  const dimTop=TB-5-hh-dimRows.length*rh;
  const order=c.up?[0,1,2,3]:[3,2,1,0];
- const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:'FEEDTHRU (in)',x:X0+66,at:X0+40,al:'right'},{h:'FEEDTHRU (ft)',x:X0+112,at:X0+75,al:'right'},{h:'',x:X1-3,at:X0+118,al:'right'}];
- const stRows=order.map(i=>{const s=STAGES[i],on=s.k===c.start;return{cells:[String(s.k),s.inch.toFixed(2),s.ft.toFixed(2),on?'SELECTED':(c.up?'+':'-')+(2*Math.abs(s.k-c.start))+' in'],col:on?COL.blue:COL.ink,hi:on?COL.hi:null,bold:on}});
- const stTop=dimTop-14-hh-stRows.length*rh;
- box('FEEDTHRU STAGES ('+(c.up?'from 2.88 ft, +2 in per stage':'from 3.38 ft, -2 in per stage')+')',stTop,stRows,stCols);
+ const stCols=[{h:'STAGE',x:X0+3,at:X0},{h:'FEEDTHRU (in)',x:X0+49,at:X0+20,al:'right'},{h:'FEEDTHRU (ft)',x:X0+77,at:X0+52,al:'right'},{h:'CHANGE',x:X0+125,at:X0+80,al:'right'},{h:'TOTAL (ft)',x:X1-3,at:X0+128,al:'right'}];
+ const chg=k=>{const d=2*Math.abs(k-c.start),sg=c.up?'+':'-';return k===c.start?'SELECTED':sg+d+' in = '+sg+(d/12).toFixed(2)+' ft'};
+ const stRows=order.map(i=>{const s=STAGES[i],on=s.k===c.start,tv=c.totAt(s.k);return{cells:[String(s.k),s.inch.toFixed(2),s.ft.toFixed(2),chg(s.k),isNaN(tv)?'—':tv.toFixed(2)],col:on?COL.blue:COL.ink,hi:on?COL.hi:null,bold:on}});
+ const stTop=dimTop-17-hh-stRows.length*rh;
+ const stBot=box('FEEDTHRU STAGES ('+(c.up?'from 2.88 ft, +2 in per stage':'from 3.38 ft, -2 in per stage')+')',stTop,stRows,stCols);
+ R.text('RANGE  stage 1 to stage 4:  '+(isNaN(c.rMin)?'—':c.rMin.toFixed(2)+' ft  to  '+c.rMax.toFixed(2)+' ft'),X0,stBot+6,{size:9,bold:true,color:COL.blue});
  box('DIMENSIONS ON DRAWING (ft)',dimTop,dimRows,dimCols);
  // title block
  const TBh=40, cw=(410-X0)/4;
@@ -289,6 +292,7 @@ function update(){
  $('Eseg').hidden=!S.E.on;
  $('Tread').innerHTML=isNaN(c.Tot)?T('Enter the MLE length and J','اكتب طول الـ MLE و J'):
   'J '+c.J.toFixed(2)+' + X '+c.X.toFixed(2)+(c.Ein?' + E '+c.E.toFixed(2):'')+' + MLE '+c.M.toFixed(2)+' − P '+c.P.toFixed(2)+' = <b>'+c.Tot.toFixed(2)+' ft</b>';
+ $('Rread').innerHTML=isNaN(c.rMin)?'':T('Range, stage 1 to stage 4: ','الرينج من ستيج 1 إلى ستيج 4: ')+'<b dir="ltr" style="unicode-bidi:isolate;display:inline-block;color:var(--blue);font-size:16px">'+c.rMin.toFixed(2)+' – '+c.rMax.toFixed(2)+' ft</b>';
  $('rM').textContent=ft(c.M);$('rJ').textContent=ft(c.J);$('rX').textContent=ft(c.X);$('rE').textContent=c.Ein?ft(c.E):'—';$('rP').textContent=ft(c.P);$('rT').textContent=ft(c.Tot);
  const R=SvgR();drawSheet(R,c);$('svgwrap').innerHTML=R.out();
  save();
