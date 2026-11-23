@@ -14,7 +14,7 @@ function T(en,ar){return LANG==="ar"?ar:en}</script>
 :root{--ink:#1a1a1a;--muted:#555;--blue:#1d4ed8;--orange:#c2410c;--line:#d6d3cc;--bg:#f6f5f1;--card:#fff}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Helvetica,Arial,sans-serif;padding-bottom:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Helvetica,Arial,sans-serif;padding-bottom:130px}
 header{padding:52px 16px 6px;max-width:1180px;margin:0 auto}
 h1{font-size:20px;margin:0 0 2px;letter-spacing:.01em}
 header p{margin:0;color:var(--muted);font-size:13px}
@@ -44,8 +44,11 @@ input:focus,select:focus{outline:2px solid var(--blue);outline-offset:0;border-c
 .seg input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
 .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .seg3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-size:16px;font-weight:700;cursor:pointer}
-.chk input{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--blue)}
+.add{border:1px dashed #9a968c;background:#fff;border-radius:8px;padding:9px 14px;font-size:15px;font-weight:700;color:var(--ink);min-height:44px;width:100%;margin-top:10px}
+.erow{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.ehead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:13px;font-weight:700;color:var(--muted)}
+.x{width:40px;height:40px;border:1px solid #c9c5bb;border-radius:7px;background:#fff;color:var(--muted);font-size:20px;line-height:1}
+.esum{margin-top:8px;font-size:14px;color:var(--blue);font-weight:700;direction:ltr;text-align:start}
 .tot{margin-top:4px;font-size:14px;color:var(--muted);direction:ltr;text-align:start}
 .tot b{color:var(--blue);font-size:22px}
 button{font:inherit;cursor:pointer}
@@ -59,7 +62,7 @@ button{font:inherit;cursor:pointer}
 .msg{font-size:13px;margin-top:8px;min-height:18px}
 .msg.err{color:#b42318}.msg.ok{color:#067647}
 .sticky{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 12px;z-index:5}
-.sticky .in{max-width:1180px;margin:0 auto;display:flex;gap:18px;align-items:center;flex-wrap:wrap;direction:ltr;font-variant-numeric:tabular-nums}
+.sticky .in{max-width:1180px;margin:0 auto;display:flex;gap:6px 14px;align-items:center;flex-wrap:wrap;direction:ltr;font-variant-numeric:tabular-nums}
 .sticky div{font-size:12px;color:var(--muted)}
 .sticky b{display:block;font-size:16px;color:var(--ink)}
 .sticky .mle b{color:var(--orange);font-size:18px}
@@ -102,12 +105,9 @@ button{font:inherit;cursor:pointer}
       <label><input type="radio" name="xb" value="2.88"><span>2.88 ft<i>34.51 in</i></span></label>
       <label><input type="radio" name="xb" value="3.38"><span>3.38 ft<i>40.51 in</i></span></label>
     </div>
-    <label class="chk" style="margin-top:12px"><input type="checkbox" id="Eon"><span data-ar="أضف إكستنشن">Add extension</span></label>
-    <div class="seg seg3" role="radiogroup" aria-label="Extension length" id="Eseg" hidden>
-      <label><input type="radio" name="ext" value="6"><span>6 in<i>0.50 ft</i></span></label>
-      <label><input type="radio" name="ext" value="12"><span>12 in<i>1.00 ft</i></span></label>
-      <label><input type="radio" name="ext" value="18"><span>18 in<i>1.50 ft</i></span></label>
-    </div>
+    <div id="Elist"></div>
+    <div class="esum" id="Esum"></div>
+    <button class="add" type="button" id="Eadd" data-ar="+ أضف إكستنشن">+ Add extension</button>
   </div>
   <div class="card">
     <h2 id="Plbl" data-ar="P · إزاحة البوت هيد (حسب شركة الموتور)">P · Pothead offset (motor vendor)</h2>
@@ -148,10 +148,10 @@ const IMG_TOP=34, IMG_H=246, K=IMG_H/GEO.h, IMG_W=GEO.w*K, IMG_LEFT=75;
 const py=p=>IMG_TOP+p*K, px=p=>IMG_LEFT+p*K;
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const devName=()=>{try{return localStorage.getItem('ksa_user')||''}catch(e){return ''}};
-function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},J:{val:'',unit:'ft'},Xb:'2.88',E:{on:false,inch:6},P:'bh'}}
+function blank(){return{well:'',date:today(),prepared:devName(),M:{val:'',unit:'ft.in'},J:{val:'',unit:'ft'},Xb:'2.88',E:[],P:'bh'}}
 const KEY='ksa-mle-v3';
 let S=blank();
-try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M){S=Object.assign(blank(),s);if(!S.J)S.J=blank().J;if(!S.E)S.E=blank().E;if(!S.P)S.P='bh'}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.M){S=Object.assign(blank(),s);if(!S.J)S.J=blank().J;if(!Array.isArray(S.E))S.E=(S.E&&S.E.on&&[6,12,18].includes(Number(S.E.inch)))?[Number(S.E.inch)]:[];if(!S.P)S.P='bh'}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 // ---------- maths
@@ -165,10 +165,10 @@ function calc(){
  const M=toFt(S.M.val,S.M.unit), Msrc=fmtRaw(S.M.val,S.M.unit);
  const J=toFt(S.J.val,S.J.unit), Jsrc=fmtRaw(S.J.val,S.J.unit);
  const up=S.Xb!=='3.38', start=up?1:4, X=up?2.88:3.38;
- const Ein=S.E&&S.E.on&&[6,12,18].includes(Number(S.E.inch))?Number(S.E.inch):0, E=Ein/12;
+ const Elist=S.E.filter(v=>[6,12,18].includes(Number(v))).map(Number), Ein=Elist.reduce((a,v)=>a+v,0), E=Ein/12, En=Elist.length;
  const borets=S.P==='borets', P=borets?0.55:0.70, Pname=borets?'Borets':'Baker Hughes';
  const Tot=M+J+X+E-P, totAt=k=>M+J+STAGES[k-1].ft+E-P;
- return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,P,Pname,Tot,totAt,rMin:totAt(1),rMax:totAt(4)};
+ return{M,Msrc,mUnit:S.M.unit,J,Jsrc,jUnit:S.J.unit,X,Xin:up?'34.51 in':'40.51 in',up,start,E,Ein,En,Elist,P,Pname,Tot,totAt,rMin:totAt(1),rMax:totAt(4)};
 }
 
 // ---------- text width (Helvetica metrics via canvas, mm)
@@ -230,7 +230,7 @@ function drawSheet(R,c){
  R.text(fmtFt(c.J)+(c.Jsrc&&c.jUnit!=='ft'?'  ('+c.Jsrc+')':''),Tx,yj+3,{size:8.5,bold:true,color:COL.blue});
  R.text('X · BIW FEEDTHRU (EA1591) · STAGE '+c.start+' OF 4',Tx,ym-2.6,{size:6.8,bold:true});
  R.text(c.X.toFixed(2)+' ft  ('+c.Xin+')',Tx,ym+1,{size:8.5,bold:true,color:COL.blue});
- if(c.Ein) R.text('+ E · EXTENSION '+c.Ein+' in = '+c.E.toFixed(2)+' ft',Tx,ym+4.8,{size:7.5,bold:true,color:COL.blue});
+ if(c.Ein) R.text('+ E · '+(c.En>1?c.En+' EXTENSIONS ('+c.Elist.join('+')+' in) = '+c.Ein+' in':'EXTENSION '+c.Ein+' in')+' = '+c.E.toFixed(2)+' ft',Tx,ym+4.8,{size:7.5,bold:true,color:COL.blue});
  arrowV(R,Mx,yPen,yPh,COL.orange);
  const ml=[{t:'MLE',size:8,bold:true,color:COL.orange},{t:fmtFt(c.M),size:12,bold:true,color:COL.orange}];
  if(c.Msrc&&c.mUnit!=='ft') ml.push({t:'('+c.Msrc+')',size:6.5,color:COL.muted});
@@ -257,7 +257,7 @@ function drawSheet(R,c){
  const f=n=>isNaN(n)?'—':n.toFixed(2);
  const dimRows=[{cells:['J','Secondary bore joint',c.jUnit==='ft'?'':(c.Jsrc||''),f(c.J)],col:COL.blue},
   {cells:['X','BIW feedthru (EA1591) · stage '+c.start,c.Xin,c.X.toFixed(2)],col:COL.blue},
-  ...(c.Ein?[{cells:['E','Extension',c.Ein+' in',c.E.toFixed(2)],col:COL.blue}]:[]),
+  ...(c.Ein?[{cells:['E',c.En>1?'Extensions x'+c.En+' ('+c.Elist.join(' + ')+' in)':'Extension',c.Ein+' in',c.E.toFixed(2)],col:COL.blue}]:[]),
   {cells:['MLE','MLE cable (penetrator to pothead)',c.mUnit==='ft'?'':(c.Msrc||''),f(c.M)],col:COL.orange,hi:COL.mleHi,bold:true},
   {cells:['P','Pothead offset — '+c.Pname,'minus',c.P.toFixed(2)],col:COL.orange},
   {cells:['TOTAL','Packer bottom to pothead',c.Ein?'J+X+E+MLE-P':'J+X+MLE-P',f(c.Tot)],col:COL.blue,hi:COL.hi,big:true,bold:true}];
@@ -289,7 +289,7 @@ function update(){
  $('Mread').innerHTML=isNaN(c.M)?'—':(c.mUnit==='ft'?'':esc(c.Msrc)+' = ')+'<b>'+c.M.toFixed(2)+' ft</b>';
  const ft=n=>isNaN(n)?'—':n.toFixed(2)+' ft';
  $('Jread').innerHTML=isNaN(c.J)?'—':(c.jUnit==='ft'?'':esc(c.Jsrc)+' = ')+'<b style="color:var(--blue)">'+c.J.toFixed(2)+' ft</b>';
- $('Eseg').hidden=!S.E.on;
+ $('Esum').textContent=c.En?(c.En>1?c.Elist.join(' + ')+' = ':'')+c.Ein+' in = '+c.E.toFixed(2)+' ft':'';
  $('Tread').innerHTML=isNaN(c.Tot)?T('Enter the MLE length and J','اكتب طول الـ MLE و J'):
   'J '+c.J.toFixed(2)+' + X '+c.X.toFixed(2)+(c.Ein?' + E '+c.E.toFixed(2):'')+' + MLE '+c.M.toFixed(2)+' − P '+c.P.toFixed(2)+' = <b>'+c.Tot.toFixed(2)+' ft</b>';
  $('Rread').innerHTML=isNaN(c.rMin)?'':T('Range, stage 1 to stage 4: ','الرينج من ستيج 1 إلى ستيج 4: ')+'<b dir="ltr" style="unicode-bidi:isolate;display:inline-block;color:var(--blue);font-size:16px">'+c.rMin.toFixed(2)+' – '+c.rMax.toFixed(2)+' ft</b>';
@@ -305,8 +305,12 @@ $('Munit').addEventListener('change',()=>{S.M.unit=$('Munit').value;update()});
 $('Jval').value=S.J.val;$('Junit').value=S.J.unit;
 $('Jval').addEventListener('input',()=>{S.J.val=$('Jval').value;update()});
 $('Junit').addEventListener('change',()=>{S.J.unit=$('Junit').value;update()});
-$('Eon').checked=!!S.E.on;$('Eon').addEventListener('change',()=>{S.E.on=$('Eon').checked;update()});
-document.querySelectorAll('input[name=ext]').forEach(r=>{r.checked=Number(r.value)===Number(S.E.inch);r.addEventListener('change',()=>{if(r.checked){S.E.inch=Number(r.value);update()}})});
+function renderExt(){const box=$('Elist');box.innerHTML=S.E.map((v,i)=>`<div class="erow"><div class="ehead"><span>${T('Extension','إكستنشن')} ${i+1}</span><button class="x" type="button" data-edel="${i}" aria-label="${T('Remove extension','احذف الإكستنشن')} ${i+1}">×</button></div>`+
+ `<div class="seg seg3" role="radiogroup" aria-label="${T('Extension','إكستنشن')} ${i+1}">`+[6,12,18].map(n=>`<label><input type="radio" name="ext${i}" value="${n}" data-ei="${i}"${Number(v)===n?' checked':''}><span>${n} in<i>${(n/12).toFixed(2)} ft</i></span></label>`).join('')+`</div></div>`).join('')}
+$('Elist').addEventListener('change',e=>{const r=e.target;if(r.dataset.ei!==undefined&&r.checked){S.E[+r.dataset.ei]=Number(r.value);update()}});
+$('Elist').addEventListener('click',e=>{const b=e.target.closest('[data-edel]');if(b){S.E.splice(+b.dataset.edel,1);renderExt();update()}});
+$('Eadd').addEventListener('click',()=>{S.E.push(6);renderExt();update()});
+renderExt();
 document.querySelectorAll('input[name=pv]').forEach(r=>{r.checked=r.value===S.P;r.addEventListener('change',()=>{if(r.checked){S.P=r.value;update()}})});
 document.querySelectorAll('input[name=xb]').forEach(r=>{r.checked=r.value===S.Xb;r.addEventListener('change',()=>{if(r.checked){S.Xb=r.value;update()}})});
 $('zoom').addEventListener('click',()=>{const p=$('preview');p.classList.toggle('zoom');$('zoom').textContent=p.classList.contains('zoom')?T('Fit','ملاءمة'):T('Zoom','تكبير')});
